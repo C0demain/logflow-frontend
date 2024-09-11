@@ -16,6 +16,6 @@ export const StageLine: React.FC<stageLineProps> = ({setor, stage1, stage2, stag
                 <li className={stage2?"step step-primary":"step"}>Choose plan</li>
                 <li className={stage3?"step step-primary":"step"}>Purchase</li>
             </ul>
-        </div>
+        </div>   
     )
 }
