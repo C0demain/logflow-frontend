@@ -9,6 +9,7 @@ export function Navbar(){
             <li><a href="/requestlist">Pedidos</a></li>
             <li><a href="/register">Registro</a></li>
             <li><a href="/login">Login</a></li>
+            <li><a href="/todolist">Lista de Tarefas</a></li>
 
             <li>
                 <details>
