@@ -74,30 +74,30 @@ export default function TodoList({}: Props) {
 
   return (
     <>
-      <div className="rounded-md mx-auto space-y-5 w-1/3 h-2/5 bg-[#fff] shadow-lg transition-all hover:bg-[#fff] hover:scale-95">
-        <div className="card bg-base-0 rounded-box grid flex-grow py-7 place-items-center shadow-x4">
-          <div className="container max-w-md">
-            <h2 className="text-2xl font-bold mb-2 mx-4 py-7">Setor</h2>
-            <div className="flex mb-4 mx-4">
+      <div className="rounded-md mx-auto space-y-5 w-full max-w-md bg-white shadow-lg transition-all hover:scale-95 p-4">
+        <div className="card bg-base-0 rounded-box grid flex-grow py-5 place-items-center shadow-x4">
+          <div className="container w-full">
+            <h2 className="text-2xl font-bold mb-4 text-center">Setor</h2>
+            <div className="flex flex-col sm:flex-row mb-4 gap-2">
               <input
                 onChange={(e) => setInputText(e.target.value)}
                 value={inputText}
                 type="text"
                 placeholder="Adicionar Tarefa..."
-                className="border-gray-300 border rounded-l px-4 py-2 w-full"
+                className="border-gray-300 border rounded-md px-4 py-2 flex-grow"
               />
               <button
                 onClick={addTodo}
-                className="bg-blue-500 text-white px-4 py-2 rounded-r"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
               >
                 Adicionar
               </button>
             </div>
-            <ul ref={animationParent}>
+            <ul ref={animationParent} className="w-full">
               {todos.map((todo) => (
                 <li
                   key={todo.id}
-                  className="flex justify-between border-b py-2 px-4"
+                  className="flex justify-between border-b py-2 px-4 items-center"
                 >
                   {editeMode === todo.id ? (
                     <>
@@ -105,11 +105,11 @@ export default function TodoList({}: Props) {
                         onChange={(e) => setEditedText(e.target.value)}
                         value={editedText}
                         type="text"
-                        className="border-gray-300 border rounded-l px-4 py-2 w-full"
+                        className="border-gray-300 border rounded-md px-4 py-2 flex-grow"
                       />
                       <button
                         onClick={saveEditedTodo}
-                        className="bg-green-500 text-white px-4 py-2 rounded-r"
+                        className="bg-green-500 text-white px-4 py-2 rounded-md ml-2"
                       >
                         Salvar
                       </button>
@@ -118,10 +118,10 @@ export default function TodoList({}: Props) {
                     <>
                       <input type="checkbox" className="mr-3" />
                       <span className="flex-grow text-left">{todo.text}</span>
-                      <div>
+                      <div className="flex gap-2">
                         <button
                           onClick={() => editTodo(todo.id)}
-                          className="text-yellow-500 mr-2"
+                          className="text-yellow-500"
                         >
                           Editar
                         </button>
