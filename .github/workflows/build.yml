@@ -1,4 +1,4 @@
-name: Unit Test CI
+name: Build project
 
 on:
   push:
@@ -26,6 +26,3 @@ jobs:
 
       - name: Build project
         run: npm run build
-      
-      - name: Execute project
-        run: npm start
