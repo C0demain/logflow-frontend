@@ -8,9 +8,8 @@ type Todo = {
   text: string;
 };
 
-type Props = {};
 
-export default function TodoList({}: Props) {
+export default function TodoList() {
   const [animationParent] = useAutoAnimate();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputText, setInputText] = useState<string>("");
