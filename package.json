@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.2",
     "my-app": "file:",
     "next": "14.2.8",
     "react": "^18",
