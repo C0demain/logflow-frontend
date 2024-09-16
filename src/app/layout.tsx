@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans antialiased bg-gradient-to-br from-slate-50 to-slate-400 h-screen text-black`}
+        className={`font-sans antialiased bg-gradient-to-br from-slate-50 to-slate-400 min-h-screen w-screen text-black`}
       >
         <Navbar/>
         {children}
