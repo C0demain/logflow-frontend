@@ -9,16 +9,20 @@ type Todo = {
   completed: boolean;
 };
 
-export default function TodoList() {
+interface TodoListProps {
+  sectorName: string;
+}
+
+export default function TodoList({ sectorName }: TodoListProps) {
   const [animationParent] = useAutoAnimate();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputText, setInputText] = useState<string>("");
-  const [editeMode, setEditeMode] = useState<number | null>(null);
+  const [editMode, setEditMode] = useState<number | null>(null);
   const [editedText, setEditedText] = useState<string>("");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [todoToDelete, setTodoToDelete] = useState<number | null>(null);
 
-  function addTodo() {
+  const addTodo = () => {
     if (inputText.trim() !== "") {
       const isExistingTodo = todos.some((todo) => todo.text === inputText);
 
@@ -27,65 +31,64 @@ export default function TodoList() {
         setInputText("");
         return;
       }
+
       const newTodo: Todo = {
         id: todos.length + 1,
         text: inputText,
-        completed: false
+        completed: false,
       };
 
-      setTodos([...todos, newTodo]);
+      setTodos((prevTodos) => [...prevTodos, newTodo]);
       setInputText("");
     }
-  }
+  };
 
-  function toggleComplete(id: number) {
+  const toggleComplete = (id: number) => {
     const updatedTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
     setTodos(updatedTodos);
-  }
+  };
 
-  function deleteTodo(id: number) {
+  const deleteTodo = (id: number) => {
     setTodoToDelete(id);
     setModalOpen(true);
-  }
+  };
 
-  function confirmDelete() {
+  const confirmDelete = () => {
     if (todoToDelete !== null) {
       const updatedTodos = todos.filter((todo) => todo.id !== todoToDelete);
       setTodos(updatedTodos);
       setModalOpen(false);
       setTodoToDelete(null);
     }
-  }
+  };
 
-  function editTodo(id: number) {
-    setEditeMode(id);
-
+  const editTodo = (id: number) => {
+    setEditMode(id);
     const todoToEdit = todos.find((todo) => todo.id === id);
     if (todoToEdit) {
       setEditedText(todoToEdit.text);
     }
-  }
+  };
 
-  function saveEditedTodo() {
-    if (editeMode !== null) {
+  const saveEditedTodo = () => {
+    if (editMode !== null) {
       const updatedTodos = todos.map((todo) =>
-        todo.id === editeMode ? { ...todo, text: editedText } : todo
+        todo.id === editMode ? { ...todo, text: editedText } : todo
       );
-
       setTodos(updatedTodos);
-      setEditeMode(null);
+      setEditMode(null);
     }
-  }
+  };
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       addTodo();
     }
-  }
+  };
 
-  const completedCount = todos.filter(todo => todo.completed).length;
+  const completedCount = todos.filter((todo) => todo.completed).length;
   const totalCount = todos.length;
   const completionPercentage = totalCount === 0 ? 0 : (completedCount / totalCount) * 100;
 
@@ -94,25 +97,25 @@ export default function TodoList() {
       <div className="rounded-md mx-auto space-y-5 w-full max-w-md bg-white shadow-lg transition-all hover:scale-105 p-4">
         <div className="grid place-items-center gap-4">
           <div className="flex w-full items-center">
-            <div className="flex flex-grow items-center px-12">
-              <h2 className="text-2xl font-bold">Setor</h2>
+            <div className="flex flex-grow items-center">
+              <h2 className="text-2xl font-bold mx-3">{sectorName}</h2>
             </div>
-            <div className="flex flex-grow items-center justify-center">
+            <div className="justify-right">
               <RadialProgress percentage={completionPercentage} />
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row mb-4 gap-2">
+          <div className="flex w-full px-2 flex-col sm:flex-row mb-4 gap-2 justify-items-stretch">
             <input
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
               value={inputText}
               type="text"
               placeholder="Adicionar Tarefa..."
-              className="border-gray-300 border rounded-md px-8 py-2 flex-grow"
+              className="input input-bordered flex-grow"
             />
             <button
               onClick={addTodo}
-              className="bg-blue-500 text-white px-8 py-2 rounded-md"
+              className="btn btn-primary ml-2"
             >
               Adicionar
             </button>
@@ -123,17 +126,17 @@ export default function TodoList() {
                 key={todo.id}
                 className="flex justify-between border-b py-2 px-4 items-center"
               >
-                {editeMode === todo.id ? (
+                {editMode === todo.id ? (
                   <>
                     <input
                       onChange={(e) => setEditedText(e.target.value)}
                       value={editedText}
                       type="text"
-                      className="border-gray-300 border rounded-md px-4 py-2 flex-grow"
+                      className="input input-bordered flex-grow"
                     />
                     <button
                       onClick={saveEditedTodo}
-                      className="bg-green-500 text-white px-4 py-2 rounded-md ml-2"
+                      className="btn btn-success ml-2"
                     >
                       Salvar
                     </button>
@@ -144,7 +147,7 @@ export default function TodoList() {
                       type="checkbox"
                       checked={todo.completed}
                       onChange={() => toggleComplete(todo.id)}
-                      className="mr-3"
+                      className="mr-3 h-6 w-6"
                     />
                     <span className={`flex-grow text-left ${todo.completed ? 'line-through text-gray-500' : ''}`}>
                       {todo.text}
@@ -152,13 +155,13 @@ export default function TodoList() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => editTodo(todo.id)}
-                        className="text-yellow-500"
+                        className="border border-yellow-500 text-yellow-500 px-2 py-1 rounded text-sm"
                       >
                         Editar
                       </button>
                       <button
                         onClick={() => deleteTodo(todo.id)}
-                        className="text-red-500"
+                        className="border border-red-500 text-red-500 px-2 py-1 rounded text-sm"
                       >
                         Deletar
                       </button>
