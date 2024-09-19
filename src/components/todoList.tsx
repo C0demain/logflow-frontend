@@ -1,7 +1,8 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useState } from "react";
-import Modal from "./modal";
+import Modal from "./modal"; 
 import RadialProgress from "./radialProgress";
+import { FaEdit, FaTrash } from 'react-icons/fa'; 
 
 type Todo = {
   id: number;
@@ -17,9 +18,10 @@ export default function TodoList({ sectorName }: TodoListProps) {
   const [animationParent] = useAutoAnimate();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputText, setInputText] = useState<string>("");
-  const [editMode, setEditMode] = useState<number | null>(null);
   const [editedText, setEditedText] = useState<string>("");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [todoToEdit, setTodoToEdit] = useState<number | null>(null);
+  const [modalOpenDelete, setModalOpenDelete] = useState<boolean>(false);
   const [todoToDelete, setTodoToDelete] = useState<number | null>(null);
 
   const addTodo = () => {
@@ -52,33 +54,35 @@ export default function TodoList({ sectorName }: TodoListProps) {
 
   const deleteTodo = (id: number) => {
     setTodoToDelete(id);
-    setModalOpen(true);
+    setModalOpenDelete(true);
   };
 
   const confirmDelete = () => {
     if (todoToDelete !== null) {
       const updatedTodos = todos.filter((todo) => todo.id !== todoToDelete);
       setTodos(updatedTodos);
-      setModalOpen(false);
+      setModalOpenDelete(false);
       setTodoToDelete(null);
     }
   };
 
   const editTodo = (id: number) => {
-    setEditMode(id);
+    setTodoToEdit(id);
     const todoToEdit = todos.find((todo) => todo.id === id);
     if (todoToEdit) {
       setEditedText(todoToEdit.text);
+      setModalOpen(true); // Abre o modal de edição
     }
   };
 
   const saveEditedTodo = () => {
-    if (editMode !== null) {
+    if (todoToEdit !== null) {
       const updatedTodos = todos.map((todo) =>
-        todo.id === editMode ? { ...todo, text: editedText } : todo
+        todo.id === todoToEdit ? { ...todo, text: editedText } : todo
       );
       setTodos(updatedTodos);
-      setEditMode(null);
+      setModalOpen(false);
+      setTodoToEdit(null);
     }
   };
 
@@ -94,7 +98,7 @@ export default function TodoList({ sectorName }: TodoListProps) {
 
   return (
     <>
-      <div className="rounded-md mx-auto space-y-5 w-full max-w-md bg-white shadow-lg transition-all hover:scale-105 p-4">
+      <div className="rounded-md mx-auto space-y-5 w-full max-w-md bg-white shadow-lg transition-all p-4">
         <div className="grid place-items-center gap-4">
           <div className="flex w-full items-center">
             <div className="flex flex-grow items-center">
@@ -126,58 +130,58 @@ export default function TodoList({ sectorName }: TodoListProps) {
                 key={todo.id}
                 className="flex justify-between border-b py-2 px-4 items-center"
               >
-                {editMode === todo.id ? (
-                  <>
-                    <input
-                      onChange={(e) => setEditedText(e.target.value)}
-                      value={editedText}
-                      type="text"
-                      className="input input-bordered flex-grow"
-                    />
-                    <button
-                      onClick={saveEditedTodo}
-                      className="btn btn-success ml-2"
-                    >
-                      Salvar
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <input
-                      type="checkbox"
-                      checked={todo.completed}
-                      onChange={() => toggleComplete(todo.id)}
-                      className="mr-3 h-6 w-6"
-                    />
-                    <span className={`flex-grow text-left ${todo.completed ? 'line-through text-gray-500' : ''}`}>
-                      {todo.text}
-                    </span>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => editTodo(todo.id)}
-                        className="border border-yellow-500 text-yellow-500 px-2 py-1 rounded text-sm"
-                      >
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => deleteTodo(todo.id)}
-                        className="border border-red-500 text-red-500 px-2 py-1 rounded text-sm"
-                      >
-                        Deletar
-                      </button>
-                    </div>
-                  </>
-                )}
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={() => toggleComplete(todo.id)}
+                  className="mr-3 h-6 w-6"
+                />
+                <span className={`flex-grow text-left ${todo.completed ? 'line-through text-gray-500' : ''}`}>
+                  {todo.text}
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => editTodo(todo.id)}
+                    className="text-yellow-500"
+                  >
+                    <FaEdit />
+                  </button>
+                  <button
+                    onClick={() => deleteTodo(todo.id)}
+                    className="text-red-500"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
         </div>
       </div>
+
+      {/* Modal de Edição */}
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
+        onConfirm={saveEditedTodo}
+      >
+        <h2 className="text-lg font-bold mb-4">Editar Tarefa</h2>
+        <input
+          value={editedText}
+          onChange={(e) => setEditedText(e.target.value)}
+          className="input input-bordered w-full mb-4"
+          placeholder="Digite a nova tarefa"
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalOpenDelete}
+        onClose={() => setModalOpenDelete(false)}
         onConfirm={confirmDelete}
-      />
+      >
+        <h2 className="text-lg font-bold mb-4">Tem certeza que deseja deletar esta tarefa?</h2>
+      </Modal>
+
     </>
   );
 }
