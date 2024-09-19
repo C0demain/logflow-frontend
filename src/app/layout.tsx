@@ -14,11 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`font-sans antialiased bg-gradient-to-br from-slate-50 to-slate-400 min-h-screen w-screen text-black`}
-      >
-        <Navbar/>
-        {children}
+      <body className={`font-sans antialiased bg-gradient-to-br from-slate-50 to-slate-400 text-black min-h-screen flex flex-col`}>
+        <Navbar />
+        <div className="flex-grow container mx-auto p-4 border-b mb-5">
+          {children}
+        </div>
       </body>
     </html>
   );
