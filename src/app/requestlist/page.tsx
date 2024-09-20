@@ -3,13 +3,14 @@
 import { CreateRequest } from "@/components/createRequest"
 import { RequestItem } from "@/components/requestItem"
 import { useCallback, useEffect, useState } from "react"
-import { listOs } from "../api/listOs"
+import { listOs } from "../api/orderService/listOs"
 
 interface OrderData {
     title: string;
     clientRelated: string;
     status: string;
     userId: string;
+    id: string;
   }
 
 export default function RequestList(){
@@ -34,6 +35,7 @@ export default function RequestList(){
                 {data.map( (order: OrderData) => (
                     <RequestItem
                     status={order.status}
+                    id={order.id}
                     name={order.title}
                     stage1={true}
                     stage2={true}

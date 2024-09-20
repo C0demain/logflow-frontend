@@ -1,7 +1,8 @@
 "use client";
 
-import { registerOrder } from "@/app/api/registerOS";
-import { useState } from "react";
+import { registerOrder } from "@/app/api/orderService/registerOS";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export function CreateRequest() {
   const [title, setTitle] = useState('');
@@ -19,6 +20,7 @@ export function CreateRequest() {
 
       setClientRelated('')
       setTitle('')
+      window.location.reload()
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Erro ao registrar ordem de serviço:', error.message);

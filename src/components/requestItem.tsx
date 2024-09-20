@@ -1,36 +1,30 @@
 import React from "react"
 import { StageLine } from "./stageLine"
+import { DeleteRequest } from "./deleteRequest";
 
 interface RequestItemProps {
     name: string,
     status: string,
+    id: string,
     stage1: boolean,
     stage2: boolean,
     stage3: boolean,
 }
 
-export const RequestItem: React.FC<RequestItemProps> = ({name, status, stage1, stage2, stage3}) => {
+export const RequestItem: React.FC<RequestItemProps> = ({name, status, id, stage1, stage2, stage3}) => {
     let component;
 
     switch (status) {
         case 'PENDENTE':
-        component = <div className="badge">Pendente</div>;
+        component = <div className="badge badge-warning">Pendente</div>;
         break;
 
         case 'FINALIZADO':
-        component = <div className="badge">Finalizado</div>;
+        component = <div className="badge badge-secondary">Em andamento</div>;
         break;
 
         case 'OPERACIONAL':
-        component = <div className="badge">Operacional</div>;
-        break;
-
-        case 'FINANCEIRO':
-        component = <div className="badge">Financeiro</div>;
-        break;
-
-        case 'ADMINISTRATIVO':
-        component = <div className="badge">Administrativo</div>;
+        component = <div className="badge badge-success">Finalizado</div>;
         break;
     }
     return (
@@ -44,6 +38,10 @@ export const RequestItem: React.FC<RequestItemProps> = ({name, status, stage1, s
                 stage1={stage1}
                 stage2={stage2}
                 stage3={stage3}/>
+            </div>
+            <div className="flex justify-end">
+                <DeleteRequest
+                id={id}/>
             </div>
         </div>
     )

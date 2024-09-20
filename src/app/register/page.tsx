@@ -17,8 +17,6 @@ const RegisterForm: React.FC = () => {
       const result = await registerUser({ name, email, password });
       setMessage(result.message);
     };
-  
-      
 
     return (
       
