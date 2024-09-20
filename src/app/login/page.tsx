@@ -1,4 +1,25 @@
+'use client'
+
+import { login } from "@/app/api/login";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
+
 export default function Login() {
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const router = useRouter()
+
+  async function logon(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    try{
+      await login(email, password)
+      router.push('/')
+      
+    }catch(e){
+      console.log(e)
+    }
+  }
+
     return (
       
         <div className="flex min-h-screen">
@@ -16,7 +37,7 @@ export default function Login() {
                 <h1 className="mb-1 text-black font-bold text-[1.5rem]">Olá de novo!</h1>
                 <p className="mb-8  text-black text-[1rem]"> Bem vindo de volta.</p>
   
-                <div>
+                <form onSubmit={logon}>
                  
                   <label className="mb-6 bg-slate-200 input input-bordered rounded-full flex  items-center gap-2">
                     <svg
@@ -29,7 +50,7 @@ export default function Login() {
                       <path
                         d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                     </svg>
-                    <input type="text" className="grow" placeholder="Email" />
+                    <input type="text" className="grow" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email"/>
                   </label>
                 
                   <label className=" mb-6 bg-slate-200 input input-bordered rounded-full flex items-center gap-2">
@@ -43,11 +64,11 @@ export default function Login() {
                         d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
                         clipRule="evenodd" />
                     </svg>
-                    <input type="password" className="grow" value="password" />
+                    <input type="password" className="grow" value={password} onChange={e => setPassword(e.target.value)} placeholder="Senha"/>
                   </label>
   
-                  <button className="  bg-sky-600 border-slate-400 text-white hover:bg-sky-600 btn btn-wide rounded-full">Registre-se</button>
-              </div>
+                  <input type="submit" className="  bg-sky-600 border-slate-400 text-white hover:bg-sky-600 btn btn-wide rounded-full"/>
+              </form>
   
             </div>  
           </div>
