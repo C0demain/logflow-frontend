@@ -1,20 +1,18 @@
 import React from "react";
 
 interface stageLineProps{
-    setor: string,
     stage1: boolean,
     stage2: boolean,
     stage3: boolean,
 }
 
-export const StageLine: React.FC<stageLineProps> = ({setor, stage1, stage2, stage3}) => {
+export const StageLine: React.FC<stageLineProps> = ({ stage1, stage2, stage3}) => {
     return(
         <div>
-            <h1 className="text-xl">{setor}</h1>
             <ul className="steps">
-                <li className={stage1?"step step-primary":"step"}>Register</li>
-                <li className={stage2?"step step-primary":"step"}>Choose plan</li>
-                <li className={stage3?"step step-primary":"step"}>Purchase</li>
+                <li className={stage1?"step step-primary w-20 md:w-60 sm:w-32":"step w-20 md:w-60 sm:w-32"}>Comercial</li>
+                <li className={stage2?"step step-primary w-20 md:w-60 sm:w-32":"step w-20 md:w-60 sm:w-32"}>Operacional</li>
+                <li className={stage3?"step step-primary w-20 md:w-60 sm:w-32":"step w-20 md:w-60 sm:w-32"}>Financeiro</li>
             </ul>
         </div>   
     )
