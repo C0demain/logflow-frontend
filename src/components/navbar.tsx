@@ -1,15 +1,17 @@
+import Link from "next/link";
+
 export function Navbar(){
     return(
     <div className="navbar bg-[#0975BB] shadow-md">
         <div className="navbar-start">
-            <a href="/" className="btn btn-ghost text-xl">JJM Log</a>
+            <Link href="/" className="btn btn-ghost text-xl">JJM Log</Link>
         </div>
         <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
-            <li><a href="/requestlist">Pedidos</a></li>
-            <li><a href="/register">Registro</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/todolist">Lista de Tarefas</a></li>
+            <li><Link href="requestlist">Ordens de Serviço</Link></li>
+            <li><Link href="/register">Registro</Link></li>
+            <li><Link href="/login">Login</Link></li>
+            <li><Link href="/todolist">Lista de Tarefas</Link></li>
 
             <li>
                 <details>
@@ -57,5 +59,5 @@ export function Navbar(){
             </button>
         </div>
     </div>
-    )
+  );
 }
