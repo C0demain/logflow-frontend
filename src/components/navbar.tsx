@@ -12,6 +12,7 @@ export function Navbar(){
             <li><Link href="/register">Registro</Link></li>
             <li><Link href="/login">Login</Link></li>
             <li><Link href="/todolist">Lista de Tarefas</Link></li>
+            <li><Link href="/userEdit">Editar Funcionários</Link></li>
 
             <li>
                 <details>
