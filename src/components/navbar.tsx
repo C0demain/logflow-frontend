@@ -12,11 +12,8 @@ export function Navbar(){
             <li><Link href="/register">Registro</Link></li>
             <li><Link href="/login">Login</Link></li>
             <li><Link href="/todolist">Lista de Tarefas</Link></li>
-<<<<<<< Updated upstream
             <li><Link href="/userEdit">Editar Funcionários</Link></li>
-=======
             <li><Link href="/client">Cliente</Link></li>
->>>>>>> Stashed changes
 
             <li>
                 <details>
@@ -27,6 +24,7 @@ export function Navbar(){
                 </ul>
                 </details>
             </li>
+            <li><a>Item 3</a></li>
             </ul>
         </div>
         <div className="navbar-end">
