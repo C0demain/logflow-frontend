@@ -1,3 +1,4 @@
+import { createApiInstances } from '@/app/util/baseURL';
 import axios from 'axios';
 
 interface OrderData {
@@ -5,11 +6,14 @@ interface OrderData {
   clientRelated: string;
   status: string;
   userId: string;
+  sector: string;
 }
 
 export const registerOrder = async (orderData: OrderData) => {
+  const { apiLogin, apiInstance } = await createApiInstances();
+
   try {
-    const response = await axios.post('http://localhost:8000/api/v1/service-order', orderData);
+    const response = await apiInstance.post('/api/v1/service-order', orderData)
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

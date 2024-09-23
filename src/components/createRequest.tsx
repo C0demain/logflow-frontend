@@ -1,20 +1,30 @@
 "use client";
 
 import { registerOrder } from "@/app/api/orderService/registerOS";
-import { useRouter } from "next/router";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 export function CreateRequest() {
   const [title, setTitle] = useState('');
   const [clientRelated, setClientRelated] = useState('');
+  const [userId, setUserId] = useState('')
   const status = "PENDENTE";
-  const userId = "dc7057a3-62e7-4296-a608-86a8ecb4deb1";
+  const sector = "COMERCIAL"
+
+  const getId = async() => {
+    try {
+      const response = await axios.get('/api/id');
+      setUserId(response.data.id)
+    } catch (error) {
+      console.error('ID não encontrada')
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const response = await registerOrder({ title, clientRelated, status, userId });
+      const response = await registerOrder({ title, clientRelated, status, userId, sector });
       console.log('Ordem de serviço registrada:', response);
       // Você pode adicionar mais lógica aqui, como limpar o formulário ou exibir uma mensagem de sucesso
 
@@ -30,6 +40,10 @@ export function CreateRequest() {
       // Adicione lógica para tratar erros, como exibir uma mensagem de erro
     }
   };
+
+  useEffect(()=>{
+    getId();
+  })
 
   return (
     <div>
