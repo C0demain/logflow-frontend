@@ -1,10 +1,11 @@
+import { createApiInstances } from "@/app/util/baseURL";
 import axios from "axios";
 
 export const deleteOsById = async (id: string) => {
+    const { apiLogin, apiInstance } = await createApiInstances();
     try {
-        const response = await axios.delete(`http://localhost:8000/api/v1/service-order/${id}`);
+        const response = await apiInstance.delete(`/api/v1/service-order/${id}`);
         console.log('Ordem de serviço deletada:', response.data);
-        console.log("foi")
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

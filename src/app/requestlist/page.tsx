@@ -10,6 +10,7 @@ interface OrderData {
     clientRelated: string;
     status: string;
     userId: string;
+    sector: string;
     id: string;
   }
 
@@ -17,9 +18,9 @@ export default function RequestList(){
     const [data, setData] = useState<any[]>([])
 
     const getOs = useCallback(async ()=>{
-            const response = listOs()
-            console.log('Listado', response)
-            setData(await response)
+        const response = listOs()
+        console.log('Listado', response)
+        setData(await response)
     },[])
 
     useEffect(()=>{
@@ -34,12 +35,11 @@ export default function RequestList(){
             <div className=" flex flex-col space-y-10 justify-center">
                 {data.map( (order: OrderData) => (
                     <RequestItem
+                    key={order.id}
                     status={order.status}
                     id={order.id}
                     name={order.title}
-                    stage1={true}
-                    stage2={true}
-                    stage3={true}/>
+                    sector={order.sector}/>
                 )
                 )}
                 

@@ -47,7 +47,7 @@ export function CreateRequest() {
 
   return (
     <div>
-      <label htmlFor="modal1" className="btn text-white bg-blue-700 hover:bg-blue-900">Nova O.S.</label>
+      <label htmlFor="modal1" className="btn btn-info text-black hover:bg-blue-500">Nova O.S.</label>
 
       <input type="checkbox" id="modal1" className="modal-toggle" />
       <div className="modal" role="dialog">
