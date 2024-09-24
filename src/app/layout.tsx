@@ -15,8 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased bg-gradient-to-br from-slate-50 to-slate-400 text-black min-h-screen flex flex-col`}>
-        <Navbar />
-        <div className="flex-grow container mx-auto p-4 border-b mb-5">
+        <div>
           {children}
         </div>
       </body>

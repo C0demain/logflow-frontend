@@ -13,8 +13,7 @@ export default function Login() {
     e.preventDefault()
     try{
       await login(email, password)
-      router.push('/')
-      
+      router.push('/auth/requestlist')
     }catch(e){
       console.log(e)
     }
@@ -31,7 +30,7 @@ export default function Login() {
             </div>
           </div>
   
-          <div className="bg-slate-100 flex flex-col flex-auto justify-center items-center ">
+          <div className="bg-slate-100 flex flex-col flex-auto justify-center items-center">
   
               <div className="mb-24 mr-32">
                 <h1 className="mb-1 text-black font-bold text-[1.5rem]">Olá de novo!</h1>

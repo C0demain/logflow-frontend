@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
-import { registerUser } from '../api/userRegisterAPI';
+import { registerUser } from '../../api/userRegisterAPI';
 
 
 const RegisterForm: React.FC = () => {

@@ -3,7 +3,7 @@
 import { CreateRequest } from "@/components/createRequest"
 import { RequestItem } from "@/components/requestItem"
 import { useCallback, useEffect, useState } from "react"
-import { listOs } from "../api/orderService/listOs"
+import { listOs } from "../../api/orderService/listOs"
 
 interface OrderData {
     title: string;
