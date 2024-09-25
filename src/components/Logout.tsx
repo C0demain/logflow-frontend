@@ -9,7 +9,7 @@ export function Logout() {
     async function handleLogout() {
         try {
             const response = await axios.delete('/api/deleteToken');
-            router.push("/login");
+            router.push("/");
             console.log(response.data);
             closeModal()
         } catch (error) {

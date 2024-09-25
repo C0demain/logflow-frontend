@@ -1,25 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export default function middleware(request: NextRequest) {
+  // Obtém o token do cookie
+  const token = request.cookies.get('token')?.value;
 
-export default function middleware(request: NextRequest){
-    const token = request.cookies.get('token')?.value
+  // URLs para redirecionamentos
+  const signInURL = new URL('/', request.url);
+  const dashURL = new URL('/auth/requestlist', request.url);
 
-    const signInURL = new URL('/login', request.url)
-    const dashURL = new URL('/auth/requestlist', request.url)
-
-    if(!token){
-        if(request.nextUrl.pathname === '/login'){
-            return NextResponse.next()
-        }
-
-        return NextResponse.redirect(signInURL)
+  // Se não houver token e a URL não for '/', redireciona para '/'
+  if (!token) {
+    if (request.nextUrl.pathname === '/') {
+      return NextResponse.next();
     }
 
-    if(request.nextUrl.pathname === '/login'){
-        return NextResponse.redirect(dashURL)
-    }
+    return NextResponse.redirect(signInURL);
+  }
+
+  // Se houver token e a URL for '/' ou '/', redireciona para o dashboard
+  if (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/') {
+    return NextResponse.redirect(dashURL);
+  }
+
+  // Se houver token e a URL não for '/', permite a navegação
+  return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/login', '/auth/requestlist', '/auth/register', '/auth/todolist', '/auth/client', '/auth/userEdit']
-}
+  matcher: ['/', '/auth/requestlist', '/auth/register', '/auth/todolist', '/auth/client', '/auth/userEdit']
+};

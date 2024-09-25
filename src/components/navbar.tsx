@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { Logout } from "./Logout"; // Importando diretamente
+import { Logout } from "./logout"; // Importando diretamente
 
 export function Navbar() {
     return (
