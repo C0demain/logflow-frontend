@@ -6,13 +6,13 @@ export const listUsers = async () => {
   const { apiLogin, apiInstance } = await createApiInstances();
 
   try {
-    const response = await apiInstance.get('/api/v1/users');
+    const response = await apiInstance.get('/api/v1/client');
     return response.data.users; // Adjust based on the actual response structure
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error('Erro ao listar usuários: ' + error.response?.data.message);
+      throw new Error('Erro ao listar clientes: ' + error.response?.data.message);
     } else {
-      throw new Error('Erro ao listar usuários: ' + (error as Error).message);
+      throw new Error('Erro ao listar clientes: ' + (error as Error).message);
     }
   }
 };
