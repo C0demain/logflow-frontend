@@ -1,6 +1,6 @@
 "use client";
 
-import CreateClient from "@/components/createClient"; // Ensure your CreateClient component path is correct
+import CreateClient from "@/components/ClientService/createClient"; // Ensure your CreateClient component path is correct
 import { useState } from "react";
 
 export default function RequestList() {
