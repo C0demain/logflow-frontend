@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { Logout } from "./logout"; // Importando diretamente
+import { Logout } from "./Logout"; // Importando diretamente
 
 export function Navbar() {
     return (
@@ -11,7 +11,7 @@ export function Navbar() {
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
-                    <li><Link href="/auth/orderService">Ordens de Serviço</Link></li>
+                    <li><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
                     <li><Link href="/auth/register">Registro</Link></li>
                     <li><Link href="/auth/todolist">Lista de Tarefas</Link></li>
                     <li><Link href="/auth/userEdit">Editar Funcionários</Link></li>
