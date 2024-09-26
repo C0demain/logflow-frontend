@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { StageLine } from "./stageLine"
-import { DeleteRequest } from "./deleteRequest";
+import { StageLine } from "../stageLine"
+import { DeleteOrder } from "./deleteOrder";
 
 interface RequestItemProps {
     name: string,
@@ -44,7 +44,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({name, status, id, secto
                 stage3={stage3}/>
             </div>
             <div className="flex justify-end">
-                <DeleteRequest
+                <DeleteOrder
                 id={id}/>
             </div>
         </div>

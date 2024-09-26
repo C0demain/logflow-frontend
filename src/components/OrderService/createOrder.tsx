@@ -4,7 +4,7 @@ import { registerOrder } from "@/app/api/orderService/registerOS";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export function CreateRequest() {
+export function CreateOrder() {
   const [title, setTitle] = useState('');
   const [clientRelated, setClientRelated] = useState('');
   const [userId, setUserId] = useState('')
@@ -13,7 +13,7 @@ export function CreateRequest() {
 
   const getId = async() => {
     try {
-      const response = await axios.get('/api/id');
+      const response = await axios.get('/api/getId');
       setUserId(response.data.id)
     } catch (error) {
       console.error('ID não encontrada')
@@ -22,7 +22,7 @@ export function CreateRequest() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    getId()
     try {
       const response = await registerOrder({ title, clientRelated, status, userId, sector });
       console.log('Ordem de serviço registrada:', response);
@@ -41,9 +41,9 @@ export function CreateRequest() {
     }
   };
 
-  useEffect(()=>{
+  /* useEffect(()=>{
     getId();
-  })
+  }) */
 
   return (
     <div>

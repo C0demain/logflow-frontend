@@ -6,7 +6,7 @@ export default function middleware(request: NextRequest) {
 
   // URLs para redirecionamentos
   const signInURL = new URL('/', request.url);
-  const dashURL = new URL('/auth/requestlist', request.url);
+  const dashURL = new URL('/auth/orderservice', request.url);
 
   // Se não houver token e a URL não for '/', redireciona para '/'
   if (!token) {
@@ -27,5 +27,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/auth/requestlist', '/auth/register', '/auth/todolist', '/auth/client', '/auth/userEdit']
+  matcher: ['/', '/auth/orderservice', '/auth/register', '/auth/todolist', '/auth/client', '/auth/userEdit']
 };

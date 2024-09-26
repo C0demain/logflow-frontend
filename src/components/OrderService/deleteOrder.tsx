@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
-interface DeleteRequestProps {
+interface DeleteOrderProps {
     id: string;
 }
 
-export const DeleteRequest: React.FC<DeleteRequestProps> = ({ id }) => {
+export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
     const handleDelete = async (id: string) => {
         try {
             const response = await deleteOsById(id);
