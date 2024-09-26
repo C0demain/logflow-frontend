@@ -3,10 +3,11 @@
 import { registerOrder } from "@/app/api/orderService/registerOS";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import SelectClient from "../ClientService/selectClient";
 
 export function CreateOrder() {
   const [title, setTitle] = useState('');
-  const [clientRelated, setClientRelated] = useState('');
+  const [clientObj, setClientObj] = useState<any>()
   const [userId, setUserId] = useState('')
   const status = "PENDENTE";
   const sector = "COMERCIAL"
@@ -22,14 +23,16 @@ export function CreateOrder() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    getId()
+    let clientId = clientObj.value
+    console.log(userId)
+    console.log(title)
     try {
-      const response = await registerOrder({ title, clientRelated, status, userId, sector });
+      const response = await registerOrder({ title, clientId, status, userId, sector });
       console.log('Ordem de serviço registrada:', response);
       // Você pode adicionar mais lógica aqui, como limpar o formulário ou exibir uma mensagem de sucesso
 
-      setClientRelated('')
       setTitle('')
+      clientId =''
       window.location.reload()
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -41,9 +44,9 @@ export function CreateOrder() {
     }
   };
 
-  /* useEffect(()=>{
+  useEffect(()=>{
     getId();
-  }) */
+  })
 
   return (
     <div>
@@ -68,13 +71,7 @@ export function CreateOrder() {
             </div>
             <div>
               <label htmlFor="client" className="mr-2">Cliente</label>
-              <input
-                type="text"
-                id="client"
-                value={clientRelated}
-                onChange={(e) => setClientRelated(e.target.value)}
-                className="bg-gray-400 rounded-md border border-black"
-              />
+              <SelectClient controlState={[clientObj, setClientObj]} dataKey={"id"}/>
             </div>
             <button
               type="submit"

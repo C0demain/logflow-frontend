@@ -2,7 +2,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { RequestItem } from "./requestItem";
 import Loading from "@/app/loading";
-import { listOs } from "@/app/api/orderService/listOs";
+import { listOs } from "@/app/api/orderService/listOS";
 
 interface OrderData {
     title: string;

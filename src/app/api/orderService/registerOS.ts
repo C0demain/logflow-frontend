@@ -3,7 +3,7 @@ import axios from 'axios';
 
 interface OrderData {
   title: string;
-  clientRelated: string;
+  clientId: string;
   status: string;
   userId: string;
   sector: string;
