@@ -13,7 +13,7 @@ interface OrderData {
     id: string;
   }  
 
-export async function ReadOrder(){
+export function ReadOrder(){
     const [data, setData] = useState<OrderData[]>([]);
     const [loading, setLoading] = useState(true);
 
