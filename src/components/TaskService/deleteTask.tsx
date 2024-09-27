@@ -1,22 +1,22 @@
-import { deleteOsById } from "@/app/api/orderService/deleteOrder";
+import { deleteTaskById } from "@/app/api/tasks/deleteTask";
 import { FaTrash } from "react-icons/fa";
 
-interface DeleteOrderProps {
+interface DeleteTaskProps {
     id: string;
 }
 
-export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
+export const DeleteTask: React.FC<DeleteTaskProps> = ({ id }) => {
     const handleDelete = async (id: string) => {
         try {
-            const response = await deleteOsById(id);
-            console.log('Ordem de serviço deletada:', response);
+            const response = await deleteTaskById(id);
+            console.log('Tarefa deletada:', response);
             // Adicionar lógica adicional aqui, como limpar o formulário ou exibir uma mensagem de sucesso
             window.location.reload()
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error('Erro ao registrar ordem de serviço:', error.message);
+                console.error('Erro ao registrar Tarefa:', error.message);
             } else {
-                console.error('Erro desconhecido ao registrar ordem de serviço');
+                console.error('Erro desconhecido ao registrar Tarefa');
             }
             // Adicionar lógica para tratar erros, como exibir uma mensagem de erro
         }

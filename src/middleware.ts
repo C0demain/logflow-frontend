@@ -17,8 +17,8 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(signInURL);
   }
 
-  // Se houver token e a URL for '/' ou '/', redireciona para o dashboard
-  if (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/') {
+  // Se houver token e a URL for '/', redireciona para o dashboard
+  if (request.nextUrl.pathname === '/') {
     return NextResponse.redirect(dashURL);
   }
 
@@ -27,5 +27,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/auth/orderservice', '/auth/register', '/auth/todolist', '/auth/client', '/auth/userEdit']
+  matcher: ['/', '/auth/orderservice', '/auth/register', '/auth/todolist/[userId]/[orderId]', '/auth/client', '/auth/userEdit']
 };

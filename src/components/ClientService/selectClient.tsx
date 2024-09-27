@@ -9,7 +9,7 @@ type propsType = {
     className?: string
 }
 
-const SelectClient = (props: propsType) =>{
+export const SelectClient = (props: propsType) =>{
     const [clientOpt, setClientOpt] = useState<any[]>([])
     const [controlState, setControlState] = props.controlState
     const { dataKey, className } = props
@@ -47,5 +47,3 @@ const SelectClient = (props: propsType) =>{
         </>
     )
 }
-
-export default SelectClient

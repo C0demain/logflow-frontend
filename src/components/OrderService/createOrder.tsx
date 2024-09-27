@@ -1,31 +1,23 @@
 "use client";
 
-import { registerOrder } from "@/app/api/orderService/registerOS";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import SelectClient from "../ClientService/selectClient";
+import { useState } from "react";
+import {SelectClient} from "../ClientService/selectClient";
+import { registerOrder } from "@/app/api/orderService/registerOrder";
 
-export function CreateOrder() {
+interface CreateOrderProps{
+  id: string,
+}
+
+export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
   const [title, setTitle] = useState('');
   const [clientObj, setClientObj] = useState<any>()
-  const [userId, setUserId] = useState('')
+  const userId = id
   const status = "PENDENTE";
   const sector = "COMERCIAL"
-
-  const getId = async() => {
-    try {
-      const response = await axios.get('/api/getId');
-      setUserId(response.data.id)
-    } catch (error) {
-      console.error('ID não encontrada')
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let clientId = clientObj.value
-    console.log(userId)
-    console.log(title)
     try {
       const response = await registerOrder({ title, clientId, status, userId, sector });
       console.log('Ordem de serviço registrada:', response);
@@ -43,10 +35,6 @@ export function CreateOrder() {
       // Adicione lógica para tratar erros, como exibir uma mensagem de erro
     }
   };
-
-  useEffect(()=>{
-    getId();
-  })
 
   return (
     <div>
