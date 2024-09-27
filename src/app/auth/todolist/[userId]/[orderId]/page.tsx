@@ -19,8 +19,6 @@ export default function TaskPage({ params }: TaskListProps) {
   const [taskAdministrativo, setTaskAdministrativo] = useState<any[]>([]);
   const [completedSectors, setCompletedSectors] = useState<string[]>([]);
 
-  const sectors = ['Comercial', 'Administrativo', 'Financeiro'];
-
   const listTasks = useCallback(async () => {
     try {
       if (userId && orderId) {
