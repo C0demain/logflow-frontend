@@ -1,22 +1,97 @@
 "use client";
 
+import React, { useState } from "react";
+import EditModal from "../editModal"; // Componente do modal de edição
+
 interface RequestClientProps {
   name: string;
   email: string;
   phone: string;
   cnpj: string;
-  address: string; // Campo que reúne informações de endereço
+  street: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  complement?: string;
+  onDelete: (clientId: string) => void; // Callback para exclusão
+  clientId: string; // ID do cliente, necessário para a exclusão
+  onSave: (clientId: string, updatedData: any) => void; // Função para salvar as alterações
 }
 
-const RequestClient: React.FC<RequestClientProps> = ({ name, email, phone, cnpj, address }) => {
+const RequestClient: React.FC<RequestClientProps> = ({
+  name,
+  email,
+  phone,
+  cnpj,
+  street,
+  number,
+  neighborhood,
+  city,
+  state,
+  zipCode,
+  complement,
+  onDelete,
+  clientId,
+  onSave,
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clientData, setClientData] = useState({
+    name,
+    email,
+    phone,
+    cnpj,
+    street,
+    number,
+    neighborhood,
+    city,
+    state,
+    zipCode,
+    complement,
+  });
+  
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleSave = (updatedData: any) => {
+    setClientData(updatedData);
+    onSave(clientId, updatedData); // Salva os dados atualizados
+  };
+
+  const handleDelete = () => {
+    if (confirm(`Tem certeza que deseja excluir ${clientData.name}?`)) {
+      onDelete(clientId); // Chama a função de exclusão do pai
+    }
+  };
+
   return (
-    <div className="border rounded-lg p-4 shadow-md bg-white">
-      <h2 className="text-xl font-semibold">{name}</h2>
-      <p className="text-gray-700">Email: {email}</p>
-      <p className="text-gray-700">Telefone: {phone}</p>
-      <p className="text-gray-700">CNPJ: {cnpj}</p>
-      <p className="text-gray-700">Endereço: {address}</p>
-    </div>
+    <tr>
+      <td>{clientData.name}</td>
+      <td>{clientData.email}</td>
+      <td>{clientData.phone}</td>
+      <td>{clientData.cnpj}</td>
+      <td>
+        <button onClick={toggleModal} className="btn btn-primary btn-sm">
+          Editar
+        </button>
+        <button onClick={handleDelete} className="btn btn-secondary btn-sm ml-2">
+          Excluir
+        </button>
+      </td>
+
+      {/* Modal de Edição */}
+      {isModalOpen && (
+        <EditModal
+          isOpen={isModalOpen}
+          onClose={toggleModal}
+          clientData={clientData}
+          onSave={handleSave}
+        />
+      )}
+    </tr>
   );
 };
 

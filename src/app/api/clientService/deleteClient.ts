@@ -1,18 +1,13 @@
-import { createApiInstances } from "@/app/util/baseURL";
+// src/app/api/clientService/deleteClient.ts
 import axios from "axios";
+import { createApiInstances } from "@/app/util/baseURL";
 
-// Function to delete a user by ID
-export const deleteUserById = async (id: string) => {
-    const { apiLogin, apiInstance } = await createApiInstances();
+export const deleteClientById = async (id: string) => {
+    const { apiInstance } = await createApiInstances();
+    
     try {
-        const response = await apiInstance.delete(`/api/v1/client/${id}`);
-        console.log('Cliente deletado:', response.data);
-        return response.data;
+        await apiInstance.delete(`/api/v1/client/${id}`); // Altere o endpoint conforme necessário
     } catch (error) {
-        if (axios.isAxiosError(error)) {
-            throw new Error('Erro ao deletar cliente: ' + error.response?.data.message);
-        } else {
-            throw new Error('Erro ao deletar cliente: ' + (error as Error).message);
-        }
+        throw new Error('Erro ao deletar cliente: ' + (error as Error).message);
     }
 };

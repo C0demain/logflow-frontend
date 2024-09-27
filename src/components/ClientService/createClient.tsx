@@ -2,7 +2,7 @@
 
 import { registerClient } from "@/app/api/clientService/registerClient"; // Certifique-se de que o caminho está correto
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface UserData {
   name: string;
@@ -15,7 +15,7 @@ interface UserData {
   neighborhood: string;
   street: string;
   number: string;
-  complement?: string; 
+  complement?: string;
 }
 
 export function CreateClient() {
@@ -32,7 +32,7 @@ export function CreateClient() {
     number: '',
     complement: '',
   });
-  
+
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -82,6 +82,9 @@ export function CreateClient() {
         number: '',
         complement: '',
       });
+
+      // Atualiza a página ou o estado da lista de clientes
+      window.location.reload(); // Recarrega a página para mostrar os dados atualizados
     } catch (error: unknown) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -98,11 +101,9 @@ export function CreateClient() {
       <label htmlFor="modal1" className="btn btn-info text-black hover:bg-blue-500">Novo Cliente</label>
 
       <input type="checkbox" id="modal1" className="modal-toggle" />
-      <div className="modal" role="dialog">
-        <div className="modal-box bg-white">
-          <div className="modal-top mb-5">
-            <h1 className="text-2xl">Cadastrar Cliente</h1>
-          </div>
+      <div className="modal">
+        <div className="modal-box relative">
+          <h1 className="text-2xl font-semibold mb-4">Cadastrar Cliente</h1>
           {errorMessage && <div className="text-red-500">{errorMessage}</div>}
           <form onSubmit={handleSubmit} className="modal-middle space-y-4">
             <input
@@ -111,7 +112,7 @@ export function CreateClient() {
               placeholder="Nome"
               value={formData.name}
               onChange={handleChange}
-              className="bg-gray-200 rounded-md border border-black w-full"
+              className="input input-bordered w-full"
               required
             />
             <input
@@ -120,7 +121,7 @@ export function CreateClient() {
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="bg-gray-200 rounded-md border border-black w-full"
+              className="input input-bordered w-full"
               required
             />
             <input
@@ -129,7 +130,7 @@ export function CreateClient() {
               placeholder="Telefone"
               value={formData.phone}
               onChange={handleChange}
-              className="bg-gray-200 rounded-md border border-black w-full"
+              className="input input-bordered w-full"
               required
             />
             <input
@@ -138,7 +139,7 @@ export function CreateClient() {
               placeholder="CNPJ"
               value={formData.cnpj}
               onChange={handleChange}
-              className="bg-gray-200 rounded-md border border-black w-full"
+              className="input input-bordered w-full"
               required
             />
             <input
@@ -148,7 +149,7 @@ export function CreateClient() {
               value={formData.zipCode}
               onChange={handleChange}
               onBlur={handleCepBlur}
-              className="bg-gray-200 rounded-md border border-black w-full"
+              className="input input-bordered w-full"
               required
             />
             <div className="flex space-x-4">
@@ -158,7 +159,7 @@ export function CreateClient() {
                 placeholder="Estado"
                 value={formData.state}
                 onChange={handleChange}
-                className="bg-gray-200 rounded-md border border-black w-full"
+                className="input input-bordered w-full"
                 readOnly
               />
               <input
@@ -167,7 +168,7 @@ export function CreateClient() {
                 placeholder="Cidade"
                 value={formData.city}
                 onChange={handleChange}
-                className="bg-gray-200 rounded-md border border-black w-full"
+                className="input input-bordered w-full"
                 readOnly
               />
             </div>
@@ -177,7 +178,7 @@ export function CreateClient() {
               placeholder="Bairro"
               value={formData.neighborhood}
               onChange={handleChange}
-              className="bg-gray-200 rounded-md border border-black w-full"
+              className="input input-bordered w-full"
               readOnly
             />
             <input
@@ -186,7 +187,7 @@ export function CreateClient() {
               placeholder="Rua"
               value={formData.street}
               onChange={handleChange}
-              className="bg-gray-200 rounded-md border border-black w-full"
+              className="input input-bordered w-full"
               readOnly
             />
             <div className="flex space-x-4">
@@ -196,7 +197,7 @@ export function CreateClient() {
                 placeholder="Número"
                 value={formData.number}
                 onChange={handleChange}
-                className="bg-gray-200 rounded-md border border-black w-full"
+                className="input input-bordered w-full"
                 required
               />
               <input
@@ -205,16 +206,16 @@ export function CreateClient() {
                 placeholder="Complemento"
                 value={formData.complement}
                 onChange={handleChange}
-                className="bg-gray-200 rounded-md border border-black w-full"
+                className="input input-bordered w-full"
               />
             </div>
-            <button type="submit" className="btn bg-blue-600 text-white">
-              Registrar Cliente
-            </button>
+            <div className="modal-action">
+              <button type="submit" className="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white">
+                Registrar Cliente
+              </button>
+            </div>
           </form>
-          <div className="modal-action">
-            <label htmlFor="modal1" className="btn bg-blue-600 text-white">Fechar</label>
-          </div>
+          <label htmlFor="modal1" className="absolute top-2 right-2 cursor-pointer text-lg">✕</label>
         </div>
       </div>
     </div>

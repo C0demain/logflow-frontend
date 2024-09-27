@@ -1,6 +1,7 @@
 "use client";
 
-import {CreateClient} from "@/components/ClientService/createClient"; // Ensure your CreateClient component path is correct
+import { CreateClient } from "@/components/ClientService/createClient"; // Verifique se o caminho do componente CreateClient está correto// Importa o componente que lista os clientes
+import { ReadClient } from "@/components/ClientService/readClient";
 import { useState } from "react";
 
 export default function RequestList() {
@@ -14,12 +15,12 @@ export default function RequestList() {
     <div className="m-5 space-y-5 relative">
       <div className="justify-between flex items-center">
         <h1 className="text-2xl">Lista de Clientes:</h1>
-        <CreateClient/>
+        <CreateClient />
       </div>
 
       <div className="flex flex-col space-y-5 sm:flex-row sm:space-y-0 sm:space-x-5">
         <div className="flex-1">
-          {/* Placeholder for the client list or other content can go here */}
+          <ReadClient /> {/* Renderiza a lista de clientes aqui */}
         </div>
       </div>
     </div>

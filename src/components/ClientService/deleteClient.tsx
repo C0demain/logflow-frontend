@@ -1,5 +1,4 @@
-import { deleteUserById } from "@/app/api/clientService/deleteClient"; // Certifique-se de que a API de exclusão de usuários esteja correta
-import { useEffect, useState } from "react";
+ // Certifique-se de que a API de exclusão de usuários esteja corretaimport { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
 interface DeleteClientProps {
@@ -44,3 +43,7 @@ export const DeleteClient: React.FC<DeleteClientProps> = ({ id }) => {
         </div>
     );
 };
+function deleteUserById(id: string) {
+    throw new Error("Function not implemented.");
+}
+

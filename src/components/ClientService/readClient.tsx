@@ -1,60 +1,140 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import RequestClient from "./requestClient"; 
+
+import { AiFillEdit, AiFillDelete } from "react-icons/ai"; // Importa os ícones
+import RequestClient from "./requestClient";
 import Loading from "@/app/loading";
-import { listUsers } from "@/app/api/clientService/listClient"; 
+import { listClient } from "@/app/api/clientService/listClient";
+import { deleteClientById } from "@/app/api/clientService/deleteClient";
+import EditModal from "../editModal"; // Importa o modal de edição
 
 interface UserData {
-    name: string;
-    email: string;
-    phone: string;
-    cnpj: string;
-    zipCode: string;
-    state: string;
-    city: string;
-    neighborhood: string;
-    street: string;
-    number: string;
-    complement?: string;
-    id: string; // ID do cliente
+  name: string;
+  email: string;
+  phone: string;
+  cnpj: string;
+  zipCode: string;
+  state: string;
+  city: string;
+  neighborhood: string;
+  street: string;
+  number: string;
+  complement?: string;
+  id: string; // ID do cliente
 }
 
-export function ReadClients() {
-    const [data, setData] = useState<UserData[]>([]);
-    const [loading, setLoading] = useState(true);
+export function ReadClient() {
+  const [data, setData] = useState<UserData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentClient, setCurrentClient] = useState<UserData | null>(null); // Estado para armazenar o cliente atual
 
-    const getUsers = useCallback(async () => {
-        try {
-            const response = await listUsers(); // Chamada para listar os clientes
-            setData(response);
-        } catch (error) {
-            console.error("Error fetching clients:", error);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        getUsers();
-    }, [getUsers]);
-
-    if (loading) {
-        return <Loading />;
+  const getClient = useCallback(async () => {
+    try {
+      const response = await listClient("", "", "", "");
+      if (Array.isArray(response.clients)) {
+        setData(response.clients);
+      } else {
+        setError("Dados dos clientes não estão no formato esperado.");
+      }
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+      setError("Não foi possível carregar os dados dos clientes.");
+    } finally {
+      setLoading(false);
     }
+  }, []);
 
-    return (
-        <div className="flex flex-col space-y-10 justify-center">
-            {data.map((client) => (
-                <RequestClient
-                    key={client.id}
-                    name={client.name}
-                    email={client.email}
-                    phone={client.phone}
-                    cnpj={client.cnpj}
-                    address={`${client.street}, ${client.number}, ${client.neighborhood}, ${client.city} - ${client.state}`}
-                />
-            ))}
-        </div>
+  const handleDelete = async (clientId: string) => {
+    try {
+      await deleteClientById(clientId);
+      setData((prevData) => prevData.filter(client => client.id !== clientId));
+    } catch (error) {
+      console.error("Erro ao deletar cliente:", error);
+      setError("Não foi possível excluir o cliente.");
+    }
+  };
+
+  const handleEdit = (clientId: string) => {
+    const clientToEdit = data.find(client => client.id === clientId);
+    if (clientToEdit) {
+      setCurrentClient(clientToEdit); // Define o cliente atual
+      setIsModalOpen(true); // Abre o modal
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setCurrentClient(null); // Limpa o cliente atual
+  };
+
+  const handleSave = async (updatedData: UserData) => {
+    // Aqui você pode implementar a lógica para atualizar os dados do cliente na API
+    setData((prevData) =>
+      prevData.map(client => (client.id === updatedData.id ? { ...client, ...updatedData } : client))
     );
+    handleCloseModal(); // Fecha o modal após salvar
+  };
+
+  useEffect(() => {
+    getClient();
+  }, [getClient]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <div className="text-red-600">{error}</div>;
+  }
+
+  if (!Array.isArray(data) || data.length === 0) {
+    return <div>Nenhum cliente encontrado.</div>;
+  }
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="table w-full bg-white shadow-md rounded-lg">
+        <thead className="bg-gray-800 text-white">
+          <tr>
+            <th className="text-lg px-4 py-2">Nome</th>
+            <th className="text-lg px-4 py-2">Email</th>
+            <th className="text-lg px-4 py-2">Telefone</th>
+            <th className="text-lg px-4 py-2">CNPJ</th>
+            <th className="text-lg px-4 py-2">Ações</th>
+          </tr>
+        </thead>
+        <tbody className="text-gray-700 text-lg">
+          {data.map((client) => (
+            <tr key={client.id} className="hover:bg-gray-100">
+              <td className="px-4 py-3">{client.name}</td>
+              <td className="px-4 py-3">{client.email}</td>
+              <td className="px-4 py-3">{client.phone}</td>
+              <td className="px-4 py-3">{client.cnpj}</td>
+              <td className="flex justify-center space-x-4 px-4 py-3">
+                <button onClick={() => handleEdit(client.id)}>
+                  <AiFillEdit className="text-blue-500 hover:text-blue-700 text-2xl" />
+                </button>
+                <button onClick={() => handleDelete(client.id)}>
+                  <AiFillDelete className="text-red-500 hover:text-red-700 text-2xl" />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Modal de Edição */}
+      {isModalOpen && currentClient && (
+        <EditModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          clientData={currentClient}
+          onSave={handleSave}
+        />
+      )}
+    </div>
+  );
 }
