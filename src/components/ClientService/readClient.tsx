@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import RequestClient from "./requestClient"; // Corrigido para RequestClient
+import RequestClient from "./requestClient"; 
 import Loading from "@/app/loading";
-import { listUsers } from "@/app/api/clientService/listClient"; // Chamada para a API de clientes
+import { listUsers } from "@/app/api/clientService/listClient"; 
 
 interface UserData {
     name: string;
