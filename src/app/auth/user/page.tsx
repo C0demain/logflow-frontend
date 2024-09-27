@@ -3,7 +3,7 @@ import { useState } from "react";
 import { CreateUser } from "@/components/UserService/createUser";
 import { ReadUsers } from "@/components/UserService/listUser";
 
-export default function RequestList() {
+export default function UserPage() {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => {

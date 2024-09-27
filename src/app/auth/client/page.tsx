@@ -4,7 +4,7 @@ import { CreateClient } from "@/components/ClientService/createClient"; // Verif
 import { ReadClient } from "@/components/ClientService/readClient";
 import { useState } from "react";
 
-export default function RequestList() {
+export default function ClientPage() {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => {
