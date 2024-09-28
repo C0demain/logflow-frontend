@@ -22,9 +22,9 @@ const RequestUser: React.FC<RequestUserProps> = ({ name, email, role, sector, id
       </div>
 
       {/* Ícones de Editar e Excluir */}
-      <div className="flex space-x-4">
+      <div className="flex space-x-4 ml-auto mr-20">
         {/* Ícone de Editar */}
-        <label htmlFor={`edit${id}`} className="btn text-gray-700 bg-white hover:bg-gray-100">
+        <label htmlFor={`edit${id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
           <FaEdit />
         </label>
 

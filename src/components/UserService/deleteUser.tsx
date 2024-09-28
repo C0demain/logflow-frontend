@@ -24,7 +24,7 @@ export const DeleteUser: React.FC<DeleteUserProps> = ({ id, onDelete }) => {
 
     return (
         <div>
-            <label htmlFor={`delete${id}`} className="btn text-gray-700 bg-white hover:bg-gray-100">
+           <label htmlFor={`delete${id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
                 <FaTrash />
             </label>
 

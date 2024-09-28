@@ -13,7 +13,7 @@ export function Navbar() {
                 <ul className="menu menu-horizontal px-1">
                     <li><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
                     <li><Link href="/auth/register">Registro</Link></li>
-                    <li><Link href="/auth/userEdit">Editar Funcionários</Link></li>
+                    <li><Link href="/auth/user">Editar Funcionários</Link></li>
                     <li><Link href="/auth/client">Cliente</Link></li>
                 </ul>
             </div>
