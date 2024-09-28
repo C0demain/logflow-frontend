@@ -10,6 +10,11 @@ interface EditUserProps {
     sector: string;
 }
 
+enum Roles {
+    MANAGER = "MANAGER",
+    EMPLOYEE = "EMPLOYEE",
+}
+
 export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, sector }) => {
     const [formData, setFormData] = useState({
         name,
@@ -61,7 +66,7 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="bg-gray-200 rounded-md border border-black w-full"
+                            className="input input-bordered w-full"
                             required
                         />
                         <input
@@ -69,14 +74,14 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className="bg-gray-200 rounded-md border border-black w-full"
+                            className="input input-bordered w-full"
                             required
                         />
                         <select
                             name="role"
                             value={formData.role}
                             onChange={handleChange}
-                            className="bg-gray-200 rounded-md border border-black w-full"
+                            className="select select-bordered w-full"
                             required
                         >
                             <option value="MANAGER">Gerente</option>
@@ -86,7 +91,7 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                             name="sector"
                             value={formData.sector}
                             onChange={handleChange}
-                            className="bg-gray-200 rounded-md border border-black w-full"
+                            className="select select-bordered w-full"
                             required
                         >
                             <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
@@ -100,7 +105,7 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                     </form>
 
                     <div className="modal-action">
-                        <label htmlFor={`edit${id}`} className="btn bg-blue-600 text-white">Fechar</label>
+                        <label htmlFor={`edit${id}`} className="absolute top-2 right-2 cursor-pointer text-lg">✕</label>
                     </div>
                 </div>
             </div>

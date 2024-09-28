@@ -24,7 +24,7 @@ export function CreateUser() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -62,14 +62,14 @@ export function CreateUser() {
         <h1 className="text-2xl">Cadastrar Funcionário</h1>
       </div>
       {errorMessage && <div className="text-red-500">{errorMessage}</div>}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="modal-middle space-y-4">
         <input
           type="text"
           name="name"
           placeholder="Nome"
           value={formData.name}
           onChange={handleChange}
-          className="bg-gray-200 rounded-md border border-black w-full"
+          className="input input-bordered w-full"
           required
         />
         <input
@@ -78,7 +78,7 @@ export function CreateUser() {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
-          className="bg-gray-200 rounded-md border border-black w-full"
+          className="input input-bordered w-full"
           required
         />
         <input
@@ -87,27 +87,30 @@ export function CreateUser() {
           placeholder="Senha"
           value={formData.password}
           onChange={handleChange}
-          className="bg-gray-200 rounded-md border border-black w-full"
+          className="input input-bordered w-full"
           required
         />
-        <input
-          type="text"
-          name="role"
-          placeholder="Cargo"
-          value={formData.role}
-          onChange={handleChange}
-          className="bg-gray-200 rounded-md border border-black w-full"
-          required
-        />
-        <input
-          type="text"
-          name="sector"
-          placeholder="Setor"
-          value={formData.sector}
-          onChange={handleChange}
-          className="bg-gray-200 rounded-md border border-black w-full"
-          required
-        />
+        <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="select select-bordered w-full"
+            required
+        >
+            <option value="MANAGER">Gerente</option>
+            <option value="EMPLOYEE">Funcionário</option>
+        </select>
+        <select
+            name="sector"
+            value={formData.sector}
+            onChange={handleChange}
+            className="select select-bordered w-full"
+            required
+        >
+            <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+            <option value="COMERCIAL">COMERCIAL</option>
+            <option value="FINANCEIRO">FINANCEIRO</option>
+        </select>
         <button type="submit" className="btn bg-blue-600 text-white">
           Registrar Funcionário
         </button>
