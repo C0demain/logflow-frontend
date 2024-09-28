@@ -8,13 +8,15 @@ interface RequestClientProps {
   email: string;
   phone: string;
   cnpj: string;
-  street: string;
-  number: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  complement?: string;
+  address: {
+    street: string;
+    number: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    complement?: string;
+  }
   onDelete: (clientId: string) => void; // Callback para exclusão
   clientId: string; // ID do cliente, necessário para a exclusão
   onSave: (clientId: string, updatedData: any) => void; // Função para salvar as alterações
@@ -25,13 +27,7 @@ const RequestClient: React.FC<RequestClientProps> = ({
   email,
   phone,
   cnpj,
-  street,
-  number,
-  neighborhood,
-  city,
-  state,
-  zipCode,
-  complement,
+  address,
   onDelete,
   clientId,
   onSave,
@@ -42,13 +38,7 @@ const RequestClient: React.FC<RequestClientProps> = ({
     email,
     phone,
     cnpj,
-    street,
-    number,
-    neighborhood,
-    city,
-    state,
-    zipCode,
-    complement,
+    address,
   });
   
 

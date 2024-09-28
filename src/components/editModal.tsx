@@ -10,13 +10,15 @@ interface EditModalProps {
     email: string;
     phone: string;
     cnpj: string;
-    street: string;
-    number: string;
-    neighborhood: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    complement?: string;
+    address: {
+      street: string;
+      number: string;
+      neighborhood: string;
+      city: string;
+      state: string;
+      zipCode: string;
+      complement?: string;
+    }
   };
   onSave: (updatedData: any) => void; // Função para salvar as alterações
 }
@@ -29,6 +31,11 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({...formData, address: {...formData.address, [name]: value}});
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -81,8 +88,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="street"
-            value={formData.street}
-            onChange={handleChange}
+            value={formData.address.street}
+            onChange={handleAddressChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Rua"
             required
@@ -90,8 +97,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="number"
-            value={formData.number}
-            onChange={handleChange}
+            value={formData.address.number}
+            onChange={handleAddressChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Número"
             required
@@ -99,8 +106,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="neighborhood"
-            value={formData.neighborhood}
-            onChange={handleChange}
+            value={formData.address.neighborhood}
+            onChange={handleAddressChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Bairro"
             required
@@ -108,8 +115,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="city"
-            value={formData.city}
-            onChange={handleChange}
+            value={formData.address.city}
+            onChange={handleAddressChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Cidade"
             required
@@ -117,8 +124,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="state"
-            value={formData.state}
-            onChange={handleChange}
+            value={formData.address.state}
+            onChange={handleAddressChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Estado"
             required
@@ -126,8 +133,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="zipCode"
-            value={formData.zipCode}
-            onChange={handleChange}
+            value={formData.address.zipCode}
+            onChange={handleAddressChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="CEP"
             required
@@ -135,8 +142,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="complement"
-            value={formData.complement}
-            onChange={handleChange}
+            value={formData.address.complement}
+            onChange={handleAddressChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Complemento"
           />

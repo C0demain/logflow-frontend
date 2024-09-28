@@ -10,18 +10,20 @@ import { deleteClientById } from "@/app/api/clientService/deleteClient";
 import EditModal from "../editModal"; // Importa o modal de edição
 
 interface UserData {
+  id: string; // ID do cliente
   name: string;
   email: string;
   phone: string;
   cnpj: string;
-  zipCode: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  number: string;
-  complement?: string;
-  id: string; // ID do cliente
+  address: {
+    zipCode: string;
+    state: string;
+    city: string;
+    neighborhood: string;
+    street: string;
+    number: string;
+    complement?: string;
+  }
 }
 
 export function ReadClient() {
