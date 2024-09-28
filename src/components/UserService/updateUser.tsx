@@ -79,17 +79,20 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                             className="bg-gray-200 rounded-md border border-black w-full"
                             required
                         >
-                            <option value="ADMINISTRATIVO">Administrativo</option>
-                            <option value="GERENTE">Gerente</option>
+                            <option value="MANAGER">Gerente</option>
+                            <option value="EMPLOYEE">Funcionário</option>
                         </select>
-                        <input
-                            type="text"
+                        <select
                             name="sector"
                             value={formData.sector}
                             onChange={handleChange}
                             className="bg-gray-200 rounded-md border border-black w-full"
                             required
-                        />
+                        >
+                            <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                            <option value="COMERCIAL">COMERCIAL</option>
+                            <option value="FINANCEIRO">FINANCEIRO</option>
+                        </select>
 
                         <button type="submit" className="btn bg-blue-600 text-white">
                             Salvar Alterações
