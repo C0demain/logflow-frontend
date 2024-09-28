@@ -1,8 +1,10 @@
 "use client";
 
-import { registerClient } from "@/app/api/clientService/registerClient"; // Certifique-se de que o caminho está correto
+import { registerClient } from "@/app/api/clientService/registerClient";
+import { validarCNPJ, validarEmail, validarTelefone } from "@/app/util/validations";
 import axios from "axios";
 import { useState } from "react";
+import MaskedInput from 'react-text-mask';
 
 interface UserData {
   name: string;
@@ -20,85 +22,139 @@ interface UserData {
 
 export function CreateClient() {
   const [formData, setFormData] = useState<UserData>({
-    name: '',
-    email: '',
-    phone: '',
-    cnpj: '',
-    zipCode: '',
-    state: '',
-    city: '',
-    neighborhood: '',
-    street: '',
-    number: '',
-    complement: '',
+    name: "",
+    email: "",
+    phone: "",
+    cnpj: "",
+    zipCode: "",
+    state: "",
+    city: "",
+    neighborhood: "",
+    street: "",
+    number: "",
+    complement: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingCep, setLoadingCep] = useState(false); 
+  const [cepError, setCepError] = useState(""); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    let cleanValue = value;
+    if (name === "phone") {
+      cleanValue = cleanValue.replace(/\D/g, ""); 
+    } else if (name === "cnpj") {
+      cleanValue = cleanValue.replace(/\D/g, ""); 
+    } else if (name === "zipCode") {
+      cleanValue = cleanValue.replace("-", ""); 
+    }
+
+    setFormData({ ...formData, [name]: cleanValue });
   };
 
-  const handleCepBlur = async () => {
-    if (formData.zipCode.length === 8) {
-      try {
-        const response = await axios.get(`https://viacep.com.br/ws/${formData.zipCode}/json/`);
-        const { localidade, uf, bairro, logradouro } = response.data;
+  const buscarEnderecoPorCep = async () => {
+    const cleanCep = formData.zipCode.replace("-", "");
 
-        setFormData({
-          ...formData,
-          state: uf,
-          city: localidade,
-          neighborhood: bairro,
-          street: logradouro,
-        });
-      } catch (error) {
-        console.error('Erro ao buscar CEP:', error);
+    if (cleanCep.length !== 8) {
+      setCepError("CEP deve ter 8 dígitos.");
+      return;
+    }
+
+    setLoadingCep(true);
+    setCepError(""); 
+
+    try {
+      const response = await axios.get(`https://viacep.com.br/ws/${cleanCep}/json/`);
+      if (response.data.erro) {
+        setCepError("CEP não encontrado.");
+        setLoadingCep(false);
+        setFormData(prevState => ({
+          ...prevState,
+          state: '',
+          city: '',
+          neighborhood: '',
+          street: '',
+        }));
+        return;
       }
+
+      const { localidade, uf, bairro, logradouro } = response.data;
+      setFormData({
+        ...formData,
+        state: uf,
+        city: localidade,
+        neighborhood: bairro,
+        street: logradouro,
+      });
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+      setCepError("Erro ao buscar CEP. Verifique sua conexão ou tente novamente.");
+    } finally {
+      setLoadingCep(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMessage('');
+    setErrorMessage("");
     setLoading(true);
+
+    if (!validarCNPJ(formData.cnpj)) {
+      setErrorMessage("CNPJ inválido. Formato correto: 00.000.000/0000-00");
+      setLoading(false);
+      return;
+    }
+
+    if (!validarEmail(formData.email)) {
+      setErrorMessage("Email inválido.");
+      setLoading(false);
+      return;
+    }
+
+    if (!validarTelefone(formData.phone)) {
+      setErrorMessage("Telefone inválido. Formato correto: (XX) XXXXX-XXXX");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await registerClient(formData);
-      console.log('Cliente registrado:', response);
-      // Limpar os campos após o registro
+      console.log("Cliente registrado:", response);
+
       setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        cnpj: '',
-        zipCode: '',
-        state: '',
-        city: '',
-        neighborhood: '',
-        street: '',
-        number: '',
-        complement: '',
+        name: "",
+        email: "",
+        phone: "",
+        cnpj: "",
+        zipCode: "",
+        state: "",
+        city: "",
+        neighborhood: "",
+        street: "",
+        number: "",
+        complement: "",
       });
 
-      // Atualiza a página ou o estado da lista de clientes
-      window.location.reload(); // Recarrega a página para mostrar os dados atualizados
+      window.location.reload();
     } catch (error: unknown) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage('Erro desconhecido ao registrar cliente');
+        setErrorMessage("Erro desconhecido ao registrar cliente");
       }
     } finally {
-      setLoading(false);
+      setLoading(false);  
     }
   };
 
   return (
     <div>
-      <label htmlFor="modal1" className="btn btn-info text-black hover:bg-blue-500">Novo Cliente</label>
+      <label htmlFor="modal1" className="btn btn-info text-black hover:bg-blue-500">
+        Novo Cliente
+      </label>
 
       <input type="checkbox" id="modal1" className="modal-toggle" />
       <div className="modal">
@@ -124,8 +180,8 @@ export function CreateClient() {
               className="input input-bordered w-full"
               required
             />
-            <input
-              type="text"
+            <MaskedInput
+              mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]} 
               name="phone"
               placeholder="Telefone"
               value={formData.phone}
@@ -133,8 +189,8 @@ export function CreateClient() {
               className="input input-bordered w-full"
               required
             />
-            <input
-              type="text"
+            <MaskedInput
+              mask={[/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.',/\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]} 
               name="cnpj"
               placeholder="CNPJ"
               value={formData.cnpj}
@@ -142,16 +198,26 @@ export function CreateClient() {
               className="input input-bordered w-full"
               required
             />
-            <input
-              type="text"
-              name="zipCode"
-              placeholder="CEP"
-              value={formData.zipCode}
-              onChange={handleChange}
-              onBlur={handleCepBlur}
-              className="input input-bordered w-full"
-              required
-            />
+            <div className="flex space-x-4">
+              <MaskedInput
+                mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
+                name="zipCode"
+                placeholder="CEP"
+                value={formData.zipCode}
+                onChange={handleChange}
+                className="input input-bordered w-full"
+                required
+              />
+              <button
+                type="button"
+                className="btn btn-outline btn-primary"
+                onClick={buscarEnderecoPorCep}
+                disabled={loadingCep}
+              >
+                {loadingCep ? "Buscando..." : "Auto Preencher"}
+              </button>
+            </div>
+            {cepError && <div className="text-red-500">{cepError}</div>}
             <div className="flex space-x-4">
               <input
                 type="text"
@@ -161,6 +227,7 @@ export function CreateClient() {
                 onChange={handleChange}
                 className="input input-bordered w-full"
                 readOnly
+                disabled={loadingCep}
               />
               <input
                 type="text"
@@ -170,6 +237,7 @@ export function CreateClient() {
                 onChange={handleChange}
                 className="input input-bordered w-full"
                 readOnly
+                disabled={loadingCep}
               />
             </div>
             <input
@@ -180,6 +248,7 @@ export function CreateClient() {
               onChange={handleChange}
               className="input input-bordered w-full"
               readOnly
+              disabled={loadingCep}
             />
             <input
               type="text"
@@ -189,6 +258,7 @@ export function CreateClient() {
               onChange={handleChange}
               className="input input-bordered w-full"
               readOnly
+              disabled={loadingCep}
             />
             <div className="flex space-x-4">
               <input
@@ -210,8 +280,8 @@ export function CreateClient() {
               />
             </div>
             <div className="modal-action">
-              <button type="submit" className="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white">
-                Registrar Cliente
+              <button type="submit" className="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white" disabled={loading}>
+                {loading ? 'Registrando...' : 'Registrar Cliente'}
               </button>
             </div>
           </form>
