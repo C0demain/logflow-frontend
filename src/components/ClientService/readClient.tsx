@@ -8,30 +8,16 @@ import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
 import EditModal from "../editModal"; // Importa o modal de edição
-
-interface UserData {
-  id: string; // ID do cliente
-  name: string;
-  email: string;
-  phone: string;
-  cnpj: string;
-  address: {
-    zipCode: string;
-    state: string;
-    city: string;
-    neighborhood: string;
-    street: string;
-    number: string;
-    complement?: string;
-  }
-}
+import ClientData from "@/interfaces/clientData";
+import { updateClientById } from "@/app/api/clientService/updateClient";
+import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
 
 export function ReadClient() {
-  const [data, setData] = useState<UserData[]>([]);
+  const [data, setData] = useState<ClientData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentClient, setCurrentClient] = useState<UserData | null>(null); // Estado para armazenar o cliente atual
+  const [currentClient, setCurrentClient] = useState<ClientData | null>(null); // Estado para armazenar o cliente atual
 
   const getClient = useCallback(async () => {
     try {
@@ -72,11 +58,14 @@ export function ReadClient() {
     setCurrentClient(null); // Limpa o cliente atual
   };
 
-  const handleSave = async (updatedData: UserData) => {
-    // Aqui você pode implementar a lógica para atualizar os dados do cliente na API
-    setData((prevData) =>
-      prevData.map(client => (client.id === updatedData.id ? { ...client, ...updatedData } : client))
-    );
+  const handleSave = async (clientId: string, updatedData: ClientUpdateInterface) => {
+      try {
+        await updateClientById(clientId, updatedData);
+        window.location.reload(); // Atualizar a página após a edição
+    } catch (error: unknown) {
+    } finally {
+        setLoading(false);
+    }
     handleCloseModal(); // Fecha o modal após salvar
   };
 

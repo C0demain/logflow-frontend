@@ -1,30 +1,31 @@
 "use client";
 
+import ClientData from "@/interfaces/clientData";
+import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
 import React, { useState } from "react";
 
 interface EditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  clientData: {
-    name: string;
-    email: string;
-    phone: string;
-    cnpj: string;
-    address: {
-      street: string;
-      number: string;
-      neighborhood: string;
-      city: string;
-      state: string;
-      zipCode: string;
-      complement?: string;
-    }
-  };
-  onSave: (updatedData: any) => void; // Função para salvar as alterações
+  clientData: ClientData
+  onSave: (clientId: string, updatedData: ClientUpdateInterface) => void; // Função para salvar as alterações
 }
 
 const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSave }) => {
   const [formData, setFormData] = useState(clientData);
+  const updateData: ClientUpdateInterface = {
+    name: formData.name,
+    phone: formData.phone,
+    cnpj: formData.cnpj,
+    email: formData.email,
+    zipCode: formData.address.zipCode,
+    state: formData.address.state,
+    city: formData.address.city,
+    neighborhood: formData.address.neighborhood,
+    street: formData.address.street,
+    number: formData.address.number,
+    complement: formData.address.complement
+  }
 
   if (!isOpen) return null;
 
@@ -40,7 +41,7 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSave(formData); // Chama a função para salvar os dados atualizados
+    onSave(clientData.id, updateData); // Chama a função para salvar os dados atualizados
     onClose(); // Fecha o modal após salvar
   };
 
