@@ -1,61 +1,50 @@
-export function Navbar(){
-    return(
-    <div className="navbar bg-[#0975BB] shadow-md">
-        <div className="navbar-start">
-            <a href="/" className="btn btn-ghost text-xl">JJM Log</a>
-        </div>
-        <div className="navbar-center hidden lg:flex">
-            <ul className="menu menu-horizontal px-1">
-            <li><a href="/requestlist">Pedidos</a></li>
-            <li><a href="/register">Registro</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/todolist">Lista de Tarefas</a></li>
+'use client'
 
-            <li>
-                <details>
-                <summary>Parent</summary>
-                <ul className="p-2 bg-[#22638f]">
-                    <li><a>Submenu 1</a></li>
-                    <li><a>Submenu 2</a></li>
-                </ul>
-                </details>
-            </li>
-            <li><a>Item 3</a></li>
-            </ul>
-        </div>
-        <div className="navbar-end">
-            <button className="btn btn-ghost btn-circle">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            </button>
-            <button className="btn btn-ghost btn-circle">
-            <div className="indicator">
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                </svg>
-                <span className="badge badge-xs badge-primary indicator-item"></span>
+import Link from "next/link";
+import { Logout } from "./logout"; // Importando diretamente
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+export function Navbar() {
+    return (
+        <div className="navbar bg-[#0975BB] shadow-md">
+            <div className="navbar-start">
+                <Link href="/" className="btn btn-ghost text-xl hover:text-white">JJM Log</Link>
             </div>
-            </button>
+            <div className="navbar-center hidden lg:flex">
+                <ul className="menu menu-horizontal text-base text px-1">
+                    <li className="hover:text-white"><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
+                    {/* <li className="hover:text-white"><Link href="/auth/register">Registro</Link></li> */}
+                    <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
+                    <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
+                </ul>
+            </div>
+            <div className="navbar-end space-x-5 mr-5">
+                <div className="indicator">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    <span className="badge badge-xs badge-primary indicator-item"></span>
+                </div>
+                <details className="dropdown dropdown-end dropdown-hover">
+                    <summary className="btn btn-circle btn-ghost hover:text-white">                    
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/>
+                        </svg>
+                    </summary>
+                    <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow">
+                        <Logout /> {/* Componente de Logout diretamente importado */}
+                    </ul>
+                </details>
+            </div>
         </div>
-    </div>
-    )
+    );
 }
