@@ -16,7 +16,7 @@ export default function TaskPage({ params }: TaskListProps) {
   const { userId, orderId } = params;
   const [taskFinanceiro, setTaskFinanceiro] = useState<any[]>([]);
   const [taskComercial, setTaskComercial] = useState<any[]>([]);
-  const [taskAdministrativo, setTaskAdministrativo] = useState<any[]>([]);
+  const [taskOperacional, setTaskOperacional] = useState<any[]>([]);
   const [completedSectors, setCompletedSectors] = useState<string[]>([]);
 
   const listTasks = useCallback(async () => {
@@ -32,12 +32,12 @@ export default function TaskPage({ params }: TaskListProps) {
 
   function separateData(data: any[]) {
     const taskFinanceiroInit: SetStateAction<any[]> = [];
-    const taskAdministrativoInit: SetStateAction<any[]> = [];
+    const taskOperacionalInit: SetStateAction<any[]> = [];
     const taskComercialInit: SetStateAction<any[]> = [];
 
     data.forEach((e) => {
-      if (e.sector === 'ADMINISTRATIVO') {
-        taskAdministrativoInit.push(e);
+      if (e.sector === 'OPERACIONAL') {
+        taskOperacionalInit.push(e);
       } else if (e.sector === 'FINANCEIRO') {
         taskFinanceiroInit.push(e);
       } else {
@@ -45,7 +45,7 @@ export default function TaskPage({ params }: TaskListProps) {
       }
     });
 
-    setTaskAdministrativo(taskAdministrativoInit);
+    setTaskOperacional(taskOperacionalInit);
     setTaskFinanceiro(taskFinanceiroInit);
     setTaskComercial(taskComercialInit);
   }
@@ -76,10 +76,10 @@ export default function TaskPage({ params }: TaskListProps) {
           onAllTasksCompleted={handleAllTasksCompleted}
         />
         <TodoList
-          sectorName="Administrativo"
+          sectorName="Operacional"
           userId={userId}
           orderId={orderId}
-          tasks={taskAdministrativo}
+          tasks={taskOperacional}
           onAllTasksCompleted={handleAllTasksCompleted}
         />
         <TodoList

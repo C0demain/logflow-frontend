@@ -17,7 +17,7 @@ export function CreateUser() {
     email: "",
     password: "",
     role: "MANAGER",
-    sector: "ADMINISTRATIVO",
+    sector: "OPERACIONAL",
     isActive: true,
   });
 
@@ -42,7 +42,7 @@ export function CreateUser() {
         email: "",
         password: "",
         role: "MANAGER",
-        sector: "ADMINISTRATIVO",
+        sector: "OPERACIONAL",
         isActive: true,
       });
     } catch (error: unknown) {
@@ -107,7 +107,7 @@ export function CreateUser() {
             className="select select-bordered w-full"
             required
         >
-            <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+            <option value="OPERACIONAL">OPERACIONAL</option>
             <option value="COMERCIAL">COMERCIAL</option>
             <option value="FINANCEIRO">FINANCEIRO</option>
         </select>

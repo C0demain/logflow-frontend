@@ -9,12 +9,12 @@ interface CreateTaskProps {
 }
 
 type SectorOption = {
-  value: 'ADMINISTRATIVO' | 'FINANCEIRO' | 'COMERCIAL',
+  value: 'OPERACIONAL' | 'FINANCEIRO' | 'COMERCIAL',
   label: string
 }
 
 const sectorOptions: SectorOption[] = [
-  { value: 'ADMINISTRATIVO', label: 'ADMINISTRATIVO' },
+  { value: 'OPERACIONAL', label: 'OPERACIONAL' },
   { value: 'FINANCEIRO', label: 'FINANCEIRO' },
   { value: 'COMERCIAL', label: 'COMERCIAL' }
 ]

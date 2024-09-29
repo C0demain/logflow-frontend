@@ -23,13 +23,10 @@ export const RequestItem: React.FC<RequestItemProps> = ({ name, status, orderId,
     switch (sector) {
       case 'FINANCEIRO':
         setStage3(true);
-        break;
-      case 'ADMINISTRATIVO':
+      case 'OPERACIONAL':
         setStage2(true);
-        break;
       case 'COMERCIAL':
         setStage1(true);
-        break;
     }
   };
 

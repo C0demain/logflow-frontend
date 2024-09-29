@@ -94,7 +94,7 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                             className="select select-bordered w-full"
                             required
                         >
-                            <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                            <option value="OPERACIONAL">OPERACIONAL</option>
                             <option value="COMERCIAL">COMERCIAL</option>
                             <option value="FINANCEIRO">FINANCEIRO</option>
                         </select>
