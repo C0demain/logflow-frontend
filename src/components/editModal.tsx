@@ -1,30 +1,30 @@
 "use client";
 
+import ClientData from "@/interfaces/clientData";
+import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
 import React, { useState } from "react";
 
 interface EditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  clientData: {
-    name: string;
-    email: string;
-    phone: string;
-    cnpj: string;
-    address: {
-      street: string;
-      number: string;
-      neighborhood: string;
-      city: string;
-      state: string;
-      zipCode: string;
-      complement?: string;
-    }
-  };
-  onSave: (updatedData: any) => void; // Função para salvar as alterações
+  clientData: ClientData
+  onSave: (clientId: string, updatedData: ClientUpdateInterface) => void; // Função para salvar as alterações
 }
 
 const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSave }) => {
-  const [formData, setFormData] = useState(clientData);
+  const [formData, setFormData] = useState({
+    name: clientData.name,
+    phone: clientData.phone,
+    cnpj: clientData.cnpj,
+    email: clientData.email,
+    zipCode: clientData.address.zipCode,
+    state: clientData.address.state,
+    city: clientData.address.city,
+    neighborhood: clientData.address.neighborhood,
+    street: clientData.address.street,
+    number: clientData.address.number,
+    complement: clientData.address.complement
+  });
 
   if (!isOpen) return null;
 
@@ -33,14 +33,11 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({...formData, address: {...formData.address, [name]: value}});
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSave(formData); // Chama a função para salvar os dados atualizados
+    if(clientData.id){
+      onSave(clientData.id, formData); // Chama a função para salvar os dados atualizados
+    }
     onClose(); // Fecha o modal após salvar
   };
 
@@ -88,8 +85,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="street"
-            value={formData.address.street}
-            onChange={handleAddressChange}
+            value={formData.street}
+            onChange={handleChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Rua"
             required
@@ -97,8 +94,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="number"
-            value={formData.address.number}
-            onChange={handleAddressChange}
+            value={formData.number}
+            onChange={handleChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Número"
             required
@@ -106,8 +103,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="neighborhood"
-            value={formData.address.neighborhood}
-            onChange={handleAddressChange}
+            value={formData.neighborhood}
+            onChange={handleChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Bairro"
             required
@@ -115,8 +112,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="city"
-            value={formData.address.city}
-            onChange={handleAddressChange}
+            value={formData.city}
+            onChange={handleChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Cidade"
             required
@@ -124,8 +121,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="state"
-            value={formData.address.state}
-            onChange={handleAddressChange}
+            value={formData.state}
+            onChange={handleChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Estado"
             required
@@ -133,8 +130,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="zipCode"
-            value={formData.address.zipCode}
-            onChange={handleAddressChange}
+            value={formData.zipCode}
+            onChange={handleChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="CEP"
             required
@@ -142,8 +139,8 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           <input
             type="text"
             name="complement"
-            value={formData.address.complement}
-            onChange={handleAddressChange}
+            value={formData.complement}
+            onChange={handleChange}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Complemento"
           />

@@ -2,28 +2,24 @@
 
 import Link from "next/link";
 import { Logout } from "./logout"; // Importando diretamente
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export function Navbar() {
     return (
         <div className="navbar bg-[#0975BB] shadow-md">
             <div className="navbar-start">
-                <Link href="/" className="btn btn-ghost text-xl">JJM Log</Link>
+                <Link href="/" className="btn btn-ghost text-xl hover:text-white">JJM Log</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    <li><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
-                    <li><Link href="/auth/register">Registro</Link></li>
-                    <li><Link href="/auth/user">Editar Funcionários</Link></li>
-                    <li><Link href="/auth/client">Cliente</Link></li>
+                <ul className="menu menu-horizontal text-base text px-1">
+                    <li className="hover:text-white"><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
+                    {/* <li className="hover:text-white"><Link href="/auth/register">Registro</Link></li> */}
+                    <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
+                    <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
                 </ul>
             </div>
             <div className="navbar-end space-x-5 mr-5">
-                <details className="dropdown">
-                    <summary className="btn btn-sm m-1">User</summary>
-                    <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow">
-                        <Logout /> {/* Componente de Logout diretamente importado */}
-                    </ul>
-                </details>
                 <div className="indicator">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -39,6 +35,15 @@ export function Navbar() {
                     </svg>
                     <span className="badge badge-xs badge-primary indicator-item"></span>
                 </div>
+                <details className="dropdown dropdown-end dropdown-hover">
+                    <summary className="btn btn-circle btn-ghost hover:text-white">                    
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/>
+                        </svg>
+                    </summary>
+                    <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow">
+                        <Logout /> {/* Componente de Logout diretamente importado */}
+                    </ul>
+                </details>
             </div>
         </div>
     );

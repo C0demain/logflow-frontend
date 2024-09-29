@@ -41,3 +41,4 @@ build
 dist
 .DS_Store
 .env
+.vscode
