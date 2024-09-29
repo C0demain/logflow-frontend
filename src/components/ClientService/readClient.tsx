@@ -2,11 +2,12 @@
 
 import { useState, useCallback, useEffect } from "react";
 
-import { AiFillEdit, AiFillDelete } from "react-icons/ai"; // Importa os ícones
-import RequestClient from "./requestClient";
+import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
+import { validarTelefone, validarCNPJ } from "@/app/util/validations";
+import { formatarCNPJ, formatarTelefone } from "@/app/util/formatting";
 import EditModal from "../editModal"; // Importa o modal de edição
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
@@ -48,14 +49,14 @@ export function ReadClient() {
   const handleEdit = (clientId: string) => {
     const clientToEdit = data.find(client => client.id === clientId);
     if (clientToEdit) {
-      setCurrentClient(clientToEdit); // Define o cliente atual
-      setIsModalOpen(true); // Abre o modal
+      setCurrentClient(clientToEdit);
+      setIsModalOpen(true);
     }
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setCurrentClient(null); // Limpa o cliente atual
+    setCurrentClient(null);
   };
 
   const handleSave = async (clientId: string, updatedData: ClientUpdateInterface) => {
@@ -102,8 +103,12 @@ export function ReadClient() {
             <tr key={client.id} className="hover:bg-gray-100">
               <td className="px-4 py-3">{client.name}</td>
               <td className="px-4 py-3">{client.email}</td>
-              <td className="px-4 py-3">{client.phone}</td>
-              <td className="px-4 py-3">{client.cnpj}</td>
+              <td className="px-4 py-3">
+                {formatarTelefone(client.phone)}  {/* Exibe o telefone formatado */}
+              </td>
+              <td className="px-4 py-3">
+                {formatarCNPJ(client.cnpj)}  {/* Exibe o CNPJ formatado */}
+              </td>
               <td className="flex justify-center space-x-4 px-4 py-3">
                 <button onClick={() => handleEdit(client.id)}>
                   <AiFillEdit className="text-blue-500 hover:text-blue-700 text-2xl" />
@@ -115,6 +120,8 @@ export function ReadClient() {
             </tr>
           ))}
         </tbody>
+
+
       </table>
 
       {/* Modal de Edição */}
