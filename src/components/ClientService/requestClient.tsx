@@ -18,7 +18,7 @@ interface RequestClientProps {
     complement?: string;
   }
   onDelete: (clientId: string) => void; // Callback para exclusão
-  clientId: string; // ID do cliente, necessário para a exclusão
+  id: string; // ID do cliente, necessário para a exclusão
   onSave: (clientId: string, updatedData: any) => void; // Função para salvar as alterações
 }
 
@@ -29,11 +29,12 @@ const RequestClient: React.FC<RequestClientProps> = ({
   cnpj,
   address,
   onDelete,
-  clientId,
+  id,
   onSave,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [clientData, setClientData] = useState({
+    id,
     name,
     email,
     phone,
@@ -48,12 +49,12 @@ const RequestClient: React.FC<RequestClientProps> = ({
 
   const handleSave = (updatedData: any) => {
     setClientData(updatedData);
-    onSave(clientId, updatedData); // Salva os dados atualizados
+    onSave(id, updatedData); // Salva os dados atualizados
   };
 
   const handleDelete = () => {
     if (confirm(`Tem certeza que deseja excluir ${clientData.name}?`)) {
-      onDelete(clientId); // Chama a função de exclusão do pai
+      onDelete(id); // Chama a função de exclusão do pai
     }
   };
 

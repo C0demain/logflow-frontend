@@ -1,4 +1,5 @@
 export default interface ClientUpdateInterface {
+  id?: string;
   name: string;
   phone: string;
   cnpj: string;
