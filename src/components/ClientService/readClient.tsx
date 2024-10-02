@@ -6,8 +6,6 @@ import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
-import { validarTelefone, validarCNPJ } from "@/app/util/validations";
-import { formatarCNPJ, formatarTelefone } from "@/app/util/formatting";
 import EditModal from "../editModal"; // Importa o modal de edição
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
@@ -103,12 +101,8 @@ export function ReadClient() {
             <tr key={client.id} className="hover:bg-gray-100">
               <td className="px-4 py-3">{client.name}</td>
               <td className="px-4 py-3">{client.email}</td>
-              <td className="px-4 py-3">
-                {formatarTelefone(client.phone)}  {/* Exibe o telefone formatado */}
-              </td>
-              <td className="px-4 py-3">
-                {formatarCNPJ(client.cnpj)}  {/* Exibe o CNPJ formatado */}
-              </td>
+              <td className="px-4 py-3">{client.phone}</td>
+              <td className="px-4 py-3"> {client.cnpj}</td>
               <td className="flex justify-center space-x-4 px-4 py-3">
                 <button onClick={() => handleEdit(client.id)}>
                   <AiFillEdit className="text-blue-500 hover:text-blue-700 text-2xl" />
