@@ -1,5 +1,4 @@
 import { createApiInstances } from "@/app/util/baseURL";
-import axios from "axios";
 
 export const deleteUserById = async (id: string) => {
   const { apiInstance } = await createApiInstances();

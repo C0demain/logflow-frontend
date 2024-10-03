@@ -38,8 +38,8 @@ export const RequestItem: React.FC<RequestItemProps> = ({ name, status, orderId,
     <div className="grid grid-cols-4 grid-rows-[auto,1fr] p-5 rounded-md space-y-5 sm:5/6 md:5/6 lg:w-5/6 h-2/5 bg-white shadow-lg transition-all hover:bg-gray-50 hover:scale-105">
       <div className="col-span-4 row-span-1 w-full mb-5 flex flex-row justify-between items-center">
         <div className="flex flex-row space-x-5">
-        <h1 className="text-xl">{name}</h1>
-        <h1 className="text-xl">Cliente: {clientName}</h1>
+          <h1 className="text-xl">{name}</h1>
+          <h1 className="text-xl">Cliente: {clientName}</h1>
         </div>
         <div className={status === "FINALIZADO" ? "badge badge-success" : "badge badge-info"}>{status}</div>
       </div>
@@ -56,5 +56,4 @@ export const RequestItem: React.FC<RequestItemProps> = ({ name, status, orderId,
       </div>
     </div>
   );
-  
 };

@@ -7,7 +7,7 @@ interface TaskData {
     userId: string;
   }
 export const updateTask = async(taskData: TaskData, id: string) => {
-    const { apiLogin, apiInstance } = await createApiInstances();
+    const { apiInstance } = await createApiInstances();
 
     try {
         const response = await apiInstance.put(`/api/v1/task/${id}`, taskData)

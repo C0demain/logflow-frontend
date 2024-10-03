@@ -1,4 +1,3 @@
- // Certifique-se de que a API de exclusão de usuários esteja corretaimport { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
 interface DeleteClientProps {
@@ -8,17 +7,16 @@ interface DeleteClientProps {
 export const DeleteClient: React.FC<DeleteClientProps> = ({ id }) => {
     const handleDelete = async (id: string) => {
         try {
-            const response = await deleteUserById(id); // Chamada para excluir o cliente
+            const response = await deleteUserById(id);
             console.log('Cliente deletado:', response);
-            // Adicionar lógica adicional aqui, como atualizar a lista de clientes ou exibir uma mensagem de sucesso
-            window.location.reload(); // Opcional: pode ser melhor atualizar a lista de clientes sem recarregar a página
+
+            window.location.reload();
         } catch (error: unknown) {
             if (error instanceof Error) {
                 console.error('Erro ao deletar cliente:', error.message);
             } else {
                 console.error('Erro desconhecido ao deletar cliente');
             }
-            // Adicionar lógica para tratar erros, como exibir uma mensagem de erro
         }
     };
 
@@ -43,6 +41,7 @@ export const DeleteClient: React.FC<DeleteClientProps> = ({ id }) => {
         </div>
     );
 };
+
 function deleteUserById(id: string) {
     throw new Error("Function not implemented.");
 }

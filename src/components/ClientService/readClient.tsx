@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
-import EditModal from "../editModal"; // Importa o modal de edição
+import EditModal from "../editModal";
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
@@ -16,7 +15,7 @@ export function ReadClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentClient, setCurrentClient] = useState<ClientData | null>(null); // Estado para armazenar o cliente atual
+  const [currentClient, setCurrentClient] = useState<ClientData | null>(null);
 
   const getClient = useCallback(async () => {
     try {
@@ -58,14 +57,14 @@ export function ReadClient() {
   };
 
   const handleSave = async (clientId: string, updatedData: ClientUpdateInterface) => {
-      try {
-        await updateClientById(clientId, updatedData);
-        window.location.reload(); // Atualizar a página após a edição
+    try {
+      await updateClientById(clientId, updatedData);
+      window.location.reload();
     } catch (error: unknown) {
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-    handleCloseModal(); // Fecha o modal após salvar
+    handleCloseModal();
   };
 
   useEffect(() => {

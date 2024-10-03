@@ -1,9 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { Logout } from "./logout"; // Importando diretamente
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { Logout } from "./logout";
 
 export function Navbar() {
     return (
@@ -37,11 +35,11 @@ export function Navbar() {
                 </div>
                 <details className="dropdown dropdown-end dropdown-hover">
                     <summary className="btn btn-circle btn-ghost hover:text-white">                    
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/>
                         </svg>
                     </summary>
                     <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow">
-                        <Logout /> {/* Componente de Logout diretamente importado */}
+                        <Logout /> 
                     </ul>
                 </details>
             </div>

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
-import { updateUserById } from "@/app/api/userService/updateUser"; // Função de atualização
+import { updateUserById } from "@/app/api/userService/updateUser";
 
 interface EditUserProps {
     id: string;

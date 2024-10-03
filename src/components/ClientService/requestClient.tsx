@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import EditModal from "../editModal"; // Componente do modal de edição
+import EditModal from "../editModal";
 
 interface RequestClientProps {
   name: string;
@@ -41,7 +41,7 @@ const RequestClient: React.FC<RequestClientProps> = ({
     cnpj,
     address,
   });
-  
+
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);

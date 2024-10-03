@@ -5,13 +5,13 @@ interface UserData {
   name: string;
   email: string;
   password: string;
-  role: string;  // Novo campo para o cargo
-  sector: string;  // Novo campo para o setor
-  isActive: boolean
+  role: string; 
+  sector: string;  
+  isActive: boolean;
 }
 
 export const registerUser = async (userData: UserData) => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
 
   try {
     const response = await apiInstance.post('/api/v1/users', userData);

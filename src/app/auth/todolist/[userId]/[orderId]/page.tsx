@@ -5,6 +5,12 @@ import CreateTask from "@/components/TaskService/createTask";
 import TodoList from "@/components/TaskService/todoList";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
 
+interface Task {
+  id: string;
+  title: string;
+  sector: string;
+}
+
 interface TaskListProps {
   params: {
     userId: string;
@@ -14,9 +20,9 @@ interface TaskListProps {
 
 export default function TaskPage({ params }: TaskListProps) {
   const { userId, orderId } = params;
-  const [taskFinanceiro, setTaskFinanceiro] = useState<any[]>([]);
-  const [taskComercial, setTaskComercial] = useState<any[]>([]);
-  const [taskOperacional, setTaskOperacional] = useState<any[]>([]);
+  const [taskFinanceiro, setTaskFinanceiro] = useState<Task[]>([]);
+  const [taskComercial, setTaskComercial] = useState<Task[]>([]);
+  const [taskOperacional, setTaskOperacional] = useState<Task[]>([]);
   const [completedSectors, setCompletedSectors] = useState<string[]>([]);
 
   const listTasks = useCallback(async () => {
@@ -30,10 +36,10 @@ export default function TaskPage({ params }: TaskListProps) {
     }
   }, [userId, orderId]);
 
-  function separateData(data: any[]) {
-    const taskFinanceiroInit: SetStateAction<any[]> = [];
-    const taskOperacionalInit: SetStateAction<any[]> = [];
-    const taskComercialInit: SetStateAction<any[]> = [];
+  function separateData(data: Task[]) {
+    const taskFinanceiroInit: Task[] = [];
+    const taskOperacionalInit: Task[] = [];
+    const taskComercialInit: Task[] = [];
 
     data.forEach((e) => {
       if (e.sector === 'OPERACIONAL') {
@@ -56,7 +62,7 @@ export default function TaskPage({ params }: TaskListProps) {
 
   const handleAllTasksCompleted = (sectorName: string) => {
     // Adiciona o setor apenas se ainda não estiver na lista
-    setCompletedSectors((prev) => 
+    setCompletedSectors((prev) =>
       prev.includes(sectorName) ? prev : [...prev, sectorName]
     );
   };

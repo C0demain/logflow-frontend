@@ -8,7 +8,7 @@ interface EditModalProps {
   isOpen: boolean;
   onClose: () => void;
   clientData: ClientData
-  onSave: (clientId: string, updatedData: ClientUpdateInterface) => void; // Função para salvar as alterações
+  onSave: (clientId: string, updatedData: ClientUpdateInterface) => void;
 }
 
 const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSave }) => {
@@ -35,10 +35,10 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(clientData.id){
-      onSave(clientData.id, formData); // Chama a função para salvar os dados atualizados
+    if (clientData.id) {
+      onSave(clientData.id, formData);
     }
-    onClose(); // Fecha o modal após salvar
+    onClose();
   };
 
   return (

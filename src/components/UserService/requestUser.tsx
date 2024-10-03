@@ -1,6 +1,6 @@
 import { DeleteUser } from "@/components/UserService/deleteUser";
-import { EditUser } from "@/components/UserService/updateUser"; // Novo componente de edição
-import { FaEdit } from "react-icons/fa"; // Ícone de edição
+import { EditUser } from "@/components/UserService/updateUser";
+import { FaEdit } from "react-icons/fa"; 
 
 interface RequestUserProps {
     name: string;
@@ -8,7 +8,7 @@ interface RequestUserProps {
     role: string;
     sector: string;
     id: string;
-    onDelete: (id: string) => void; // Adicionando a prop onDelete
+    onDelete: (id: string) => void; 
 }
 
 const RequestUser: React.FC<RequestUserProps> = ({ name, email, role, sector, id, onDelete }) => {

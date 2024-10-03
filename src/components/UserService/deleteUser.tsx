@@ -1,10 +1,9 @@
-import { deleteUserById } from "@/app/api/userService/deleteUser"; // Certifique-se de que está importando do serviço correto
-import { useEffect } from "react";
+import { deleteUserById } from "@/app/api/userService/deleteUser"; 
 import { FaTrash } from "react-icons/fa";
 
 interface DeleteUserProps {
     id: string;
-    onDelete: (id: string) => void; // Adicionando prop onDelete
+    onDelete: (id: string) => void; 
 }
 
 export const DeleteUser: React.FC<DeleteUserProps> = ({ id, onDelete }) => {
@@ -12,7 +11,7 @@ export const DeleteUser: React.FC<DeleteUserProps> = ({ id, onDelete }) => {
         try {
             const response = await deleteUserById(id); 
             console.log('Funcionário deletado:', response);
-            onDelete(id); // Chamando a função onDelete aqui
+            onDelete(id); 
         } catch (error: unknown) {
             if (error instanceof Error) {
                 console.error('Erro ao deletar funcionário:', error.message);

@@ -31,7 +31,6 @@ export function ReadUsers() {
     }, [getUsers]);
 
     const handleDelete = (id: string) => {
-        // Atualize o estado para remover o usuário
         setData(prevData => prevData.filter(user => user.id !== id));
     };
 
@@ -49,7 +48,7 @@ export function ReadUsers() {
                     email={user.email}
                     role={user.role}
                     sector={user.sector}
-                    onDelete={handleDelete} // Passando a função handleDelete
+                    onDelete={handleDelete}
                 />
             ))}
         </div>

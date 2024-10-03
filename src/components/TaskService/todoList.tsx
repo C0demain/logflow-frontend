@@ -9,7 +9,7 @@ interface TodoListProps {
   onAllTasksCompleted: (sectorName: string) => void;
 }
 
-export default function TodoList({ sectorName, userId, orderId, tasks, onAllTasksCompleted }: TodoListProps) {
+export default function TodoList({ sectorName, userId, tasks, onAllTasksCompleted }: TodoListProps) {
   
   useEffect(() => {
     if (tasks && tasks.length > 0 && tasks.every(task => task.completed)) {

@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import {SelectClient} from "../ClientService/selectClient";
+import { SelectClient } from "../ClientService/selectClient";
 import { registerOrder } from "@/app/api/orderService/registerOrder";
 
-interface CreateOrderProps{
+interface CreateOrderProps {
   id: string,
 }
 
-export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
+export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
   const [title, setTitle] = useState('');
   const [clientObj, setClientObj] = useState<any>()
   const userId = id
@@ -21,10 +21,9 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
     try {
       const response = await registerOrder({ title, clientId, status, userId, sector });
       console.log('Ordem de serviço registrada:', response);
-      // Você pode adicionar mais lógica aqui, como limpar o formulário ou exibir uma mensagem de sucesso
 
       setTitle('')
-      clientId =''
+      clientId = ''
       window.location.reload()
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -32,7 +31,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
       } else {
         console.error('Erro desconhecido ao registrar ordem de serviço');
       }
-      // Adicione lógica para tratar erros, como exibir uma mensagem de erro
+
     }
   };
 
@@ -59,7 +58,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
             </div>
             <div>
               <label htmlFor="client" className="mr-2">Cliente</label>
-              <SelectClient controlState={[clientObj, setClientObj]} dataKey={"id"}/>
+              <SelectClient controlState={[clientObj, setClientObj]} dataKey={"id"} />
             </div>
             <button
               type="submit"

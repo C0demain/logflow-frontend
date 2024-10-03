@@ -2,7 +2,7 @@ import { createApiInstances } from "@/app/util/baseURL"
 import axios from "axios"
 
 export const listOs = async() => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
   
     try {
       const response = await apiInstance.get('/api/v1/service-order')

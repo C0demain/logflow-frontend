@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createApiInstances } from '@/app/util/baseURL'; // Certifique-se de que o caminho está correto
+import { createApiInstances } from '@/app/util/baseURL';
 
 interface UserData {
   name: string;
