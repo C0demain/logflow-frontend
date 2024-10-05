@@ -37,7 +37,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
 
   return (
     <div>
-      <label htmlFor="modal1" className="btn btn-info text-black hover:bg-blue-500">Nova O.S.</label>
+      <label htmlFor="modal1" className="btn btn-info text-black hover:bg-blue-500">Nova Ordem de Serviço</label>
 
       <input type="checkbox" id="modal1" className="modal-toggle" />
       <div className="modal" role="dialog">

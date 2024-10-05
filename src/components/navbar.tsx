@@ -7,7 +7,7 @@ export function Navbar() {
     return (
         <div className="navbar bg-[#0975BB] shadow-md">
             <div className="navbar-start">
-                <Link href="/" className="btn btn-ghost text-xl hover:text-white">JJM Log</Link>
+                <Link href="/" className="btn btn-ghost text-xl hover:text-white">LogFlow</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal text-base text px-1">

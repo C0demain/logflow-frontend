@@ -1,31 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export default function middleware(request: NextRequest) {
-  // Obtém o token do cookie
+
   const token = request.cookies.get('token')?.value;
 
-  // URLs para redirecionamentos
-  const signInURL = new URL('/', request.url);
+  const signInURL = new URL('/login', request.url);
   const dashURL = new URL('/auth/orderservice', request.url);
 
-  // Se não houver token e a URL não for '/', redireciona para '/'
-  if (!token) {
-    if (request.nextUrl.pathname === '/') {
-      return NextResponse.next();
-    }
+  const isRoot = request.nextUrl.pathname === '/';
+  const isProtectedRoute = request.nextUrl.pathname.startsWith('/auth');
 
+  // Se estiver na página raiz, redireciona para '/login'
+  if (isRoot) {
     return NextResponse.redirect(signInURL);
   }
 
-  // Se houver token e a URL for '/', redireciona para o dashboard
-  if (request.nextUrl.pathname === '/') {
+  // Se não houver token e for uma rota protegida, redireciona para '/'
+  if (!token && isProtectedRoute) {
+    return NextResponse.redirect(signInURL);
+  }
+
+  // Se houver token e estiver na página '/', redireciona para o dashboard
+  if (token && isRoot) {
     return NextResponse.redirect(dashURL);
   }
 
-  // Se houver token e a URL não for '/', permite a navegação
+  // Caso contrário, permite a navegação
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/', '/auth/orderservice', '/auth/register', '/auth/todolist/[userId]/[orderId]', '/auth/client', '/auth/userEdit']
+  matcher: ['/', '/auth/:path*'] // Verifica o token para qualquer rota que começe com '/auth'
 };
