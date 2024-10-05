@@ -1,5 +1,19 @@
 import { useState } from "react";
 import { updateUserById } from "@/app/api/userService/updateUser";
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    ModalFooter,
+    Input,
+    Select,
+    Button,
+    Alert,
+    AlertIcon,
+} from "@chakra-ui/react";
 
 interface EditUserProps {
     id: string;
@@ -7,6 +21,7 @@ interface EditUserProps {
     email: string;
     role: string;
     sector: string;
+    onClose: () => void; // Função para fechar o modal
 }
 
 enum Roles {
@@ -14,7 +29,7 @@ enum Roles {
     EMPLOYEE = "EMPLOYEE",
 }
 
-export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, sector }) => {
+export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, sector, onClose }) => {
     const [formData, setFormData] = useState({
         name,
         email,
@@ -36,7 +51,7 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
 
         try {
             await updateUserById(id, formData);
-            window.location.reload(); // Atualizar a página após a edição
+            onClose(); // Fecha o modal após a edição
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setErrorMessage(error.message);
@@ -49,65 +64,67 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
     };
 
     return (
-        <div>
-            <input type="checkbox" id={`edit${id}`} className="modal-toggle" />
-            <div className="modal" role="dialog">
-                <div className="modal-box bg-white">
-                    <div className="modal-top mb-5">
-                        <h1 className="text-2xl">Editar Funcionário</h1>
-                    </div>
-
-                    {errorMessage && <div className="text-red-500">{errorMessage}</div>}
-
-                    <form onSubmit={handleSubmit} className="modal-middle space-y-4">
-                        <input
+        <Modal isOpen={true} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Editar Funcionário</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                    {errorMessage && (
+                        <Alert status="error" mb={4}>
+                            <AlertIcon />
+                            {errorMessage}
+                        </Alert>
+                    )}
+                    <form onSubmit={handleSubmit}>
+                        <Input
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="input input-bordered w-full"
+                            placeholder="Nome"
+                            mb={4}
                             required
                         />
-                        <input
+                        <Input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className="input input-bordered w-full"
+                            placeholder="Email"
+                            mb={4}
                             required
                         />
-                        <select
+                        <Select
                             name="role"
                             value={formData.role}
                             onChange={handleChange}
-                            className="select select-bordered w-full"
+                            placeholder="Selecione um cargo"
+                            mb={4}
                             required
                         >
-                            <option value="MANAGER">Gerente</option>
-                            <option value="EMPLOYEE">Funcionário</option>
-                        </select>
-                        <select
+                            <option value={Roles.MANAGER}>Gerente</option>
+                            <option value={Roles.EMPLOYEE}>Funcionário</option>
+                        </Select>
+                        <Select
                             name="sector"
                             value={formData.sector}
                             onChange={handleChange}
-                            className="select select-bordered w-full"
+                            placeholder="Selecione um setor"
+                            mb={4}
                             required
                         >
                             <option value="OPERACIONAL">OPERACIONAL</option>
                             <option value="COMERCIAL">COMERCIAL</option>
                             <option value="FINANCEIRO">FINANCEIRO</option>
-                        </select>
+                        </Select>
 
-                        <button type="submit" className="btn bg-blue-600 text-white">
+                        <Button type="submit" colorScheme="blue" isLoading={loading}>
                             Salvar Alterações
-                        </button>
+                        </Button>
                     </form>
-
-                    <div className="modal-action">
-                        <label htmlFor={`edit${id}`} className="absolute top-2 right-2 cursor-pointer text-lg">✕</label>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </ModalBody>
+            </ModalContent>
+        </Modal>
     );
 };

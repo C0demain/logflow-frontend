@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { Button } from "@chakra-ui/react";
 
 export function Logout() {
     const router = useRouter();
@@ -24,8 +25,16 @@ export function Logout() {
     };
 
     return (
-        <div>
-            <label htmlFor="logout" onClick={handleLogout} className="btn btn-sm bg-blue-600 text-white">Sair</label>
-        </div>
+        <Button
+            onClick={handleLogout}
+            size="sm"
+            colorScheme="blue"
+            bg="blue.600"
+            color="white"
+            _hover={{ bg: "blue.700" }}
+            _active={{ bg: "blue.800" }}
+        >
+            Sair
+        </Button>
     );
-};
+}

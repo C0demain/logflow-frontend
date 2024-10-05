@@ -1,6 +1,21 @@
 import { DeleteUser } from "@/components/UserService/deleteUser";
 import { EditUser } from "@/components/UserService/updateUser";
-import { FaEdit } from "react-icons/fa"; 
+import { FaEdit } from "react-icons/fa";
+import {
+    Box,
+    Flex,
+    Text,
+    IconButton,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    ModalFooter,
+    Button,
+} from "@chakra-ui/react";
 
 interface RequestUserProps {
     name: string;
@@ -12,30 +27,50 @@ interface RequestUserProps {
 }
 
 const RequestUser: React.FC<RequestUserProps> = ({ name, email, role, sector, id, onDelete }) => {
-  return (
-    <div className="border rounded-lg p-4 shadow-md bg-white flex justify-between items-center">
-      <div>
-        <h2 className="text-xl font-semibold">{name}</h2>
-        <p className="text-gray-700">Email: {email}</p>
-        <p className="text-gray-700">Cargo: {role}</p>
-        <p className="text-gray-700">Setor: {sector}</p>
-      </div>
+    const { isOpen, onOpen, onClose } = useDisclosure(); // Hook para controle do modal
 
-      {/* Ícones de Editar e Excluir */}
-      <div className="flex space-x-4 ml-auto mr-20">
-        {/* Ícone de Editar */}
-        <label htmlFor={`edit${id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
-          <FaEdit />
-        </label>
+    return (
+        <Box borderWidth={1} borderRadius="lg" p={4} boxShadow="md" bg="white" mb={4}>
+            <Flex justifyContent="space-between" alignItems="center">
+                <Box>
+                    <Text fontSize="xl" fontWeight="semibold">{name}</Text>
+                    <Text color="gray.700">Email: {email}</Text>
+                    <Text color="gray.700">Cargo: {role}</Text>
+                    <Text color="gray.700">Setor: {sector}</Text>
+                </Box>
 
-        {/* Ícone de Excluir */}
-        <DeleteUser id={id} onDelete={onDelete} /> {/* Passando a função onDelete */}
-      </div>
+                {/* Ícones de Editar e Excluir */}
+                <Flex alignItems="center" ml="auto" gap={4}>
+                    {/* Ícone de Editar */}
+                    <IconButton
+                        aria-label="Editar usuário"
+                        icon={<FaEdit />}
+                        variant="outline"
+                        colorScheme="blue"
+                        onClick={onOpen} // Chama onOpen ao clicar
+                    />
 
-      {/* Modal de Edição */}
-      <EditUser id={id} name={name} email={email} role={role} sector={sector} />
-    </div>
-  );
+                    {/* Ícone de Excluir */}
+                    <DeleteUser id={id} onDelete={onDelete} /> 
+                </Flex>
+            </Flex>
+
+            {/* Modal de Edição */}
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Editar Usuário</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <EditUser id={id} name={name} email={email} role={role} sector={sector} onClose={onClose} />
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" onClick={onClose}>Fechar</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </Box>
+    );
 };
 
 export default RequestUser;

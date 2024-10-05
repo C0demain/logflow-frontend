@@ -62,10 +62,10 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id, onAddOrder }) => {
       setTitle("");
       setClientObj(null);
       
-      // Limpa o alerta após 3 segundos
+      // Limpa o alerta após 5 segundos
       setTimeout(() => {
         setAlert(null);
-      }, 3000);
+      }, 5000);
 
     
     } catch (error: unknown) {
@@ -75,10 +75,10 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id, onAddOrder }) => {
         setAlert({ type: "error", message: "Erro desconhecido ao registrar ordem de serviço" });
       }
       
-      // Limpa o alerta após 3 segundos, caso haja erro
+      // Limpa o alerta após 5 segundos, caso haja erro
       setTimeout(() => {
         setAlert(null);
-      }, 3000);
+      }, 5000);
     }
   };
   
