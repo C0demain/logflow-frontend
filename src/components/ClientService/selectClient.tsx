@@ -49,7 +49,7 @@ export const SelectClient = (props: PropsType) => {
             onChange={setControlState} 
             className={`text-black ${props.className || ''}`} 
             classNamePrefix="custom-select"
-            placeholder="Select an option"
+            placeholder="Selecione um cliente"
             isClearable 
         />
     );

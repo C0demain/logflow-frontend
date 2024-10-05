@@ -24,7 +24,7 @@ export default function Login() {
   const router = useRouter()
   const toast = useToast()
 
-  async function logon(e: FormEvent<HTMLFormElement>) {
+  async function handleLogin(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     try {
@@ -75,7 +75,7 @@ export default function Login() {
           <Heading mb={4} textAlign="center">Olá de novo!</Heading>
           <Text mb={8} textAlign="center">Bem-vindo de volta</Text>
 
-          <form onSubmit={logon}>
+          <form onSubmit={handleLogin}>
             <VStack spacing={4}>
               <FormControl id="email" isRequired>
                 <FormLabel>Email</FormLabel>

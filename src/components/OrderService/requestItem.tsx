@@ -11,10 +11,10 @@ interface RequestItemProps {
   sector: string;
   userId: string;
   clientName: string;
-  userName: string
+  onDelete: (id: string) => void; 
 }
 
-export const RequestItem: React.FC<RequestItemProps> = ({ name, status, orderId, sector, userId, clientName, userName }) => {
+export const RequestItem: React.FC<RequestItemProps> = ({ name, status, orderId, sector, userId, clientName, onDelete }) => {
   const [stage1, setStage1] = useState(false);
   const [stage2, setStage2] = useState(false);
   const [stage3, setStage3] = useState(false);
@@ -23,10 +23,13 @@ export const RequestItem: React.FC<RequestItemProps> = ({ name, status, orderId,
     switch (sector) {
       case 'FINANCEIRO':
         setStage3(true);
+        break;
       case 'OPERACIONAL':
         setStage2(true);
+        break;
       case 'COMERCIAL':
         setStage1(true);
+        break;
     }
   };
 
@@ -44,7 +47,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({ name, status, orderId,
         <div className={status === "FINALIZADO" ? "badge badge-success" : "badge badge-info"}>{status}</div>
       </div>
       <div className="col-span-1 row-span-1 space-y-7">
-        <DeleteOrder id={orderId} />
+        <DeleteOrder id={orderId} onDelete={onDelete} /> 
       </div>
       <div className="col-span-2 row-span-1 flex justify-center items-center">
         <StageLine stage1={stage1} stage2={stage2} stage3={stage3} />

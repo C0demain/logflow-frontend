@@ -1,55 +1,77 @@
 import { deleteOsById } from "@/app/api/orderService/deleteOrder";
 import { FaTrash } from "react-icons/fa";
+import { useToast, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from "@chakra-ui/react";
+import { useState, useRef } from "react";
 
 interface DeleteOrderProps {
-    id: string;
+  id: string;
+  onDelete: (id: string) => void; 
 }
 
-export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
-    const handleDelete = async (id: string) => {
-        try {
-            const response = await deleteOsById(id);
-            console.log('Ordem de serviço deletada:', response);
+export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id, onDelete }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const toast = useToast();
 
-            window.location.reload()
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                console.error('Erro ao registrar ordem de serviço:', error.message);
-            } else {
-                console.error('Erro desconhecido ao registrar ordem de serviço');
-            }
-        }
-    };
+  const handleDelete = async () => {
+    try {
+      await deleteOsById(id); 
 
-    const openModal = () => {
-        const modal = document.getElementById(`modal${id}`) as HTMLDialogElement;
-        if (modal) {
-            modal.showModal();
-        }
-    };
+      onDelete(id);
 
-    const closeModal = () => {
-        const modal = document.getElementById(`modal${id}`) as HTMLDialogElement;
-        if (modal) {
-            modal.close();
-        }
-    };
+      toast({
+        title: "Ordem de serviço deletada.",
+        description: "A ordem de serviço foi excluída com sucesso.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
 
-    return (
-        <div>
-            <button className="btn" onClick={openModal}><FaTrash /></button>
-            <dialog id={`modal${id}`} className="modal">
-                <div className="modal-box w-3/12 max-w-5xl">
-                    <form method="dialog">
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    </form>
-                    <p className="text-xl mb-6">Confirma exclusão?</p>
-                    <div className="flex w-full justify-center space-x-7">
-                        <label htmlFor="delete" onClick={() => { closeModal() }} className="btn btn-sm bg-blue-600 text-white">Não</label>
-                        <label htmlFor="delete" onClick={() => { handleDelete(id) }} className="btn btn-sm bg-blue-600 text-white">Sim</label>
-                    </div>
-                </div>
-            </dialog>
-        </div>
-    );
+      setIsOpen(false);
+    } catch (error: unknown) {
+    
+      toast({
+        title: "Erro ao deletar a ordem de serviço.",
+        description: error instanceof Error ? error.message : "Erro desconhecido.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  return (
+    <>
+      <Button colorScheme="red" onClick={() => setIsOpen(true)}>
+        <FaTrash />
+      </Button>
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={() => setIsOpen(false)}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Deletar Ordem de Serviço
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Tem certeza que deseja deletar esta ordem de serviço? Essa ação não pode ser desfeita.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={() => setIsOpen(false)}>
+                Cancelar
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                Deletar
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
+  );
 };
