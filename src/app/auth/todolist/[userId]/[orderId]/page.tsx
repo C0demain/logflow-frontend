@@ -1,5 +1,6 @@
 "use client";
 
+import { updateOrder } from "@/app/api/orderService/updateOrder";
 import { getTasks } from "@/app/api/tasks/listTasks";
 import CreateTask from "@/components/TaskService/createTask";
 import TodoList from "@/components/TaskService/todoList";
@@ -30,6 +31,22 @@ export default function TaskPage({ params }: TaskListProps) {
     }
   }, [userId, orderId]);
 
+  const updateOrderSector = useCallback(async () => {
+    try {
+      if (!completedSectors.includes('Comercial')) {
+        await updateOrder({sector: 'COMERCIAL', status: 'PENDENTE'}, orderId);
+      } else if (!completedSectors.includes('Operacional')) {
+        await updateOrder({sector: 'OPERACIONAL', status: 'PENDENTE'}, orderId);
+      } else if (!completedSectors.includes('Financeiro')) {
+        await updateOrder({sector: 'FINANCEIRO', status: 'PENDENTE'}, orderId);
+      } else if (completedSectors.length === 3) {
+        await updateOrder({status: 'FINALIZADO'}, orderId);
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar setor da ordem:', error);
+    }
+  }, [completedSectors, orderId]);
+
   function separateData(data: any[]) {
     const taskFinanceiroInit: SetStateAction<any[]> = [];
     const taskOperacionalInit: SetStateAction<any[]> = [];
@@ -52,7 +69,8 @@ export default function TaskPage({ params }: TaskListProps) {
 
   useEffect(() => {
     listTasks();
-  }, [listTasks]);
+    updateOrderSector();
+  }, [listTasks, completedSectors, updateOrderSector]);
 
   const handleAllTasksCompleted = (sectorName: string) => {
     // Adiciona o setor apenas se ainda não estiver na lista
@@ -60,6 +78,8 @@ export default function TaskPage({ params }: TaskListProps) {
       prev.includes(sectorName) ? prev : [...prev, sectorName]
     );
   };
+
+
 
   return (
     <div className="m-5 space-y-5">
