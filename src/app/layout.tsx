@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
+import { Providers } from "@/app/providers";
 
 export const metadata: Metadata = {
   title: "Log Flow",
@@ -14,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="light">
       <body className={`font-sans antialiased h-full bg-gradient-to-br from-slate-100 to-slate-300 text-black min-h-screen flex flex-col`}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

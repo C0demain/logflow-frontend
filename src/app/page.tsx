@@ -4,21 +4,36 @@ import { login } from "@/app/api/login";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import Loading from "./loading";
+import { useToast } from "@chakra-ui/react";
+import { AxiosError, isAxiosError } from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
+  const toast = useToast()
 
   async function logon(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true); // Inicia o estado de loading
     try{
       await login(email, password)
+      toast({
+        title: "Sucesso",
+        status: "success", 
+        description: "Login efetuado com sucesso",
+        position: "bottom-right"
+      })
       router.push('/auth/orderservice')
-    }catch(e){
-      console.log(e)
+    }catch(e: any){
+      toast({
+        title: "Falha no login",
+        status: "error",
+        description: new String(e).replace("Error: ", ""),
+        position: "bottom-right"
+        }
+      )
     }finally {
       setLoading(false); // Finaliza o estado de loading
     }
