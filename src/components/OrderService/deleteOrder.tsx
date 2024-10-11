@@ -44,7 +44,7 @@ export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
                     <form method="dialog">
                         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                     </form>
-                    <p className="text-xl mb-6">Confirma exclusão?</p>
+                    <p className="text-xl mb-6">Deseja confirmar a exclusão?</p>
                     <div className="flex w-full justify-center space-x-7">
                         <label htmlFor="delete" onClick={()=>{closeModal()}} className="btn btn-sm bg-blue-600 text-white">Não</label>
                         <label htmlFor="delete" onClick={()=>{handleDelete(id)}} className="btn btn-sm bg-blue-600 text-white">Sim</label>

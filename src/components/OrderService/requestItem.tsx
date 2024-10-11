@@ -13,6 +13,7 @@ interface RequestItemProps {
   userId: string;
   clientName: string;
   userName: string;
+  logs: { changedTo: string; atDate: string }[];
 }
 
 export const RequestItem: React.FC<RequestItemProps> = ({
@@ -23,6 +24,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   userId,
   clientName,
   userName,
+  logs,
 }) => {
   const [stage1, setStage1] = useState(false);
   const [stage2, setStage2] = useState(false);
@@ -68,6 +70,15 @@ export const RequestItem: React.FC<RequestItemProps> = ({
         <Link href={`/auth/todolist/${userId}/${orderId}`}>
           <FaAngleRight className="text-6xl w-full h-full" />
         </Link>
+      </div>
+      <div className="col-span-4 row-span-1">
+        <ul className="steps steps-vertical">
+          {logs.map((log) => (
+            <li key={log.atDate} className="step step-info h-1" data-content="">
+              {log.atDate} - Ordem movida para {log.changedTo}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

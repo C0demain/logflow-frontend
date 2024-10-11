@@ -44,6 +44,7 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId }) => {
             userId={userId}
             clientName={order.client.clientName}
             userName={order.user.userName}
+            logs={order.logs}
           />
       ))}
     </div>

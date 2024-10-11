@@ -6,7 +6,7 @@ interface TodoListProps {
   userId: string;
   orderId: string;
   tasks: any[] | undefined;
-  onAllTasksCompleted: (sectorName: string) => void;
+  onAllTasksCompleted: () => void;
 }
 
 export default function TodoList({ sectorName, userId, orderId, tasks, onAllTasksCompleted }: TodoListProps) {
@@ -15,7 +15,7 @@ export default function TodoList({ sectorName, userId, orderId, tasks, onAllTask
     if (tasks && tasks.length > 0 && tasks.every(task => task.completed)) {
       onAllTasksCompleted(sectorName);
     }
-  }, [tasks, onAllTasksCompleted]);
+  }, [tasks, onAllTasksCompleted, sectorName]);
 
   return (
     <div className="bg-gray-100 p-5 rounded-md shadow-lg w-96">
