@@ -5,7 +5,7 @@ interface OrderData {
   title: string;
   clientId: string;
   status: string;
-  userId: string;
+  userId: string | undefined;
   sector: string;
 }
 
