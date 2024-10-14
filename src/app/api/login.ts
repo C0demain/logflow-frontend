@@ -12,7 +12,7 @@ export async function login(email: string, password: string): Promise<undefined>
         }
     }catch(e){
         if(isAxiosError(e)){
-            if(e.response?.status === 404){
+            if(e.response?.status === 404 || e.response?.status === 401){
                 throw new AxiosError("Email ou senha incorretos")
             }
 
