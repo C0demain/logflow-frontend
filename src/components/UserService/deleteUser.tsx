@@ -12,7 +12,7 @@ export const DeleteUser: React.FC<DeleteUserProps> = ({ id, onDelete }) => {
         try {
             const response = await deleteUserById(id); 
             console.log('Funcionário deletado:', response);
-            onDelete(id); // Chamando a função onDelete aqui
+            window.location.reload();
         } catch (error: unknown) {
             if (error instanceof Error) {
                 console.error('Erro ao deletar funcionário:', error.message);

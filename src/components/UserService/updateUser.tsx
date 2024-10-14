@@ -95,8 +95,10 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                             required
                         >
                             <option value="OPERACIONAL">OPERACIONAL</option>
-                            <option value="COMERCIAL">COMERCIAL</option>
+                            <option value="VENDAS">VENDAS</option>
                             <option value="FINANCEIRO">FINANCEIRO</option>
+                            <option>RH</option>
+                            <option>DIRETORIA</option>
                         </select>
 
                         <button type="submit" className="btn bg-blue-600 text-white">

@@ -45,6 +45,8 @@ export function CreateUser() {
         sector: "OPERACIONAL",
         isActive: true,
       });
+
+      window.location.reload();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         setErrorMessage("Erro ao registrar funcionário: " + error.response?.data.message);
@@ -108,8 +110,10 @@ export function CreateUser() {
             required
         >
             <option value="OPERACIONAL">OPERACIONAL</option>
-            <option value="COMERCIAL">COMERCIAL</option>
+            <option value="VENDAS">VENDAS</option>
             <option value="FINANCEIRO">FINANCEIRO</option>
+            <option>RH</option>
+            <option>DIRETORIA</option>
         </select>
         <button type="submit" className="btn bg-blue-600 text-white">
           Registrar Funcionário
