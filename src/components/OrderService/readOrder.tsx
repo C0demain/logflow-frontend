@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { RequestItem } from "./requestItem";
 
 interface ReadOrderProps {
-  userId: string;
+  userId: string | undefined;
 }
 
 export const ReadOrder: React.FC<ReadOrderProps> = ({ userId }) => {
@@ -26,7 +26,7 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId }) => {
 
   useEffect(() => {
     getOs();
-  }, [getOs]);
+  }, []);
 
   if (loading) {
     return <Loading />;

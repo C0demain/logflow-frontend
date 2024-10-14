@@ -5,7 +5,7 @@ import {SelectClient} from "../ClientService/selectClient";
 import { registerOrder } from "@/app/api/orderService/registerOrder";
 
 interface CreateOrderProps{
-  id: string,
+  id: string | undefined,
 }
 
 export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
@@ -13,7 +13,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
   const [clientObj, setClientObj] = useState<any>()
   const userId = id
   const status = "PENDENTE";
-  const sector = "COMERCIAL"
+  const sector = "VENDAS"
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
