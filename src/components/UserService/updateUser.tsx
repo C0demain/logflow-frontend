@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { updateUserById } from "@/app/api/userService/updateUser"; // Função de atualização
+import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { isAxiosError } from "axios";
 
 interface EditUserProps {
     id: string;
@@ -22,8 +25,9 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
         role,
         sector,
     });
-    const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const toast = useToast()
+    const router = useRouter()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -32,17 +36,29 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setErrorMessage('');
         setLoading(true);
 
         try {
             await updateUserById(id, formData);
-            window.location.reload(); // Atualizar a página após a edição
+            toast({
+                status: "success",
+                title: "Sucesso",
+                description: "Funcionário atualizado com sucesso"
+            })
+            router.refresh(); // Atualizar a página após a edição
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                setErrorMessage(error.message);
+            if (isAxiosError(error)) {
+                toast({
+                    status: "error",
+                    title: "Erro",
+                    description: error.message
+                })
             } else {
-                setErrorMessage('Erro desconhecido ao editar funcionário');
+                toast({
+                    status: "error",
+                    title: "Erro",
+                    description: "Ocorreu um erro inesperado. Tente novamente"
+                  })
             }
         } finally {
             setLoading(false);
@@ -58,7 +74,6 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                         <h1 className="text-2xl">Editar Funcionário</h1>
                     </div>
 
-                    {errorMessage && <div className="text-red-500">{errorMessage}</div>}
 
                     <form onSubmit={handleSubmit} className="modal-middle space-y-4">
                         <input
