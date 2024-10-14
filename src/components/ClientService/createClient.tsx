@@ -131,13 +131,13 @@ export function CreateClient() {
       if (error instanceof AxiosError) {
         toast({
           status: "error",
-          title: "Falha",
+          title: "Erro",
           description: error.message
         })
       } else {
         toast({
           status: "error",
-          title: "Falha",
+          title: "Erro",
           description: "Ocorreu um erro inesperado. Tente novamente"
         })
 

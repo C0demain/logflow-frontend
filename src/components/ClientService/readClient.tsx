@@ -11,6 +11,8 @@ import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
 import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 export function ReadClient() {
   const [data, setData] = useState<ClientData[]>([]);
@@ -19,6 +21,7 @@ export function ReadClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentClient, setCurrentClient] = useState<ClientData | null>(null); // Estado para armazenar o cliente atual
   const toast = useToast()
+  const router = useRouter()
 
   const getClient = useCallback(async () => {
     try {
@@ -70,12 +73,29 @@ export function ReadClient() {
   const handleSave = async (clientId: string, updatedData: ClientUpdateInterface) => {
       try {
         await updateClientById(clientId, updatedData);
-        window.location.reload(); // Atualizar a página após a edição
+        toast({
+          status: "success",
+          title: "Sucesso",
+          description: "Cliente atualizado com sucesso"
+        })
+        router.refresh()
+        getClient()
     } catch (error: unknown) {
-    } finally {
-        setLoading(false);
+      if (error instanceof AxiosError) {
+        toast({
+          status: "error",
+          title: "Error",
+          description: error.message
+        })
+      } else {
+        toast({
+          status: "error",
+          title: "Erro",
+          description: "Ocorreu um erro inesperado. Tente novamente"
+        })
+
+      }
     }
-    handleCloseModal(); // Fecha o modal após salvar
   };
 
   useEffect(() => {

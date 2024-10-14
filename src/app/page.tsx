@@ -28,7 +28,7 @@ export default function Login() {
       router.push('/auth/orderservice')
     }catch(e: any){
       toast({
-        title: "Falha no login",
+        title: "Erro no login",
         status: "error",
         description: new String(e).replace("Error: ", ""),
         position: "bottom-right"

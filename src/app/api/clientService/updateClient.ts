@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { createApiInstances } from "@/app/util/baseURL";
 import ClientData from "@/interfaces/clientData";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
@@ -14,11 +14,10 @@ export const updateClientById = async (
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      throw new Error(
-        "Erro ao atualizar cliente: " + error.response?.data.message
-      );
+      if(error?.response?.status === 400)
+      throw new AxiosError(error.response.data?.message)
     } else {
-      throw new Error("Erro ao atualizar cliente: " + (error as Error).message);
+      throw new AxiosError('Erro ao conectar ao servidor. Tente novamente');
     }
   }
 };
