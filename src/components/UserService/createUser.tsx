@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { registerUser } from "@/app/api/userService/createUser";
 import axios from "axios";
+import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 interface UserData {
   name: string;
@@ -21,8 +23,9 @@ export function CreateUser() {
     isActive: true,
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const toast = useToast()
+  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -31,12 +34,10 @@ export function CreateUser() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMessage("");
     setLoading(true);
 
     try {
       const response = await registerUser(formData);
-      console.log("Funcionário registrado:", response);
       setFormData({
         name: "",
         email: "",
@@ -45,13 +46,26 @@ export function CreateUser() {
         sector: "OPERACIONAL",
         isActive: true,
       });
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Funcionário adicionado com sucesso"
+      })
 
-      window.location.reload();
+      router.refresh()
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        setErrorMessage("Erro ao registrar funcionário: " + error.response?.data.message);
+        toast({
+          status: "error",
+          title: "Erro",
+          description: error.message
+        })
       } else {
-        setErrorMessage("Erro desconhecido ao registrar funcionário");
+        toast({
+          status: "error",
+          title: "Erro",
+          description: "Ocorreu um erro inesperado. Tente novamente"
+        })
       }
     } finally {
       setLoading(false);
@@ -63,7 +77,6 @@ export function CreateUser() {
       <div className="modal-top mb-5">
         <h1 className="text-2xl">Cadastrar Funcionário</h1>
       </div>
-      {errorMessage && <div className="text-red-500">{errorMessage}</div>}
       <form onSubmit={handleSubmit} className="modal-middle space-y-4">
         <input
           type="text"

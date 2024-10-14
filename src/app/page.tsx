@@ -5,33 +5,48 @@ import { FormEvent, useContext, useState } from "react";
 import Loading from "./loading";
 import { AuthContext, UserProps } from "./context/auth";
 import { loginPut } from "./api/login";
+import { useToast } from "@chakra-ui/react";
+import { AxiosError, isAxiosError } from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
-  const [errorText, setError] = useState<string | null>(null)
   const { login } = useContext(AuthContext)
+  const toast = useToast()
 
   async function logon(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true); // Inicia o estado de loading
-    setError(null); // Reseta o erro antes de tentar o login
     try {
       const response = await loginPut(email, password);
 
       if (response) {
         router.push('/auth/orderservice');
         const { token, id, role, sector } = response;
-        login({ token, id, role, sector }); // Passar informações de login conforme necessário
-      } else {
-        console.error('Login failed');
-        setError('Login failed: No response data');
+        login({ token, id, role, sector });
+        toast({
+          status: "success",
+          title: "Sucesso",
+          description: "Você entrou"
+        })
       }
     } catch (error: any) {
-      console.log(error);
-      setError(error.message || 'An unexpected error occurred');
+      if(isAxiosError(error)){
+        toast({
+          status: "error",
+          title: "Erro no login",
+          description: error.message,
+          position: "bottom-right"
+        })
+      }else{
+        toast({
+          status: "error",
+          title: "Erro no login",
+          description: "Ocorreu um erro inesperado. Tente novamente",
+        })
+      }
     } finally {
       setLoading(false); // Finaliza o estado de loading
     }
@@ -73,7 +88,6 @@ export default function Login() {
 
             <input type="submit" className="bg-sky-600 border-slate-400 text-white hover:bg-sky-600 btn btn-wide rounded-full" />
           </form>
-          {errorText && <p className="text-red-700">{errorText}</p>}
         </div>
       </div>
     </div>

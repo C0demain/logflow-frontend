@@ -3,6 +3,9 @@
 import { useState } from "react";
 import {SelectClient} from "../ClientService/selectClient";
 import { registerOrder } from "@/app/api/orderService/registerOrder";
+import { useRouter } from "next/navigation";
+import { useToast } from "@chakra-ui/react";
+import { isAxiosError } from "axios";
 
 interface CreateOrderProps{
   id: string | undefined,
@@ -14,25 +17,38 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
   const userId = id
   const status = "PENDENTE";
   const sector = "VENDAS"
+  const router = useRouter()
+  const toast = useToast()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let clientId = clientObj.value
     try {
       const response = await registerOrder({ title, clientId, status, userId, sector });
-      console.log('Ordem de serviço registrada:', response);
-      // Você pode adicionar mais lógica aqui, como limpar o formulário ou exibir uma mensagem de sucesso
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Ordem de serviço criada com sucesso"
+        }
+      )
 
       setTitle('')
       clientId =''
-      window.location.reload()
+      router.refresh()
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Erro ao registrar ordem de serviço:', error.message);
-      } else {
-        console.error('Erro desconhecido ao registrar ordem de serviço');
-      }
-      // Adicione lógica para tratar erros, como exibir uma mensagem de erro
+      if (isAxiosError(error)) {
+        toast({
+            status: "error",
+            title: "Erro",
+            description: error.message
+        })
+    } else {
+        toast({
+            status: "error",
+            title: "Erro",
+            description: "Ocorreu um erro inesperado. Tente novamente"
+          })
+    }
     }
   };
 

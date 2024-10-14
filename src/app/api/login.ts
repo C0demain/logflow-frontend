@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError, isAxiosError } from "axios";
 import Cookies from 'js-cookie'
 
 interface LoginResponse {
@@ -23,10 +23,12 @@ export async function loginPut(email: string, password: string): Promise<LoginRe
 
         return response.data;
     } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            throw new Error('Erro ao registrar ordem de serviço: ' + error.response?.data.message);
-        } else {
-            throw new Error('Erro ao registrar ordem de serviço: ' + (error as Error).message);
+        if(isAxiosError(error)){
+            if(error.response?.status === 404 || error.response?.status === 401){
+                throw new AxiosError("Email ou senha incorretos")
+            }
+
+            throw new AxiosError("Erro ao conectar ao servidor. Tente novamente")
         }
     }
 }

@@ -1,6 +1,9 @@
 "use client";
 
 import { registerClient } from "@/app/api/clientService/registerClient";
+import { useToast } from "@chakra-ui/react";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MaskedInput from "react-text-mask";
 
@@ -36,7 +39,8 @@ export function CreateClient() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
-  const [cepError, setCepError] = useState("");
+  const toast = useToast();
+  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,18 +51,25 @@ export function CreateClient() {
     const cep = formData.zipCode.replace("-", "");
 
     if (cep.length !== 8) {
-      setCepError("CEP deve ter 8 dígitos.");
+      toast({
+        status: "error",
+        title: "CEP inválido",
+        description: "CEP deve ter 8 dígitos."
+      });
       return;
     }
 
     setLoadingCep(true);
-    setCepError("");
 
     try {
       const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const data = await response.json();
       if (data.erro) {
-        setCepError("CEP não encontrado.");
+        toast({
+          status: "error",
+          title: "CEP inválido",
+          description: "Não foi possível encontrar esse CEP. Tente novamente"
+        })
         setFormData((prevState) => ({
           ...prevState,
           state: "",
@@ -78,8 +89,11 @@ export function CreateClient() {
         street: logradouro,
       });
     } catch (error) {
-      console.error("Erro ao buscar CEP:", error);
-      setCepError("Erro ao buscar CEP. Verifique sua conexão ou tente novamente.");
+      toast({
+        status: "error",
+        title: "Erro ao buscar CEP",
+        description: "Não foi possível encontrar o CEP especificado. Tente novamente"
+      })
     } finally {
       setLoadingCep(false);
     }
@@ -92,7 +106,11 @@ export function CreateClient() {
 
     try {
       const response = await registerClient(formData);
-      console.log("Cliente registrado:", response);
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Cliente criado com sucesso"
+      })
 
       setFormData({
         name: "",
@@ -108,12 +126,21 @@ export function CreateClient() {
         complement: "",
       });
 
-      window.location.reload();
+      router.refresh()
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
+      if (error instanceof AxiosError) {
+        toast({
+          status: "error",
+          title: "Erro",
+          description: error.message
+        })
       } else {
-        setErrorMessage("Erro desconhecido ao registrar cliente");
+        toast({
+          status: "error",
+          title: "Erro",
+          description: "Ocorreu um erro inesperado. Tente novamente"
+        })
+
       }
     } finally {
       setLoading(false);
@@ -191,7 +218,6 @@ export function CreateClient() {
                 {loadingCep ? "Buscando..." : "Auto Preencher"}
               </button>
             </div>
-            {cepError && <div className="text-red-500">{cepError}</div>}
             <div className="flex space-x-4">
               <input
                 type="text"

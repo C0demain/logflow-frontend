@@ -1,4 +1,7 @@
 import { deleteUserById } from "@/app/api/userService/deleteUser"; // Certifique-se de que está importando do serviço correto
+import { useToast } from "@chakra-ui/react";
+import { isAxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 
@@ -8,16 +11,32 @@ interface DeleteUserProps {
 }
 
 export const DeleteUser: React.FC<DeleteUserProps> = ({ id, onDelete }) => {
+    const toast = useToast()
+    const router = useRouter()
     const handleDelete = async (id: string) => {
         try {
             const response = await deleteUserById(id); 
-            console.log('Funcionário deletado:', response);
-            window.location.reload();
+            toast({
+                status: "success",
+                title: "Sucesso",
+                description: "Funcionário arquivado com sucesso"
+            })
+            onDelete(id);
+            router.refresh()
+
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                console.error('Erro ao deletar funcionário:', error.message);
+            if (isAxiosError(error)) {
+                toast({
+                    status: "error",
+                    title: "Erro",
+                    description: error.message
+                })
             } else {
-                console.error('Erro desconhecido ao deletar funcionário');
+                toast({
+                    status: "error",
+                    title: "Erro",
+                    description: "Ocorreu um erro inesperado. Tente novamente"
+                  })
             }
         }
     };
