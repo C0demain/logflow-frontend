@@ -1,6 +1,8 @@
 "use client";
 
 import { registerClient } from "@/app/api/clientService/registerClient";
+import { useToast } from "@chakra-ui/react";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import MaskedInput from "react-text-mask";
 
@@ -37,6 +39,7 @@ export function CreateClient() {
   const [loading, setLoading] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
   const [cepError, setCepError] = useState("");
+  const toast = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -92,7 +95,11 @@ export function CreateClient() {
 
     try {
       const response = await registerClient(formData);
-      console.log("Cliente registrado:", response);
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Cliente criado com sucesso"
+      })
 
       setFormData({
         name: "",
@@ -110,10 +117,19 @@ export function CreateClient() {
 
       window.location.reload();
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
+      if (error instanceof AxiosError) {
+        toast({
+          status: "error",
+          title: "Falha",
+          description: error.message
+        })
       } else {
-        setErrorMessage("Erro desconhecido ao registrar cliente");
+        toast({
+          status: "error",
+          title: "Falha",
+          description: "Ocorreu um erro inesperado. Tente novamente"
+        })
+
       }
     } finally {
       setLoading(false);

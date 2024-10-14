@@ -1,5 +1,5 @@
 import { createApiInstances } from '@/app/util/baseURL';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 interface UserData {
     name: string,
@@ -23,9 +23,10 @@ export const registerClient = async (userData: UserData) => {
     return response.data; // Adjust based on the actual response structure
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      throw new Error('Erro ao registrar Cliente: ' + error.response?.data.message);
+      if(error?.response?.status === 400)
+      throw new AxiosError(error.response.data?.message)
     } else {
-      throw new Error('Erro ao registrar Cliente: ' + (error as Error).message);
+      throw new AxiosError('Erro ao conectar ao servidor. Tente novamente');
     }
   }
 };
