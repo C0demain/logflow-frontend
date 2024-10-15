@@ -17,7 +17,7 @@ export default function CreateButton({
   return (
     <>
       <button
-        className="btn btn-info btn-lg btn-circle absolute bottom-10 right-10"
+        className="btn btn-info btn-lg btn-circle fixed bottom-10 right-10"
         onClick={handleModalOpen}
       >
         <FaPlus />
