@@ -23,12 +23,10 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
 
     useEffect(() => {
         const storedUser = Cookies.get('user');
-        console.log("peguei dos cookies", storedUser); // Adicionado log
 
         if (storedUser) {
             try {
                 const userParse: UserProps = JSON.parse(storedUser);
-                console.log("usei o parse",userParse)
                 login( { token: userParse.token, id: userParse.id, role: userParse.role, sector: userParse.sector } )
             } catch (error) {
                 console.error("Error parsing user data from cookie:", error);
@@ -37,16 +35,13 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
     }, []);
 
     const login = (userT: UserProps) => {
-        console.log("recebido", userT)
         setUser(userT);
-        console.log("Teste setado", user)
         Cookies.set('user', JSON.stringify(user), { expires: 7 }); // Cookie expira em 7 dias
     }
 
     const logout = () => {
         setUser(undefined);
         Cookies.remove('user');
-        console.log("User removed from cookie"); // Adicionado log
     }
 
     return (
