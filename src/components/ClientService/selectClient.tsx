@@ -33,17 +33,14 @@ export const SelectClient = (props: propsType) =>{
     }, [])
 
     return (
-
-        <>
-            <Select
-                options={clientOpt}
-                value={controlState}
-                onChange={(e) => { setControlState(e); } }
-                className="text-black"
-                classNamePrefix="custom-select"
-                placeholder="Select an option"
-                isClearable 
-            />
-        </>
+        <Select
+            options={clientOpt}
+            value={controlState}
+            onChange={(e) => { setControlState(e); } }
+            className="text-black"
+            classNamePrefix="custom-select"
+            placeholder="Selecione um cliente"
+            isClearable 
+        />
     )
 }

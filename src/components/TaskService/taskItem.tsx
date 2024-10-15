@@ -36,7 +36,7 @@ export default function TaskItem({ idTask, completed, title, sectorName, }: Task
           type="checkbox"
           checked={completedTask}
           onChange={handleCheckboxChange}
-          className="checkbox checkbox-lg checkbox-info"
+          className="checkbox checkbox-lg checkbox-info transition"
         />
         <span>{title}</span>
       </div>

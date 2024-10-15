@@ -33,12 +33,17 @@ export const DeleteTask: React.FC<DeleteTaskProps> = ({ id }) => {
 
   return (
     <div>
-      <button className="btn btn-ghost btn-circle" onClick={openModal}>
+      <button
+        className="btn btn-ghost btn-circle transition-all hover:bg-red-500 hover:text-white"
+        onClick={openModal}
+      >
         <FaTrash />
       </button>
       <dialog id={`modal${id}`} className="modal">
         <div className="modal-box">
-          <p className="text-xl text-center mb-6">Deseja excluir essa tarefa?</p>
+          <p className="text-xl text-center mb-6">
+            Deseja excluir essa tarefa?
+          </p>
           <div className="flex w-full justify-center space-x-7">
             <button
               className="btn btn-info text-white"

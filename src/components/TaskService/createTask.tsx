@@ -2,7 +2,9 @@
 import { registerTask } from "@/app/api/tasks/registerTask";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
 import Select, { SingleValue } from "react-select";
+import CreateButton from "../createButton";
 
 interface CreateTaskProps {
   userId: string;
@@ -57,57 +59,44 @@ export default function CreateTask({ userId, orderId }: CreateTaskProps) {
 
   return (
     <div>
-      <button className="btn btn-info" onClick={handleModalOpen}>
-        Nova Tarefa
-      </button>
-
-      <dialog className="modal" id="modal">
-        <div className="modal-box">
-          <h1 className="text-2xl">Nova Tarefa</h1>
-          <form onSubmit={handleSubmit} className="modal-middle space-y-2">
-            <div>
-              <label htmlFor="title" className="mr-4">
-                Título
-              </label>
-              <input
-                type="text"
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="input input-bordered w-full"
-              />
-            </div>
-            <div>
-              <label htmlFor="sector" className="mr-2">
-                Setor
-              </label>
-              <Select
-                options={sectorOptions}
-                value={sector}
-                onChange={(selectedOption: SingleValue<SectorOption>) => {
-                  setSector(selectedOption);
-                }}
-                className="text-black"
-                classNamePrefix="custom-select"
-                placeholder="Selecione um setor"
-                isClearable
-              />
-            </div>
-            <div className="modal-action flex flex-row justify-between">
-              <button type="submit" className="btn btn-info">
-                Registrar nova tarefa
-              </button>
-              <form method="dialog">
-                <button
-                  className="btn btn-error text-white"
-                >
-                  Fechar
-                </button>
-              </form>
-            </div>
-          </form>
-        </div>
-      </dialog>
+      <CreateButton>
+        <h1 className="text-2xl">Nova Tarefa</h1>
+        <form onSubmit={handleSubmit} className="modal-middle space-y-2">
+          <div>
+            <label htmlFor="title" className="mr-4">
+              Título
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="input input-bordered w-full"
+            />
+          </div>
+          <div>
+            <label htmlFor="sector" className="mr-2">
+              Setor
+            </label>
+            <Select
+              options={sectorOptions}
+              value={sector}
+              onChange={(selectedOption: SingleValue<SectorOption>) => {
+                setSector(selectedOption);
+              }}
+              className="text-black"
+              classNamePrefix="custom-select"
+              placeholder="Selecione um setor"
+              isClearable
+            />
+          </div>
+          <div className="modal-action flex flex-row justify-around pt-2">
+            <button type="submit" className="btn btn-info">
+              Registrar nova tarefa
+            </button>
+          </div>
+        </form>
+      </CreateButton>
     </div>
   );
 }

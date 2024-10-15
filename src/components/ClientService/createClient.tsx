@@ -6,6 +6,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MaskedInput from "react-text-mask";
+import CreateButton from "../createButton";
 
 interface UserData {
   name: string;
@@ -40,7 +41,7 @@ export function CreateClient() {
   const [loading, setLoading] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
   const toast = useToast();
-  const router = useRouter()
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,7 +55,7 @@ export function CreateClient() {
       toast({
         status: "error",
         title: "CEP inválido",
-        description: "CEP deve ter 8 dígitos."
+        description: "CEP deve ter 8 dígitos.",
       });
       return;
     }
@@ -68,8 +69,8 @@ export function CreateClient() {
         toast({
           status: "error",
           title: "CEP inválido",
-          description: "Não foi possível encontrar esse CEP. Tente novamente"
-        })
+          description: "Não foi possível encontrar esse CEP. Tente novamente",
+        });
         setFormData((prevState) => ({
           ...prevState,
           state: "",
@@ -92,8 +93,9 @@ export function CreateClient() {
       toast({
         status: "error",
         title: "Erro ao buscar CEP",
-        description: "Não foi possível encontrar o CEP especificado. Tente novamente"
-      })
+        description:
+          "Não foi possível encontrar o CEP especificado. Tente novamente",
+      });
     } finally {
       setLoadingCep(false);
     }
@@ -109,8 +111,8 @@ export function CreateClient() {
       toast({
         status: "success",
         title: "Sucesso",
-        description: "Cliente criado com sucesso"
-      })
+        description: "Cliente criado com sucesso",
+      });
 
       setFormData({
         name: "",
@@ -126,21 +128,20 @@ export function CreateClient() {
         complement: "",
       });
 
-      router.refresh()
+      router.refresh();
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         toast({
           status: "error",
           title: "Erro",
-          description: error.message
-        })
+          description: error.message,
+        });
       } else {
         toast({
           status: "error",
           title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente"
-        })
-
+          description: "Ocorreu um erro inesperado. Tente novamente",
+        });
       }
     } finally {
       setLoading(false);
@@ -149,151 +150,169 @@ export function CreateClient() {
 
   return (
     <div>
-      <label htmlFor="modal1" className="btn btn-info text-black hover:bg-blue-500">
-        Novo Cliente
-      </label>
+      <CreateButton>
+        <h1 className="text-2xl font-semibold mb-4">Cadastrar Cliente</h1>
+        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+        <form onSubmit={handleSubmit} className="modal-middle space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Nome"
+            value={formData.name}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+          <MaskedInput
+            mask={[
+              "(",
+              /\d/,
+              /\d/,
+              ")",
+              " ",
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+              "-",
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+            ]}
+            name="phone"
+            placeholder="Telefone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+          <MaskedInput
+            mask={[
+              /\d/,
+              /\d/,
+              ".",
+              /\d/,
+              /\d/,
+              /\d/,
+              ".",
+              /\d/,
+              /\d/,
+              /\d/,
+              "/",
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+              "-",
+              /\d/,
+              /\d/,
+            ]}
+            name="cnpj"
+            placeholder="CNPJ"
+            value={formData.cnpj}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+          <div className="flex space-x-4">
+            <MaskedInput
+              mask={[/\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/]}
+              name="zipCode"
+              placeholder="CEP"
+              value={formData.zipCode}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+            <button
+              type="button"
+              className="btn btn-outline btn-primary"
+              onClick={buscarEnderecoPorCep}
+              disabled={loadingCep}
+            >
+              {loadingCep ? "Buscando..." : "Auto Preencher"}
+            </button>
+          </div>
+          <div className="flex space-x-4">
+            <input
+              type="text"
+              name="state"
+              placeholder="Estado"
+              value={formData.state}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              readOnly
+              disabled={loadingCep}
+            />
+            <input
+              type="text"
+              name="city"
+              placeholder="Cidade"
+              value={formData.city}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              readOnly
+              disabled={loadingCep}
+            />
+          </div>
+          <input
+            type="text"
+            name="neighborhood"
+            placeholder="Bairro"
+            value={formData.neighborhood}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            readOnly
+            disabled={loadingCep}
+          />
+          <input
+            type="text"
+            name="street"
+            placeholder="Rua"
+            value={formData.street}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            readOnly
+            disabled={loadingCep}
+          />
+          <div className="flex space-x-4">
+            <input
+              type="text"
+              name="number"
+              placeholder="Número"
+              value={formData.number}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+            <input
+              type="text"
+              name="complement"
+              placeholder="Complemento"
+              value={formData.complement}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
 
-      <input type="checkbox" id="modal1" className="modal-toggle" />
-      <div className="modal">
-        <div className="modal-box relative">
-          <h1 className="text-2xl font-semibold mb-4">Cadastrar Cliente</h1>
-          {errorMessage && <div className="text-red-500">{errorMessage}</div>}
-          <form onSubmit={handleSubmit} className="modal-middle space-y-4">
-            <input
-              type="text"
-              name="name"
-              placeholder="Nome"
-              value={formData.name}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-            <MaskedInput
-              mask={[
-                "(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/,
-              ]}
-              name="phone"
-              placeholder="Telefone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-            <MaskedInput
-              mask={[
-                /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/,
-              ]}
-              name="cnpj"
-              placeholder="CNPJ"
-              value={formData.cnpj}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-            <div className="flex space-x-4">
-              <MaskedInput
-                mask={[/\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/]}
-                name="zipCode"
-                placeholder="CEP"
-                value={formData.zipCode}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-                required
-              />
-              <button
-                type="button"
-                className="btn btn-outline btn-primary"
-                onClick={buscarEnderecoPorCep}
-                disabled={loadingCep}
-              >
-                {loadingCep ? "Buscando..." : "Auto Preencher"}
-              </button>
-            </div>
-            <div className="flex space-x-4">
-              <input
-                type="text"
-                name="state"
-                placeholder="Estado"
-                value={formData.state}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-                readOnly
-                disabled={loadingCep}
-              />
-              <input
-                type="text"
-                name="city"
-                placeholder="Cidade"
-                value={formData.city}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-                readOnly
-                disabled={loadingCep}
-              />
-            </div>
-            <input
-              type="text"
-              name="neighborhood"
-              placeholder="Bairro"
-              value={formData.neighborhood}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              readOnly
-              disabled={loadingCep}
-            />
-            <input
-              type="text"
-              name="street"
-              placeholder="Rua"
-              value={formData.street}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              readOnly
-              disabled={loadingCep}
-            />
-            <div className="flex space-x-4">
-              <input
-                type="text"
-                name="number"
-                placeholder="Número"
-                value={formData.number}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-                required
-              />
-              <input
-                type="text"
-                name="complement"
-                placeholder="Complemento"
-                value={formData.complement}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-              />
-            </div>
-            <div className="modal-action">
-              <button
-                type="submit"
-                className="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white"
-                disabled={loading}
-              >
-                {loading ? "Registrando..." : "Registrar Cliente"}
-              </button>
-            </div>
-          </form>
-          <label htmlFor="modal1" className="absolute top-2 right-2 cursor-pointer text-lg">
-            ✕
-          </label>
-        </div>
-      </div>
+          <div className="modal-action flex flex-row justify-around">
+            <button type="submit" className="btn btn-info" disabled={loading}>
+              {loading ? "Registrando..." : "Registrar Cliente"}
+            </button>
+          </div>
+        </form>
+      </CreateButton>
     </div>
   );
 }

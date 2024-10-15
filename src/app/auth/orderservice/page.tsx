@@ -9,9 +9,6 @@ import { AuthContext } from "@/app/context/auth";
 export default function OrderService() {
   const { user } = useContext(AuthContext)
 
-  useEffect(()=>{
-    console.log(user)
-  })
   return (
       <div className="m-5 space-y-5">
         <div className="justify-between flex items-center">

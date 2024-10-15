@@ -79,8 +79,6 @@ export function ReadUsers() {
             </tr>
           ))}
         </tbody>
-
-
       </table>
     );
 }

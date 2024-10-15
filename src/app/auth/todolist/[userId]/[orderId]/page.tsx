@@ -2,6 +2,7 @@
 
 import { updateOrder } from "@/app/api/orderService/updateOrder";
 import { getTasks } from "@/app/api/tasks/listTasks";
+import Loading from "@/app/loading";
 import CreateTask from "@/components/TaskService/createTask";
 import TodoList from "@/components/TaskService/todoList";
 import { useQuery } from "@tanstack/react-query";
@@ -18,7 +19,9 @@ export default function TaskPage({ params }: TaskListProps) {
     const [responseVendas, responseOperacional, responseFinanceiro] =
       await Promise.all([
         (await getTasks(params.orderId, "VENDAS", params.userId, "")).tasks,
-        (await getTasks(params.orderId, "OPERACIONAL", params.userId, "")).tasks,
+        (
+          await getTasks(params.orderId, "OPERACIONAL", params.userId, "")
+        ).tasks,
         (await getTasks(params.orderId, "FINANCEIRO", params.userId, "")).tasks,
       ]);
     const tasksVendasCompleted = responseVendas.every((task) => task.completed);
@@ -64,10 +67,14 @@ export default function TaskPage({ params }: TaskListProps) {
   });
 
   if (error) {
-    return <div>Erro ao listar tarefas</div>;
+    return (
+      <div className="flex w-full justify-center items-center">
+        <p className="text-2xl text-red-600">Erro ao listar tarefas</p>
+      </div>
+    );
   }
   if (!data) {
-    return <div>Carregando...</div>;
+    return <Loading />;
   }
 
   return (
@@ -77,18 +84,9 @@ export default function TaskPage({ params }: TaskListProps) {
         <CreateTask userId={params.userId} orderId={params.orderId} />
       </div>
       <div className="flex flex-col justify-center w-full sm:flex-row sm:space-y-0 sm:space-x-5 sm:w-full">
-        <TodoList
-          sectorName="Vendas"
-          tasks={data.vendas}
-        />
-        <TodoList
-          sectorName="Operacional"
-          tasks={data.operacional}
-        />
-        <TodoList
-          sectorName="Financeiro"
-          tasks={data.financeiro}
-        />
+        <TodoList sectorName="Vendas" tasks={data.vendas} />
+        <TodoList sectorName="Operacional" tasks={data.operacional} />
+        <TodoList sectorName="Financeiro" tasks={data.financeiro} />
       </div>
     </div>
   );
