@@ -1,12 +1,13 @@
 'use client'
 
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import Cookies from 'js-cookie';
 
 export type UserProps = {
     token: string,
     id: string,
-    role: string,
-    sector: string
+    sector: string,
+    role: string
 }
 
 type AuthContextProps = {
@@ -20,20 +21,39 @@ const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 const AuthProvider = ({children}: {children: React.ReactNode}) => {
     const [user, setUser] = useState<UserProps | undefined>(undefined);
 
-    const login = (user: UserProps) => {
-        setUser(user)
-        console.log(user)
+    useEffect(() => {
+        const storedUser = Cookies.get('user');
+        console.log("peguei dos cookies", storedUser); // Adicionado log
+
+        if (storedUser) {
+            try {
+                const userParse: UserProps = JSON.parse(storedUser);
+                console.log("usei o parse",userParse)
+                login( { token: userParse.token, id: userParse.id, role: userParse.role, sector: userParse.sector } )
+            } catch (error) {
+                console.error("Error parsing user data from cookie:", error);
+            }
+        }
+    }, []);
+
+    const login = (userT: UserProps) => {
+        console.log("recebido", userT)
+        setUser(userT);
+        console.log("Teste setado", user)
+        Cookies.set('user', JSON.stringify(user), { expires: 7 }); // Cookie expira em 7 dias
     }
 
     const logout = () => {
-        setUser(undefined)
+        setUser(undefined);
+        Cookies.remove('user');
+        console.log("User removed from cookie"); // Adicionado log
     }
 
-    return(
+    return (
         <AuthContext.Provider value={{user, login, logout}}>
-            <>{children}</>
+            {children}
         </AuthContext.Provider>
     );
 };
 
-export {AuthContext, AuthProvider}
+export { AuthContext, AuthProvider }

@@ -6,7 +6,6 @@ import { registerOrder } from "@/app/api/orderService/registerOrder";
 import { useRouter } from "next/navigation";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
-import { FaIcons, FaPlus } from "react-icons/fa";
 import CreateButton from "../createButton";
 
 interface CreateOrderProps {
@@ -96,12 +95,10 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
               dataKey={"id"}
             />
           </div>
-        </form>
-        <div className="modal-action flex flex-row justify-around">
           <button type="submit" className="btn btn-info ">
             Registrar Ordem de Serviço
           </button>
-        </div>
+        </form>
       </CreateButton>
     </div>
   );

@@ -3,7 +3,6 @@ import { StageLine } from "../stageLine";
 import { DeleteOrder } from "./deleteOrder";
 import Link from "next/link";
 import { FaAngleDown, FaAngleRight, FaAngleUp } from "react-icons/fa";
-import { OrderHistory } from "./orderHistory";
 
 interface RequestItemProps {
   name: string;
@@ -47,7 +46,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   }, [sector]);
 
   return (
-    <div className="grid grid-cols-4 grid-rows-[auto,1fr] rounded-box p-5 space-y-5 sm:5/6 md:5/6 lg:w-5/6 h-2/5 bg-white transition hover:shadow-lg border-2 border-transparent hover:bg-gray-50 hover:border-2 hover:border-info">
+    <div className="grid grid-cols-4 grid-rows-[auto,1fr] p-5 rounded-md space-y-5 w-full h-1/5 bg-white shadow-lg transition-all hover:bg-gray-50 hover:scale-105">
       <div className="col-span-4 row-span-1 w-full mb-5 flex flex-row justify-between items-center">
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold">{name}</h1>
@@ -66,7 +65,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
       <div className="col-span-1 row-span-1 space-y-7">
         <DeleteOrder id={orderId} />
       </div>
-      <div className="col-span-2 row-span-1 flex justify-center items-center">
+      <div className="col-span-2 row-span-2 flex justify-center items-center">
         <StageLine stage1={stage1} stage2={stage2} stage3={stage3} />
       </div>
       <div className="col-span-1 row-span-1 flex justify-end items-center w-full">
