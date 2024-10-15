@@ -4,7 +4,7 @@ import { updateOrder } from "@/app/api/orderService/updateOrder";
 import { getTasks } from "@/app/api/tasks/listTasks";
 import CreateTask from "@/components/TaskService/createTask";
 import TodoList from "@/components/TaskService/todoList";
-import { SetStateAction, useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 interface TaskListProps {
   params: {
@@ -14,112 +14,91 @@ interface TaskListProps {
 }
 
 export default function TaskPage({ params }: TaskListProps) {
-  const { userId, orderId } = params;
-  const [taskFinanceiro, setTaskFinanceiro] = useState<any[]>([]);
-  const [taskComercial, setTaskComercial] = useState<any[]>([]);
-  const [taskOperacional, setTaskOperacional] = useState<any[]>([]);
-  const [completedSectors, setCompletedSectors] = useState<string[]>([]);
+  async function fetchTasks() {
+    const [responseVendas, responseOperacional, responseFinanceiro] =
+      await Promise.all([
+        (await getTasks(params.orderId, "VENDAS", params.userId, "")).tasks,
+        (await getTasks(params.orderId, "OPERACIONAL", params.userId, "")).tasks,
+        (await getTasks(params.orderId, "FINANCEIRO", params.userId, "")).tasks,
+      ]);
+    const tasksVendasCompleted = responseVendas.every((task) => task.completed);
+    const tasksOperacionalCompleted = responseOperacional.every(
+      (task) => task.completed
+    );
+    const tasksFinanceiroCompleted = responseFinanceiro.every(
+      (task) => task.completed
+    );
 
-  const listTasks = useCallback(async () => {
-    try {
-      if (userId && orderId) {
-        const response = await getTasks(orderId, '', '');
-        separateData(response.data.tasks);
-      }
-    } catch (error) {
-      console.log('Erro para listar tarefas', error);
+    if (!tasksVendasCompleted) {
+      await updateOrder(
+        { sector: "VENDAS", status: "PENDENTE" },
+        params.orderId
+      );
+    } else if (!tasksOperacionalCompleted) {
+      await updateOrder(
+        { sector: "OPERACIONAL", status: "PENDENTE" },
+        params.orderId
+      );
+    } else if (!tasksFinanceiroCompleted) {
+      await updateOrder(
+        { sector: "FINANCEIRO", status: "PENDENTE" },
+        params.orderId
+      );
+    } else {
+      await updateOrder(
+        { sector: "FINANCEIRO", status: "FINALIZADO" },
+        params.orderId
+      );
     }
-  }, [userId, orderId]);
 
-  const updateOrderSector = useCallback(async () => {
-    try {
-      if (!completedSectors.includes('Comercial')) {
-        await updateOrder({sector: 'COMERCIAL', status: 'PENDENTE'}, orderId);
-      } else if (!completedSectors.includes('Operacional')) {
-        await updateOrder({sector: 'OPERACIONAL', status: 'PENDENTE'}, orderId);
-      } else if (!completedSectors.includes('Financeiro')) {
-        await updateOrder({sector: 'FINANCEIRO', status: 'PENDENTE'}, orderId);
-      } else if (completedSectors.length === 3) {
-        await updateOrder({status: 'FINALIZADO'}, orderId);
-      }
-    } catch (error) {
-      console.error('Erro ao atualizar setor da ordem:', error);
-    }
-  }, [completedSectors, orderId]);
-
-  function separateData(data: any[]) {
-    const taskFinanceiroInit: SetStateAction<any[]> = [];
-    const taskOperacionalInit: SetStateAction<any[]> = [];
-    const taskComercialInit: SetStateAction<any[]> = [];
-
-    data.forEach((e) => {
-      if (e.sector === 'OPERACIONAL') {
-        taskOperacionalInit.push(e);
-      } else if (e.sector === 'FINANCEIRO') {
-        taskFinanceiroInit.push(e);
-      } else {
-        taskComercialInit.push(e);
-      }
-    });
-
-    setTaskOperacional(taskOperacionalInit);
-    setTaskFinanceiro(taskFinanceiroInit);
-    setTaskComercial(taskComercialInit);
+    return {
+      vendas: responseVendas,
+      operacional: responseOperacional,
+      financeiro: responseFinanceiro,
+    };
   }
 
-  useEffect(() => {
-    listTasks();
-    updateOrderSector();
-  }, [listTasks, completedSectors, updateOrderSector]);
+  const { data, error } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: fetchTasks,
+  });
 
-  const handleAllTasksCompleted = (sectorName: string) => {
-    // Adiciona o setor apenas se ainda não estiver na lista
-    setCompletedSectors((prev) => 
-      prev.includes(sectorName) ? prev : [...prev, sectorName]
-    );
-  };
-
-
+  if (error) {
+    return <div>Erro ao listar tarefas</div>;
+  }
+  if (!data) {
+    return <div>Carregando...</div>;
+  }
 
   return (
-    <div className="m-5 space-y-5">
-      <div className="flex flex-row justify-between items-center">
+    <div>
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Lista de Tarefas:</h1>
-        <CreateTask userId={userId} orderId={orderId} />
+        <CreateTask userId={params.userId} orderId={params.orderId} />
       </div>
-      <div className="flex flex-col space-y-5 sm:flex-row sm:space-y-0 sm:space-x-5">
+      <div className="flex flex-col justify-center w-full sm:flex-row sm:space-y-0 sm:space-x-5 sm:w-full">
         <TodoList
-          sectorName="Comercial"
-          userId={userId}
-          orderId={orderId}
-          tasks={taskComercial}
-          onAllTasksCompleted={handleAllTasksCompleted}
+          sectorName="Vendas"
+          tasks={data.vendas}
+          onAllTasksCompleted={() =>
+            console.log("Todas as tarefas foram completadas")
+          }
         />
         <TodoList
           sectorName="Operacional"
-          userId={userId}
-          orderId={orderId}
-          tasks={taskOperacional}
-          onAllTasksCompleted={handleAllTasksCompleted}
+          tasks={data.operacional}
+          onAllTasksCompleted={() =>
+            console.log("Todas as tarefas foram completadas")
+          }
         />
         <TodoList
           sectorName="Financeiro"
-          userId={userId}
-          orderId={orderId}
-          tasks={taskFinanceiro}
-          onAllTasksCompleted={handleAllTasksCompleted}
+          tasks={data.financeiro}
+          onAllTasksCompleted={() =>
+            console.log("Todas as tarefas foram completadas")
+          }
         />
       </div>
-      {completedSectors.length > 0 && (
-        <div>
-          <h2>Setores com todas as tarefas concluídas:</h2>
-          <ul>
-            {completedSectors.map(sector => (
-              <li key={sector}>{sector}</li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }

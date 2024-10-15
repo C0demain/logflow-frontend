@@ -19,7 +19,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
   const sector = "VENDAS"
   const router = useRouter()
   const toast = useToast()
-
+        
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let clientId = clientObj.value

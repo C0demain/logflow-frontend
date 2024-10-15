@@ -1,32 +1,38 @@
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import TaskItem from "./taskItem";
+import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
 
 interface TodoListProps {
   sectorName: string;
-  userId: string;
-  orderId: string;
-  tasks: any[] | undefined;
-  onAllTasksCompleted: (sectorName: string) => void;
+  tasks: TaskData[];
+  onAllTasksCompleted: () => void;
 }
 
-export default function TodoList({ sectorName, userId, orderId, tasks, onAllTasksCompleted }: TodoListProps) {
-  
-  useEffect(() => {
-    if (tasks && tasks.length > 0 && tasks.every(task => task.completed)) {
-      onAllTasksCompleted(sectorName);
-    }
-  }, [tasks, onAllTasksCompleted]);
+export default function TodoList({
+  sectorName,
+  tasks,
+  onAllTasksCompleted,
+}: TodoListProps) {
+
+  const { data } = useQuery({
+    queryKey: ["tasks"],
+  });
+
+  const handleTaskCompletion = () => {
+    onAllTasksCompleted();
+  };
 
   return (
-    <div className="bg-gray-100 p-5 rounded-md shadow-lg w-96">
+    <div className="flex flex-col w-full bg-gray-100 p-5 rounded-md shadow-lg">
       <h1 className="text-xl">Tarefas {sectorName}</h1>
-      {tasks?.map((task) => (
+      {tasks.map((task) => (
         <TaskItem
           key={task.id}
-          userId={userId}
           idTask={task.id}
           completed={task.completed}
           title={task.title}
+          sectorName={sectorName}
+          onTaskCompletion={handleTaskCompletion}
         />
       ))}
     </div>

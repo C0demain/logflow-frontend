@@ -5,6 +5,8 @@ interface TaskData {
     title: string;
     completed: boolean;
     userId: string;
+    orderId: string;
+    sector: string;
   }
 export const updateTask = async(taskData: TaskData, id: string) => {
     const { apiLogin, apiInstance } = await createApiInstances();

@@ -13,7 +13,7 @@ export const registerOrder = async (orderData: OrderData) => {
   const { apiLogin, apiInstance } = await createApiInstances();
 
   try {
-    const response = await apiInstance.post('/api/v1/service-order', orderData)
+    const response = await apiInstance.post("/api/v1/service-order", orderData);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
