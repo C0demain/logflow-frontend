@@ -1,14 +1,18 @@
 'use client';
 
+import { AuthContext } from "@/app/context/auth";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 
 export function Logout() {
     const router = useRouter();
+    const { logout } = useContext(AuthContext)
 
     async function handleLogout() {
         try {
             const response = await axios.delete('/api/deleteToken');
+            logout();
             router.push("/");
             console.log(response.data);
             closeModal()

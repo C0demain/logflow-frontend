@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { createApiInstances } from '@/app/util/baseURL'; // Certifique-se de que o caminho está correto
 
 interface UserData {
@@ -16,9 +16,10 @@ export const updateUserById = async (id: string, userData: UserData) => {
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      throw new Error('Erro ao atualizar funcionário: ' + error.response?.data.message);
+      if(error?.response?.status === 400 || error?.response?.status === 404)
+      throw new AxiosError(error.response.data?.message)
     } else {
-      throw new Error('Erro ao atualizar funcionário: ' + (error as Error).message);
+      throw new AxiosError('Erro ao conectar ao servidor. Tente novamente');
     }
   }
 };

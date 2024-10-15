@@ -9,8 +9,8 @@ interface RequestItemProps {
   name: string;
   status: string;
   orderId: string;
-  sector: string;
-  userId: string;
+  sector: string | undefined;
+  userId: string | undefined;
   clientName: string;
   userName: string;
   logs: { changedTo: string; atDate: string }[];
@@ -30,7 +30,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   const [stage2, setStage2] = useState(false);
   const [stage3, setStage3] = useState(false);
 
-  const setSector = (sector: string) => {
+  const setSector = (sector: string | undefined) => {
     switch (sector) {
       case "FINANCEIRO":
         setStage3(true);

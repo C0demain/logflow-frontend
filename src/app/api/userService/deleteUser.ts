@@ -1,5 +1,5 @@
 import { createApiInstances } from "@/app/util/baseURL";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export const deleteUserById = async (id: string) => {
   const { apiInstance } = await createApiInstances();
@@ -8,11 +8,11 @@ export const deleteUserById = async (id: string) => {
     const response = await apiInstance.delete(`/api/v1/users/${id}`);
     return response.data;
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("Erro ao deletar usuário:", error.message);
-      throw new Error('Erro ao deletar usuário: ' + error.message);
+    if (axios.isAxiosError(error)) {
+      if(error?.response?.status === 400)
+      throw new AxiosError(error.response.data?.message)
     } else {
-      throw new Error('Erro desconhecido ao deletar usuário');
+      throw new AxiosError('Erro ao conectar ao servidor. Tente novamente');
     }
   }
 };

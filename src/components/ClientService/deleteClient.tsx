@@ -44,6 +44,5 @@ export const DeleteClient: React.FC<DeleteClientProps> = ({ id }) => {
     );
 };
 function deleteUserById(id: string) {
-    throw new Error("Function not implemented.");
 }
 

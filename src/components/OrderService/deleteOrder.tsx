@@ -1,4 +1,6 @@
 import { deleteOsById } from "@/app/api/orderService/deleteOrder";
+import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { FaTrash } from "react-icons/fa";
 
 interface DeleteOrderProps {
@@ -6,12 +8,17 @@ interface DeleteOrderProps {
 }
 
 export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
+    const toast = useToast()
+    const router = useRouter()
     const handleDelete = async (id: string) => {
         try {
             const response = await deleteOsById(id);
-            console.log('Ordem de serviço deletada:', response);
-            // Adicionar lógica adicional aqui, como limpar o formulário ou exibir uma mensagem de sucesso
-            window.location.reload()
+            toast({
+                status: "success",
+                title: "Sucesso",
+                description: "Ordem de serviço arquivada com sucesso"
+            })
+            router.refresh()
         } catch (error: unknown) {
             if (error instanceof Error) {
                 console.error('Erro ao registrar ordem de serviço:', error.message);
