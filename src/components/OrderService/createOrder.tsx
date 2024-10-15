@@ -12,20 +12,18 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
   const [title, setTitle] = useState('');
   const [clientObj, setClientObj] = useState<any>()
   const userId = id
-  const status = "PENDENTE";
-  const sector = "COMERCIAL"
+  const sector = "VENDAS"
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let clientId = clientObj.value
     try {
-      const response = await registerOrder({ title, clientId, status, userId, sector });
+      const response = await registerOrder({ title, clientId, userId, sector });
       console.log('Ordem de serviço registrada:', response);
       // Você pode adicionar mais lógica aqui, como limpar o formulário ou exibir uma mensagem de sucesso
 
       setTitle('')
       clientId =''
-      window.location.reload()
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Erro ao registrar ordem de serviço:', error.message);

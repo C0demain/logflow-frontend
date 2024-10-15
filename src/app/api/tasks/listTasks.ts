@@ -1,12 +1,33 @@
 import { createApiInstances } from "@/app/util/baseURL";
 import axios from "axios";
 
+export type TaskData = {
+  id: string;
+  title: string;
+  completed: boolean;
+  sector: string;
+  assignedUser: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  serviceOrder: {
+    id: string;
+    title: string;
+  };
+};
+
+type TasksResponse = {
+  message: string;
+  tasks: TaskData[];
+};
+
 export const getTasks = async (
   orderId: string,
   sector: string,
   userId: string,
   title: string
-) => {
+): Promise<TasksResponse> => {
   const { apiLogin, apiInstance } = await createApiInstances();
   try {
     let url = "/api/v1/task";
@@ -20,9 +41,8 @@ export const getTasks = async (
       .join("&");
     url += queryParams ? "?" + queryParams : "";
 
-    console.log(url);
     const response = await apiInstance.get(url);
-    return response;
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(

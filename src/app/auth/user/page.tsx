@@ -14,7 +14,7 @@ export default function UserPage() {
     <div className="m-5 space-y-5 relative">
       <div className="justify-between flex items-center">
         <h1 className="text-2xl">Lista de Funcionários:</h1>
-        <button onClick={toggleModal} className="btn btn-primary">
+        <button onClick={toggleModal} className="btn btn-info">
           Adicionar Funcionário
         </button>
       </div>

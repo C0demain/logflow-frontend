@@ -36,7 +36,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
         setStage3(true);
       case "OPERACIONAL":
         setStage2(true);
-      case "COMERCIAL":
+      case "VENDAS":
         setStage1(true);
     }
   };

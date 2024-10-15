@@ -1,87 +1,113 @@
-'use client'
-import { registerTask } from "@/app/api/tasks/registerTask"
-import { useState } from "react"
-import Select, { SingleValue } from "react-select"
+"use client";
+import { registerTask } from "@/app/api/tasks/registerTask";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import Select, { SingleValue } from "react-select";
 
 interface CreateTaskProps {
-  userId: string,
-  orderId: string
+  userId: string;
+  orderId: string;
 }
 
 type SectorOption = {
-  value: 'OPERACIONAL' | 'FINANCEIRO' | 'COMERCIAL',
-  label: string
-}
+  value: "OPERACIONAL" | "FINANCEIRO" | "RH" | "DIRETORIA" | "VENDAS";
+  label: string;
+};
 
 const sectorOptions: SectorOption[] = [
-  { value: 'OPERACIONAL', label: 'OPERACIONAL' },
-  { value: 'FINANCEIRO', label: 'FINANCEIRO' },
-  { value: 'COMERCIAL', label: 'COMERCIAL' }
-]
+  { value: "OPERACIONAL", label: "OPERACIONAL" },
+  { value: "FINANCEIRO", label: "FINANCEIRO" },
+  { value: "RH", label: "RH" },
+  { value: "DIRETORIA", label: "DIRETORIA" },
+  { value: "VENDAS", label: "VENDAS" },
+];
 
 export default function CreateTask({ userId, orderId }: CreateTaskProps) {
-  const [title, setTitle] = useState('')
-  const [sector, setSector] = useState<SectorOption | null>(sectorOptions[0])
+  const queryClient = useQueryClient();
+  const [title, setTitle] = useState("");
+  const [sector, setSector] = useState<SectorOption | null>(sectorOptions[0]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       if (sector) {
-        const response = await registerTask({ title, userId, orderId, sector: sector.value })
-        console.log('Response:', response); // Adicione este log para inspecionar a resposta
+        const response = await registerTask({
+          title,
+          userId,
+          orderId,
+          sector: sector.value,
+        });
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
       } else {
-        console.error('Setor não selecionado')
+        console.error("Setor não selecionado");
       }
     } catch (error) {
-      console.error('Erro ao registrar tarefa:', error)
+      console.error("Erro ao registrar tarefa:", error);
     }
-  }
+  };
+
+  const handleModalOpen = () => {
+    const modal = document.getElementById("modal");
+    if (modal) {
+      (modal as HTMLDialogElement).showModal();
+    } else {
+      console.error("Modal element not found");
+    }
+  };
 
   return (
     <div>
-      <label htmlFor="modal1" className="btn btn-info text-black hover:bg-blue-500">Nova tarefa</label>
+      <button className="btn btn-info" onClick={handleModalOpen}>
+        Nova Tarefa
+      </button>
 
-      <input type="checkbox" id="modal1" className="modal-toggle" />
-      <div className="modal" role="dialog">
-        <div className="modal-box bg-white">
-          <div className="modal-top mb-5">
-            <h1 className="text-2xl">Nova Ordem de Serviço</h1>
-          </div>
+      <dialog className="modal" id="modal">
+        <div className="modal-box">
+          <h1 className="text-2xl">Nova Tarefa</h1>
           <form onSubmit={handleSubmit} className="modal-middle space-y-2">
             <div>
-              <label htmlFor="title" className="mr-4">Título</label>
+              <label htmlFor="title" className="mr-4">
+                Título
+              </label>
               <input
                 type="text"
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="bg-gray-400 rounded-md border border-black"
+                className="input input-bordered w-full"
               />
             </div>
             <div>
-              <label htmlFor="sector" className="mr-2">Setor</label>
+              <label htmlFor="sector" className="mr-2">
+                Setor
+              </label>
               <Select
                 options={sectorOptions}
                 value={sector}
-                onChange={(selectedOption: SingleValue<SectorOption>) => { setSector(selectedOption); }}
+                onChange={(selectedOption: SingleValue<SectorOption>) => {
+                  setSector(selectedOption);
+                }}
                 className="text-black"
                 classNamePrefix="custom-select"
                 placeholder="Selecione um setor"
                 isClearable
               />
             </div>
-            <button
-              type="submit"
-              className="btn bg-blue-600 text-white"
-            >
-              Registrar nova tarefa
-            </button>
+            <div className="modal-action flex flex-row justify-between">
+              <button type="submit" className="btn btn-info">
+                Registrar nova tarefa
+              </button>
+              <form method="dialog">
+                <button
+                  className="btn btn-error text-white"
+                >
+                  Fechar
+                </button>
+              </form>
+            </div>
           </form>
-          <div className="modal-action">
-            <label htmlFor="modal1" onClick={()=>(window.location.reload())} className="btn bg-blue-600 text-white">Fechar</label>
-          </div>
         </div>
-      </div>
+      </dialog>
     </div>
-  )
+  );
 }
