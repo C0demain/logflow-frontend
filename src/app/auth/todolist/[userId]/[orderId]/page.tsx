@@ -80,23 +80,14 @@ export default function TaskPage({ params }: TaskListProps) {
         <TodoList
           sectorName="Vendas"
           tasks={data.vendas}
-          onAllTasksCompleted={() =>
-            console.log("Todas as tarefas foram completadas")
-          }
         />
         <TodoList
           sectorName="Operacional"
           tasks={data.operacional}
-          onAllTasksCompleted={() =>
-            console.log("Todas as tarefas foram completadas")
-          }
         />
         <TodoList
           sectorName="Financeiro"
           tasks={data.financeiro}
-          onAllTasksCompleted={() =>
-            console.log("Todas as tarefas foram completadas")
-          }
         />
       </div>
     </div>

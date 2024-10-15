@@ -9,14 +9,14 @@ interface CreateTaskProps {
 }
 
 type SectorOption = {
-  value: 'OPERACIONAL' | 'FINANCEIRO' | 'COMERCIAL',
+  value: 'OPERACIONAL' | 'FINANCEIRO' | 'VENDAS',
   label: string
 }
 
 const sectorOptions: SectorOption[] = [
   { value: 'OPERACIONAL', label: 'OPERACIONAL' },
   { value: 'FINANCEIRO', label: 'FINANCEIRO' },
-  { value: 'COMERCIAL', label: 'COMERCIAL' }
+  { value: 'VENDAS', label: 'COMERCIAL' }
 ]
 
 export default function CreateTask({ userId, orderId }: CreateTaskProps) {

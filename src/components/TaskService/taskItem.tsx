@@ -9,10 +9,9 @@ interface TaskItemProps {
   completed: boolean;
   title: string;
   sectorName: string;
-  onTaskCompletion: () => void;
 }
 
-export default function TaskItem({ idTask, completed, title, sectorName, onTaskCompletion: onTaskCompletion }: TaskItemProps) {
+export default function TaskItem({ idTask, completed, title, sectorName, }: TaskItemProps) {
   const params = useParams<{userId: string, orderId: string}>();
   const queryClient = useQueryClient();
   const [completedTask, setCompletedTask] = useState<boolean>(completed);
@@ -25,7 +24,6 @@ export default function TaskItem({ idTask, completed, title, sectorName, onTaskC
     queryClient.invalidateQueries({ queryKey: ["tasks"] });
     try {
       await updateTask({ title: title, completed: newCompletedStatus, userId, orderId, sector: sectorName.toUpperCase() }, idTask);
-      onTaskCompletion();
     } catch (error) {
       console.error(error);
     }
