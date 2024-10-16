@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, ReactNode } from "react";
 import Cookies from 'js-cookie';
 
 export type UserProps = {
@@ -18,16 +18,15 @@ type AuthContextProps = {
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
-const AuthProvider = ({children}: {children: React.ReactNode}) => {
+const AuthProvider = ({children}: {children: ReactNode}) => {
     const [user, setUser] = useState<UserProps | undefined>(undefined);
 
     useEffect(() => {
         const storedUser = Cookies.get('user');
-
         if (storedUser) {
             try {
                 const userParse: UserProps = JSON.parse(storedUser);
-                login( { token: userParse.token, id: userParse.id, role: userParse.role, sector: userParse.sector } )
+                setUser(userParse);
             } catch (error) {
                 console.error("Error parsing user data from cookie:", error);
             }
@@ -36,10 +35,11 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
 
     const login = (userT: UserProps) => {
         setUser(userT);
-        Cookies.set('user', JSON.stringify(user), { expires: 7 }); // Cookie expira em 7 dias
+        Cookies.set('user', JSON.stringify(userT), { expires: 7 }); // Cookie expira em 7 dias
     }
 
     const logout = () => {
+        console.log("Logging out user");
         setUser(undefined);
         Cookies.remove('user');
     }

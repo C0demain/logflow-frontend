@@ -10,9 +10,11 @@ export default function OrderService() {
   const [userId, setUserId] = useState<string | undefined>('')
   const { user } = useContext(AuthContext)
 
-  useEffect(()=>{
-    setUserId(user?.id)
-  },[])
+  useEffect(() => {
+    if (user) {
+      setUserId(user.id);
+    }
+  }, [user]);
   return (
       <div className="m-5 space-y-5">
         <div className="justify-between flex items-center">
