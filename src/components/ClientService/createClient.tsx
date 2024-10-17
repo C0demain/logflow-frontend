@@ -168,6 +168,7 @@ export function CreateClient() {
         });
       }
     } finally {
+      router.refresh()
       setLoading(false);
     }
   };

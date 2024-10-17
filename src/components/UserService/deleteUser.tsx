@@ -7,10 +7,9 @@ import { FaTrash } from "react-icons/fa";
 
 interface DeleteUserProps {
     id: string;
-    onDelete: (id: string) => void; // Adicionando prop onDelete
 }
 
-export const DeleteUser: React.FC<DeleteUserProps> = ({ id, onDelete }) => {
+export const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
     const toast = useToast()
     const router = useRouter()
     const handleDelete = async (id: string) => {
@@ -21,7 +20,6 @@ export const DeleteUser: React.FC<DeleteUserProps> = ({ id, onDelete }) => {
                 title: "Sucesso",
                 description: "Funcionário arquivado com sucesso"
             })
-            onDelete(id);
             router.refresh()
 
         } catch (error: unknown) {

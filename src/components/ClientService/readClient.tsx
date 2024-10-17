@@ -10,6 +10,8 @@ import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
+import { FaEdit } from "react-icons/fa";
+import { DeleteClient } from "./deleteClient";
 
 interface ReadClientProps{
   autorizado:boolean
@@ -150,14 +152,17 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
               <td className="px-4 py-3">{client.email}</td>
               <td className="px-4 py-3">{client.phone}</td>
               <td className="px-4 py-3"> {client.cnpj}</td>
-              {autorizado && <td className="flex justify-center space-x-4 px-4 py-3">
-                <button onClick={() => handleEdit(client.id)}>
-                  <AiFillEdit className="text-blue-500 hover:text-blue-700 text-2xl" />
-                </button>
-                <button onClick={() => handleDelete(client.id)}>
-                  <AiFillDelete className="text-red-500 hover:text-red-700 text-2xl" />
-                </button>
-              </td>}
+              {autorizado && (
+                <td className="flex justify-center space-x-4 px-4 py-3">
+                  <button onClick={() => handleEdit(client.id)}>
+                    <label className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
+                      <FaEdit />
+                    </label>
+                  </button>
+                  <DeleteClient id={client.id}/>
+                </td>
+              )}
+
             </tr>
           ))}
         </tbody>

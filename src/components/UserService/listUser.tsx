@@ -51,10 +51,6 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({autorizado}) => {
         return <Loading />;
     }
 
-    function onDelete(id: string): void {
-        throw new Error("Function not implemented.");
-    }
-
     return (
       <div className="overflow-x-auto">
       <table className="table w-full bg-white shadow-md rounded-lg">
@@ -73,16 +69,14 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({autorizado}) => {
               <td className="px-4 py-3">{user.name}</td>
               <td className="px-4 py-3">{user.email}</td>
               <td className="px-4 py-3">{user.role}</td>
-              <td className="px-4 py-3">{user.sector}</td>
-              {autorizado && (
-                <td className="flex justify-center space-x-4 px-4 py-3">
-                  <DeleteUser id={user.id} onDelete={onDelete} />
-                  <label htmlFor={`edit${user.id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
-                    <FaEdit />
-                  </label>
-                  <EditUser id={user.id} name={user.name} email={user.email} role={user.role} sector={user.sector} />
-                </td>
-              )}
+              <td className="px-4 py-3"> {user.sector}</td>
+              {autorizado?<td className="flex justify-center space-x-4 px-4 py-3">
+              <label htmlFor={`edit${user.id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
+                <FaEdit />
+              </label>
+              <DeleteUser id={user.id} />
+              <EditUser id={user.id} name={user.name} email={user.email} role={user.role} sector={user.sector} />
+              </td> : <></>}
             </tr>
           ))}
         </tbody>

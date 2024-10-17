@@ -21,7 +21,7 @@ const rolesBySector: Record<string, string[]> = {
   VENDAS: ["Vendedor"],
   FINANCEIRO: ['Analista Administrativo "Financeiro"', 'Ass. Administrativo "Financeiro"'],
   RH: ["Analista de RH", 'Ass. Administrativo "RH"'],
-  DIRETORIA: ["Diretor", "Diretor Financeiro", "Diretor Administrativo"],
+  DIRETORIA: ["Diretor Comercial", "Diretor Administrativo"],
 };
 
 export function CreateUser() {
@@ -74,7 +74,7 @@ export function CreateUser() {
         title: "Sucesso",
         description: "Funcionário adicionado com sucesso",
       });
-      router.refresh();
+      router.refresh()
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         toast({

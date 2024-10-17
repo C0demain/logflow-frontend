@@ -1,30 +1,40 @@
- // Certifique-se de que a API de exclusão de usuários esteja corretaimport { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { deleteClientById } from "@/app/api/clientService/deleteClient";
+import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 interface DeleteClientProps {
     id: string;
 }
 
-export const DeleteClient: React.FC<DeleteClientProps> = ({ id }) => {
-    const handleDelete = async (id: string) => {
+export const DeleteClient: React.FC<DeleteClientProps> = ({ id}) => {
+    const [isOpen, setIsOpen] = useState(false); // Estado para controlar a abertura do modal
+    const toast = useToast()
+    const router = useRouter()
+
+    const handleDelete = async (clientId: string) => {
         try {
-            const response = await deleteUserById(id); // Chamada para excluir o cliente
-            console.log('Cliente deletado:', response);
-            // Adicionar lógica adicional aqui, como atualizar a lista de clientes ou exibir uma mensagem de sucesso
-            window.location.reload(); // Opcional: pode ser melhor atualizar a lista de clientes sem recarregar a página
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                console.error('Erro ao deletar cliente:', error.message);
-            } else {
-                console.error('Erro desconhecido ao deletar cliente');
-            }
-            // Adicionar lógica para tratar erros, como exibir uma mensagem de erro
+          await deleteClientById(clientId);
+          toast({
+            status: "success",
+            title: "Sucesso",
+            description: "Cliente excluído com sucesso"
+          });
+
+        } catch (error) {
+          toast({
+            status: "error",
+            title: "Erro",
+            description: "Não foi possível excluir o cliente. Tente novamente"
+          });
         }
-    };
+        router.refresh()
+      };
 
     return (
         <div>
-            <label htmlFor={`delete${id}`} className="btn text-gray-700 bg-white hover:bg-gray-100">
+           <label htmlFor={`delete${id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
                 <FaTrash />
             </label>
 
@@ -36,13 +46,10 @@ export const DeleteClient: React.FC<DeleteClientProps> = ({ id }) => {
                     </div>
                     <div className="modal-action">
                         <label htmlFor={`delete${id}`} className="btn bg-blue-600 text-white">Não, não excluir</label>
-                        <label htmlFor={`delete${id}`} onClick={() => handleDelete(id)} className="btn bg-blue-600 text-white">Sim, excluir!</label>
+                        <label htmlFor={`delete${id}`} onClick={() => {handleDelete(id)}} className="btn bg-blue-600 text-white">Sim, excluir!</label>
                     </div>
                 </div>
             </div>
         </div>
     );
 };
-function deleteUserById(id: string) {
-}
-
