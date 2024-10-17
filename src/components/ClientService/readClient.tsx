@@ -11,7 +11,11 @@ import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 
-export function ReadClient() {
+interface ReadClientProps{
+  autorizado:boolean
+}
+
+export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
   const [data, setData] = useState<ClientData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -145,15 +149,15 @@ export function ReadClient() {
               <td className="px-4 py-3">{client.name}</td>
               <td className="px-4 py-3">{client.email}</td>
               <td className="px-4 py-3">{client.phone}</td>
-              <td className="px-4 py-3">{client.cnpj}</td>
-              <td className="flex justify-center space-x-4 px-4 py-3">
+              <td className="px-4 py-3"> {client.cnpj}</td>
+              {autorizado && <td className="flex justify-center space-x-4 px-4 py-3">
                 <button onClick={() => handleEdit(client.id)}>
                   <AiFillEdit className="text-blue-500 hover:text-blue-700 text-2xl" />
                 </button>
                 <button onClick={() => handleDelete(client.id)}>
                   <AiFillDelete className="text-red-500 hover:text-red-700 text-2xl" />
                 </button>
-              </td>
+              </td>}
             </tr>
           ))}
         </tbody>

@@ -2,23 +2,28 @@
 
 import Link from "next/link";
 import { Logout } from "./logout"; // Importando diretamente
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "@/app/context/auth";
 
 export function Navbar() {
+    const {user} = useContext(AuthContext)
+
     return (
         <div className="navbar bg-[#0975BB] shadow-md">
             <div className="navbar-start">
                 <Link href="/" className="btn btn-ghost text-xl hover:text-white">JJM Log</Link>
             </div>
-            <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal text-base text px-1">
-                    <li className="hover:text-white"><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
-                    {/* <li className="hover:text-white"><Link href="/auth/register">Registro</Link></li> */}
-                    <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
-                    <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
-                    <li className="hover:text-white"><Link href="/auth/driver">Motorista</Link></li>
-                </ul>
+            <div className="navbar-center flex">
+                    {user?.role === "Motorista" ?
+                        <></> : 
+                        <ul className="menu menu-horizontal text-base text px-1">
+                            <li className="hover:text-white"><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
+                            <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
+                            <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
+                            <li className="hover:text-white"><Link href="/auth/driver">Motorista</Link></li>
+                        </ul>
+                    }
+                
             </div>
             <div className="navbar-end space-x-5 mr-5">
                 <div className="indicator">

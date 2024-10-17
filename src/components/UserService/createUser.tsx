@@ -1,9 +1,10 @@
-import { useState } from "react";
+'use client'
+
+import { useState, useEffect } from "react";
 import { registerUser } from "@/app/api/userService/createUser";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { FaPlus } from "react-icons/fa";
 import CreateButton from "../createButton";
 
 interface UserData {
@@ -15,19 +16,37 @@ interface UserData {
   isActive: boolean;
 }
 
+const rolesBySector: Record<string, string[]> = {
+  OPERACIONAL: ["SAC", "Motorista", "Analista de Logística", 'Ass. Administrativo "Operacional"', "Gerente Operacional" ],
+  VENDAS: ["Vendedor"],
+  FINANCEIRO: ['Analista Administrativo "Financeiro"', 'Ass. Administrativo "Financeiro"'],
+  RH: ["Analista de RH", 'Ass. Administrativo "RH"'],
+  DIRETORIA: ["Diretor", "Diretor Financeiro", "Diretor Administrativo"],
+};
+
 export function CreateUser() {
   const [formData, setFormData] = useState<UserData>({
     name: "",
     email: "",
     password: "",
-    role: "MANAGER",
-    sector: "OPERACIONAL",
+    role: "",
+    sector: "OPERACIONAL", // Setando um valor padrão para sector
     isActive: true,
   });
 
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const router = useRouter();
+
+  useEffect(() => {
+    // Atualiza o campo "role" quando o campo "sector" é alterado
+    if (formData.sector) {
+      setFormData((prev) => ({
+        ...prev,
+        role: rolesBySector[formData.sector][0] || "", // Define o primeiro role disponível para o setor
+      }));
+    }
+  }, [formData.sector]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -46,8 +65,8 @@ export function CreateUser() {
         name: "",
         email: "",
         password: "",
-        role: "MANAGER",
-        sector: "OPERACIONAL",
+        role: "",
+        sector: "OPERACIONAL", // Resetando para o valor padrão
         isActive: true,
       });
       toast({
@@ -55,7 +74,6 @@ export function CreateUser() {
         title: "Sucesso",
         description: "Funcionário adicionado com sucesso",
       });
-
       router.refresh();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -79,65 +97,65 @@ export function CreateUser() {
   return (
     <div>
       <CreateButton>
+        <form onSubmit={handleSubmit} className="modal-middle space-y-3">
+          <input
+            type="text"
+            name="name"
+            placeholder="Nome"
+            value={formData.name}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Senha"
+            value={formData.password}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+          <select
+            name="sector"
+            value={formData.sector}
+            onChange={handleChange}
+            className="select select-bordered w-full"
+            required
+          >
+            <option value="OPERACIONAL">OPERACIONAL</option>
+            <option value="VENDAS">VENDAS</option>
+            <option value="FINANCEIRO">FINANCEIRO</option>
+            <option value="RH">RH</option>
+            <option value="DIRETORIA">DIRETORIA</option>
+          </select>
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="select select-bordered w-full"
+            required
+          >
+            {rolesBySector[formData.sector]?.map((role) => (
+              <option key={role} value={role}>{role}</option>
+            ))}
+          </select>
 
-            <form onSubmit={handleSubmit} className="modal-middle space-y-3">
-              <input
-                type="text"
-                name="name"
-                placeholder="Nome"
-                value={formData.name}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-                required
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Senha"
-                value={formData.password}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-                required
-              />
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="select select-bordered w-full"
-                required
-              >
-                <option value="Gerente Operacional">Gerente</option>
-                <option value="EMPLOYEE">Funcionário</option>
-              </select>
-              <select
-                name="sector"
-                value={formData.sector}
-                onChange={handleChange}
-                className="select select-bordered w-full"
-                required
-              >
-                <option value="OPERACIONAL">OPERACIONAL</option>
-                <option value="VENDAS">VENDAS</option>
-                <option value="FINANCEIRO">FINANCEIRO</option>
-                <option>RH</option>
-                <option>DIRETORIA</option>
-              </select>
-
-              <div className="modal-action flex justify-around">
-                <button type="submit" className="btn btn-info">
-                  Registrar Funcionário
-                </button>
-              </div>
-            </form>
+          <div className="modal-action flex justify-around">
+            <button type="submit" className="btn btn-info">
+              Registrar Funcionário
+            </button>
+          </div>
+        </form>
       </CreateButton>
     </div>
   );

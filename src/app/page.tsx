@@ -26,6 +26,7 @@ export default function Login() {
         router.push('/auth/orderservice');
         const { token, id, role, sector } = response;
         login({ token, id, role, sector });
+        console.log({ token, id, role, sector });
         toast({
           status: "success",
           title: "Sucesso",

@@ -13,6 +13,7 @@ interface RequestItemProps {
   clientName: string;
   userName: string;
   logs: { changedTo: string; atDate: string }[];
+  crudAutorizado: boolean;
 }
 
 export const RequestItem: React.FC<RequestItemProps> = ({
@@ -24,6 +25,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   clientName,
   userName,
   logs,
+  crudAutorizado
 }) => {
   const [stage1, setStage1] = useState(false);
   const [stage2, setStage2] = useState(false);
@@ -63,7 +65,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
         </div>
       </div>
       <div className="col-span-1 row-span-1 space-y-7">
-        <DeleteOrder id={orderId} />
+        {crudAutorizado ? <DeleteOrder id={orderId} /> : <></>}
       </div>
       <div className="col-span-2 row-span-2 flex justify-center items-center">
         <StageLine stage1={stage1} stage2={stage2} stage3={stage3} />

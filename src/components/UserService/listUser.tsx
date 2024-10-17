@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { DeleteUser } from "@/components/UserService/deleteUser";
 import { EditUser } from "@/components/UserService/updateUser"; // Novo componente de edição
 import Loading from "@/app/loading";
@@ -14,7 +14,11 @@ interface UserData {
     sector: string;
 }
 
-export function ReadUsers() {
+interface ReadUsersProps{
+  autorizado: boolean
+}
+
+export const ReadUsers: React.FC<ReadUsersProps> = ({autorizado}) => {
     const [data, setData] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -59,7 +63,7 @@ export function ReadUsers() {
             <th className="text-lg px-4 py-2">Email</th>
             <th className="text-lg px-4 py-2">Cargo</th>
             <th className="text-lg px-4 py-2">Setor</th>
-            <th className="text-lg px-4 py-2">Ações</th>
+            {autorizado ? <th className="text-lg px-4 py-2">Ações</th> : <></>}
           </tr>
         </thead>
         <tbody className="text-gray-700 text-lg">
@@ -69,13 +73,14 @@ export function ReadUsers() {
               <td className="px-4 py-3">{user.email}</td>
               <td className="px-4 py-3">{user.role}</td>
               <td className="px-4 py-3"> {user.sector}</td>
-              <td className="flex justify-center space-x-4 px-4 py-3">
-              <DeleteUser id={user.id} onDelete={onDelete} /> {/* Passando a função onDelete */}
+              {autorizado?<td className="flex justify-center space-x-4 px-4 py-3">
+              <DeleteUser id={user.id} onDelete={onDelete} />
               <label htmlFor={`edit${user.id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
                 <FaEdit />
               </label>
               <EditUser id={user.id} name={user.name} email={user.email} role={user.role} sector={user.sector} />
-              </td>
+              </td> : <></>}
+              
             </tr>
           ))}
         </tbody>

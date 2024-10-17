@@ -6,9 +6,10 @@ import { RequestItem } from "./requestItem";
 
 interface ReadOrderProps {
   userId: string | undefined;
+  autorizado: boolean
 }
 
-export const ReadOrder: React.FC<ReadOrderProps> = ({ userId }) => {
+export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,8 +35,10 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId }) => {
 
   return (
     <div className="flex flex-col items-center justify-center space-y-10">
-      {data.map((order) => (
+      {data.length>0 ?    
+      data.map((order) => (
           <RequestItem
+            crudAutorizado={autorizado}
             key={order.id}
             status={order.status}
             orderId={order.id}
@@ -46,7 +49,7 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId }) => {
             userName={order.user.userName}
             logs={order.logs}
           />
-      ))}
+      )): <div className="h-80 items-center justify-center flex text-gray-900">Não há ordens de serviço cadastradas.</div>}
     </div>
   );
 };
