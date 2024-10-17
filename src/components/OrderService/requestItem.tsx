@@ -25,7 +25,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   clientName,
   userName,
   logs,
-  crudAutorizado
+  crudAutorizado,
 }) => {
   const [stage1, setStage1] = useState(false);
   const [stage2, setStage2] = useState(false);
@@ -35,10 +35,13 @@ export const RequestItem: React.FC<RequestItemProps> = ({
     switch (sector) {
       case "FINANCEIRO":
         setStage3(true);
+      // Use `break` to avoid fall-through
       case "OPERACIONAL":
         setStage2(true);
+      // Use `break` to avoid fall-through
       case "VENDAS":
         setStage1(true);
+      // Use `break` to avoid fall-through
     }
   };
 
@@ -47,7 +50,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   }, [sector]);
 
   return (
-    <div className="grid grid-cols-4 grid-rows-[auto,1fr] p-5 rounded-md space-y-5 w-full h-1/5 bg-white shadow-lg transition-all hover:bg-gray-50 hover:scale-105">
+    <div className="grid grid-cols-4 grid-rows-[auto,1fr] p-5 rounded-md space-y-5 w-full h-1/5 bg-white shadow-lg transition-all hover:bg-gray-50">
       <div className="col-span-4 row-span-1 w-full mb-5 flex flex-row justify-between items-center">
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold">{name}</h1>
@@ -70,9 +73,13 @@ export const RequestItem: React.FC<RequestItemProps> = ({
         <StageLine stage1={stage1} stage2={stage2} stage3={stage3} />
       </div>
       <div className="col-span-1 row-span-1 flex justify-end items-center w-full">
-      <Link href={`/auth/history`}>
-          <FaAngleRight className="text-6xl w-full h-full" />
-        </Link>
+        {userId && orderId ? (
+          <Link href={`/auth/todolist/${userId}/${orderId}`}>
+            <FaAngleRight className="text-6xl w-full h-full" />
+          </Link>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
