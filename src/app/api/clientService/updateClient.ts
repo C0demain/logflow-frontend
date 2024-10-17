@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import { createApiInstances } from "@/app/util/baseURL";
-import ClientData from "@/interfaces/clientData";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
 
 export const updateClientById = async (

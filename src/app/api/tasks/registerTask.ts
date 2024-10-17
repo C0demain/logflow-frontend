@@ -6,10 +6,11 @@ interface TaskData {
   orderId: string;
   userId: string;
   sector: "OPERACIONAL" | "FINANCEIRO" | "RH" | "DIRETORIA" | "VENDAS";
+  completed: boolean;
 }
 
 export const registerTask = async (taskData: TaskData) => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
 
   try {
     const response = await apiInstance.post("/api/v1/task", taskData);

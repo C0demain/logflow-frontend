@@ -1,22 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-import EditModal from "../editModal"; // Componente do modal de edição
+import EditModal from "./editModal"; // Componente do modal de edição
+
+interface Address {
+  zipCode: string;
+  state: string;
+  city: string;
+  neighborhood: string;
+  street: string;
+  number: string;
+  complement?: string;
+}
 
 interface RequestClientProps {
   name: string;
   email: string;
   phone: string;
   cnpj: string;
-  address: {
-    street: string;
-    number: string;
-    neighborhood: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    complement?: string;
-  }
+  address?: Address; // Tornar o endereço opcional
   onDelete: (clientId: string) => void; // Callback para exclusão
   id: string; // ID do cliente, necessário para a exclusão
   onSave: (clientId: string, updatedData: any) => void; // Função para salvar as alterações
@@ -39,9 +41,16 @@ const RequestClient: React.FC<RequestClientProps> = ({
     email,
     phone,
     cnpj,
-    address,
+    address: address || {
+      zipCode: "",
+      state: "",
+      city: "",
+      neighborhood: "",
+      street: "",
+      number: "",
+      complement: "",
+    }, // Garantir que address tenha um valor padrão
   });
-  
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);

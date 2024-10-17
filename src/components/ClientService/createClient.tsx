@@ -8,48 +8,63 @@ import { useState } from "react";
 import MaskedInput from "react-text-mask";
 import CreateButton from "../createButton";
 
-interface UserData {
+interface ClientData {
   name: string;
   email: string;
   phone: string;
   cnpj: string;
-  zipCode: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  number: string;
-  complement?: string;
+  address: {
+    zipCode: string;
+    state: string;
+    city: string;
+    neighborhood: string;
+    street: string;
+    number: string;
+    complement?: string;
+  };
 }
 
 export function CreateClient() {
-  const [formData, setFormData] = useState<UserData>({
+  const [formData, setFormData] = useState<ClientData>({
     name: "",
     email: "",
     phone: "",
     cnpj: "",
-    zipCode: "",
-    state: "",
-    city: "",
-    neighborhood: "",
-    street: "",
-    number: "",
-    complement: "",
+    address: {
+      zipCode: "",
+      state: "",
+      city: "",
+      neighborhood: "",
+      street: "",
+      number: "",
+      complement: "",
+    },
   });
 
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const toast = useToast();
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Lida com campos aninhados dentro de 'address'
+    if (name.includes("address.")) {
+      const field = name.split(".")[1];
+      setFormData((prevData) => ({
+        ...prevData,
+        address: { ...prevData.address, [field]: value },
+      }));
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const buscarEnderecoPorCep = async () => {
-    const cep = formData.zipCode.replace("-", "");
+    const cep = formData.address.zipCode.replace("-", "");
 
     if (cep.length !== 8) {
       toast({
@@ -73,22 +88,28 @@ export function CreateClient() {
         });
         setFormData((prevState) => ({
           ...prevState,
-          state: "",
-          city: "",
-          neighborhood: "",
-          street: "",
+          address: {
+            ...prevState.address,
+            state: "",
+            city: "",
+            neighborhood: "",
+            street: "",
+          },
         }));
         return;
       }
 
       const { localidade, uf, bairro, logradouro } = data;
-      setFormData({
-        ...formData,
-        state: uf,
-        city: localidade,
-        neighborhood: bairro,
-        street: logradouro,
-      });
+      setFormData((prevState) => ({
+        ...prevState,
+        address: {
+          ...prevState.address,
+          state: uf,
+          city: localidade,
+          neighborhood: bairro,
+          street: logradouro,
+        },
+      }));
     } catch (error) {
       toast({
         status: "error",
@@ -119,15 +140,18 @@ export function CreateClient() {
         email: "",
         phone: "",
         cnpj: "",
-        zipCode: "",
-        state: "",
-        city: "",
-        neighborhood: "",
-        street: "",
-        number: "",
-        complement: "",
+        address: {
+          zipCode: "",
+          state: "",
+          city: "",
+          neighborhood: "",
+          street: "",
+          number: "",
+          complement: "",
+        },
       });
 
+      setIsOpen(false);
       router.refresh();
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
@@ -173,23 +197,7 @@ export function CreateClient() {
             required
           />
           <MaskedInput
-            mask={[
-              "(",
-              /\d/,
-              /\d/,
-              ")",
-              " ",
-              /\d/,
-              /\d/,
-              /\d/,
-              /\d/,
-              /\d/,
-              "-",
-              /\d/,
-              /\d/,
-              /\d/,
-              /\d/,
-            ]}
+            mask={["(",/\d/,/\d/,")"," ",/\d/,/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,/\d/]}
             name="phone"
             placeholder="Telefone"
             value={formData.phone}
@@ -198,26 +206,7 @@ export function CreateClient() {
             required
           />
           <MaskedInput
-            mask={[
-              /\d/,
-              /\d/,
-              ".",
-              /\d/,
-              /\d/,
-              /\d/,
-              ".",
-              /\d/,
-              /\d/,
-              /\d/,
-              "/",
-              /\d/,
-              /\d/,
-              /\d/,
-              /\d/,
-              "-",
-              /\d/,
-              /\d/,
-            ]}
+            mask={[/\d/,/\d/,".",/\d/,/\d/,/\d/,".",/\d/,/\d/,/\d/,"/",/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,]}
             name="cnpj"
             placeholder="CNPJ"
             value={formData.cnpj}
@@ -228,9 +217,9 @@ export function CreateClient() {
           <div className="flex space-x-4">
             <MaskedInput
               mask={[/\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/]}
-              name="zipCode"
+              name="address.zipCode"
               placeholder="CEP"
-              value={formData.zipCode}
+              value={formData.address.zipCode}
               onChange={handleChange}
               className="input input-bordered w-full"
               required
@@ -247,9 +236,9 @@ export function CreateClient() {
           <div className="flex space-x-4">
             <input
               type="text"
-              name="state"
+              name="address.state"
               placeholder="Estado"
-              value={formData.state}
+              value={formData.address.state}
               onChange={handleChange}
               className="input input-bordered w-full"
               readOnly
@@ -257,9 +246,9 @@ export function CreateClient() {
             />
             <input
               type="text"
-              name="city"
+              name="address.city"
               placeholder="Cidade"
-              value={formData.city}
+              value={formData.address.city}
               onChange={handleChange}
               className="input input-bordered w-full"
               readOnly
@@ -268,9 +257,9 @@ export function CreateClient() {
           </div>
           <input
             type="text"
-            name="neighborhood"
+            name="address.neighborhood"
             placeholder="Bairro"
-            value={formData.neighborhood}
+            value={formData.address.neighborhood}
             onChange={handleChange}
             className="input input-bordered w-full"
             readOnly
@@ -278,9 +267,9 @@ export function CreateClient() {
           />
           <input
             type="text"
-            name="street"
+            name="address.street"
             placeholder="Rua"
-            value={formData.street}
+            value={formData.address.street}
             onChange={handleChange}
             className="input input-bordered w-full"
             readOnly
@@ -289,18 +278,18 @@ export function CreateClient() {
           <div className="flex space-x-4">
             <input
               type="text"
-              name="number"
+              name="address.number"
               placeholder="Número"
-              value={formData.number}
+              value={formData.address.number}
               onChange={handleChange}
               className="input input-bordered w-full"
               required
             />
             <input
               type="text"
-              name="complement"
+              name="address.complement"
               placeholder="Complemento"
-              value={formData.complement}
+              value={formData.address.complement}
               onChange={handleChange}
               className="input input-bordered w-full"
             />

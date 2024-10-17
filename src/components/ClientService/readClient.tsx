@@ -1,12 +1,9 @@
-"use client";
-
 import { useState, useCallback, useEffect } from "react";
-
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
-import EditModal from "../editModal"; // Importa o modal de edição
+import EditModal from "./editModal"; // Importa o modal de edição
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
@@ -19,9 +16,9 @@ export function ReadClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentClient, setCurrentClient] = useState<ClientData | null>(null); // Estado para armazenar o cliente atual
-  const toast = useToast()
-  const router = useRouter()
+  const [currentClient, setCurrentClient] = useState<ClientData | null>(null);
+  const toast = useToast();
+  const router = useRouter();
 
   const getClient = useCallback(async () => {
     try {
@@ -47,13 +44,13 @@ export function ReadClient() {
         status: "success",
         title: "Sucesso",
         description: "Cliente excluído com sucesso"
-      })
+      });
     } catch (error) {
       toast({
         status: "error",
         title: "Erro",
         description: "Não foi possível excluir o cliente. Tente novamente"
-      })
+      });
     }
   };
 
@@ -71,29 +68,45 @@ export function ReadClient() {
   };
 
   const handleSave = async (clientId: string, updatedData: ClientUpdateInterface) => {
-      try {
-        await updateClientById(clientId, updatedData);
-        toast({
-          status: "success",
-          title: "Sucesso",
-          description: "Cliente atualizado com sucesso"
-        })
-        router.refresh()
-        getClient()
+    // Prepare the updated data to match UpdateClientDto structure
+    const clientUpdate: ClientUpdateInterface = {
+      name: updatedData.name,
+      phone: updatedData.phone,
+      cnpj: updatedData.cnpj,
+      email: updatedData.email,
+      address: {
+        zipCode: updatedData.address.zipCode,
+        state: updatedData.address.state,
+        city: updatedData.address.city,
+        neighborhood: updatedData.address.neighborhood,
+        street: updatedData.address.street,
+        number: updatedData.address.number,
+        complement: updatedData.address.complement,
+      },
+    };
+
+    try {
+      await updateClientById(clientId, clientUpdate);
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Cliente atualizado com sucesso"
+      });
+      router.refresh();
+      getClient();
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         toast({
           status: "error",
           title: "Error",
           description: error.message
-        })
+        });
       } else {
         toast({
           status: "error",
           title: "Erro",
           description: "Ocorreu um erro inesperado. Tente novamente"
-        })
-
+        });
       }
     }
   };
@@ -132,7 +145,7 @@ export function ReadClient() {
               <td className="px-4 py-3">{client.name}</td>
               <td className="px-4 py-3">{client.email}</td>
               <td className="px-4 py-3">{client.phone}</td>
-              <td className="px-4 py-3"> {client.cnpj}</td>
+              <td className="px-4 py-3">{client.cnpj}</td>
               <td className="flex justify-center space-x-4 px-4 py-3">
                 <button onClick={() => handleEdit(client.id)}>
                   <AiFillEdit className="text-blue-500 hover:text-blue-700 text-2xl" />
@@ -144,8 +157,6 @@ export function ReadClient() {
             </tr>
           ))}
         </tbody>
-
-
       </table>
 
       {/* Modal de Edição */}
