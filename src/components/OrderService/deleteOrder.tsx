@@ -44,31 +44,31 @@ export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
   };
 
   return (
-    <div>
-      <button
-        className="btn btn-ghost absolute btn-circle transition-all hover:bg-red-500 hover:text-white"
-        onClick={openModal}
-      >
-        <FaTrash />
-      </button>{" "}
-      <dialog id={`modal${id}`} className="modal">
-        <div className="modal-box w-3/12 max-w-5xl">
-          <p className="text-xl mb-6">Deseja confirmar a exclusão?</p>
-          <div className="flex w-full justify-center space-x-7">
-            <div className="flex w-full justify-center space-x-7">
-              <button
-                className="btn btn-info text-white"
-                onClick={() => handleDelete(id)}
-              >
-                Sim
-              </button>
-              <form method="dialog">
-                <button className="btn btn-error text-white">Não</button>
-              </form>
-            </div>
-          </div>
+    <div className="relative">
+    <button
+      className="btn btn-ghost absolute btn-circle transition-all hover:bg-red-500 hover:text-white"
+      onClick={openModal}
+    >
+      <FaTrash />
+    </button>
+    <dialog id={`modal${id}`} className="modal">
+      <div className="modal-box w-11/12 max-w-md">
+        <p className="text-xl mb-6">Deseja confirmar a exclusão?</p>
+        <div className="flex w-full justify-center space-x-4">
+          <button
+            className="btn btn-info text-white"
+            onClick={() => handleDelete(id)}
+          >
+            Sim
+          </button>
+          <form method="dialog">
+            <button className="btn btn-error text-white">Não</button>
+          </form>
         </div>
-      </dialog>
-    </div>
+      </div>
+    </dialog>
+  </div>
+  
+
   );
 };

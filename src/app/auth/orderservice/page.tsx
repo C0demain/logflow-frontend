@@ -27,14 +27,18 @@ export default function OrderService() {
   return (
     setoresAcessoPermitidos.includes(user.sector) ? (
       <div className="m-5 space-y-5">
-        <div className="justify-between flex items-center">
+        <div className="flex justify-between items-center">
           <h1 className="text-2xl">Lista de ordens de serviço:</h1>
-          {crudAutorizado ? <CreateOrder id={userId || ''} /> : <></>}
+          {crudAutorizado && <CreateOrder id={userId || ''} />}
         </div>
-        <ReadOrder autorizado={crudAutorizado} userId={userId || ''} />
+    
+        <div className="overflow-x-auto">
+          <ReadOrder autorizado={crudAutorizado} userId={userId || ''} />
+        </div>
       </div>
     ) : (
       <div className="flex justify-center items-center h-full">Você não tem permissão para acessar esta página.</div>
     )
+    
   );
 }
