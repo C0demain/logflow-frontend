@@ -2,13 +2,12 @@
 import { registerTask } from "@/app/api/tasks/registerTask";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import Select, { SingleValue } from "react-select";
 import CreateButton from "../createButton";
 
 interface CreateTaskProps {
-  userId: string;
   orderId: string;
+  userId: string; 
 }
 
 type SectorOption = {
@@ -24,27 +23,50 @@ const sectorOptions: SectorOption[] = [
   { value: "VENDAS", label: "VENDAS" },
 ];
 
-export default function CreateTask({ userId, orderId }: CreateTaskProps) {
+export default function CreateTask({ orderId, userId }: CreateTaskProps) {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [sector, setSector] = useState<SectorOption | null>(sectorOptions[0]);
+  const [completed, setCompleted] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null); // Reseta a mensagem de erro ao iniciar o envio
+    
     try {
+      // Validação dos IDs
+      if (!userId) {
+        setErrorMessage("Usuário não encontrado.");
+        return;
+      }
+
+      if (!orderId) {
+        setErrorMessage("Ordem de serviço não encontrada.");
+        return;
+      }
+
       if (sector) {
         const response = await registerTask({
           title,
-          userId,
           orderId,
           sector: sector.value,
+          userId, 
+          completed,
         });
+
+        // Verifica se a resposta é válida, caso contrário, mostra erro
+        if (!response) {
+          throw new Error("Erro ao registrar a tarefa. Verifique os dados e tente novamente.");
+        }
+
         queryClient.invalidateQueries({ queryKey: ["tasks"] });
       } else {
-        console.error("Setor não selecionado");
+        setErrorMessage("Setor não selecionado.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao registrar tarefa:", error);
+      setErrorMessage(error.message || "Erro inesperado ao registrar a tarefa.");
     }
   };
 
@@ -72,6 +94,7 @@ export default function CreateTask({ userId, orderId }: CreateTaskProps) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="input input-bordered w-full"
+              required
             />
           </div>
           <div>
@@ -90,6 +113,20 @@ export default function CreateTask({ userId, orderId }: CreateTaskProps) {
               isClearable
             />
           </div>
+          <div>
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={completed}
+                onChange={(e) => setCompleted(e.target.checked)}
+                className="form-checkbox"
+              />
+              <span className="ml-2">Concluído</span>
+            </label>
+          </div>
+          {errorMessage && (
+            <div className="text-red-500">{errorMessage}</div> // Exibe mensagem de erro
+          )}
           <div className="modal-action flex flex-row justify-around pt-2">
             <button type="submit" className="btn btn-info">
               Registrar nova tarefa

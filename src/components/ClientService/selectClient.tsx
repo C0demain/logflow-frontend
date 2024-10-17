@@ -17,7 +17,7 @@ export const SelectClient = (props: propsType) =>{
     const getClients = async () => {
         const response = await listClient('','','','')
         const options = []
-        for(let c of response.clients){
+        for(const c of response.clients){
             options.push({
                 value: c.id,
                 label: c.name
