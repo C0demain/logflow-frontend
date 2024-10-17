@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StageLine } from "../stageLine";
 import { DeleteOrder } from "./deleteOrder";
 import Link from "next/link";
-import { FaAngleDown, FaAngleRight, FaAngleUp } from "react-icons/fa";
+import { FaAngleRight } from "react-icons/fa";
 
 interface RequestItemProps {
   name: string;
@@ -30,7 +30,6 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   const [stage1, setStage1] = useState(false);
   const [stage2, setStage2] = useState(false);
   const [stage3, setStage3] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
 
   const setSector = (sector: string | undefined) => {
     switch (sector) {
@@ -71,31 +70,10 @@ export const RequestItem: React.FC<RequestItemProps> = ({
         <StageLine stage1={stage1} stage2={stage2} stage3={stage3} />
       </div>
       <div className="col-span-1 row-span-1 flex justify-end items-center w-full">
-        <Link href={`/auth/todolist/${userId}/${orderId}`}>
+      <Link href={`/auth/history`}>
           <FaAngleRight className="text-6xl w-full h-full" />
         </Link>
       </div>
-      <div className="col-span-4 flex justify-around row-span-1 w-full">
-        <button className="btn btn-ghost btn-circle btn-sm" onClick={() => setShowHistory(!showHistory)}>
-          {showHistory ? <FaAngleUp/> : <FaAngleDown />}
-        </button>
-      </div>
-      {showHistory ? (
-        <div className="col-span-4">
-          <h2 className="text-lg text-center font-bold">Histórico</h2>
-          <ul className="steps steps-vertical">
-            {logs.map((log) => (
-              <li
-                key={log.atDate}
-                className="step step-info h-1"
-                data-content=""
-              >
-                {log.atDate} - Ordem movida para {log.changedTo}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
     </div>
   );
 };

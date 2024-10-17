@@ -28,8 +28,9 @@ export default function OrderService() {
     setoresAcessoPermitidos.includes(user.sector) ? (
       <div className="m-5 space-y-5">
         <div className="justify-between flex items-center">
-          <h1 className="text-2xl">Lista de ordens de serviço:</h1>
-          {crudAutorizado ? <CreateOrder id={userId || ''} /> : <></>}
+            <h1 className="text-2xl">Lista de Ordens de Serviço:</h1>
+            <CreateOrder 
+            id={userId}/>
         </div>
         <ReadOrder autorizado={crudAutorizado} userId={userId || ''} />
       </div>
