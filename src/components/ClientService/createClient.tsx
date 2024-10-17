@@ -44,6 +44,7 @@ export function CreateClient() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const toast = useToast();
   const router = useRouter();
 
@@ -150,6 +151,7 @@ export function CreateClient() {
         },
       });
 
+      setIsOpen(false);
       router.refresh();
     } catch (error: unknown) {
       if (error instanceof AxiosError) {

@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import EditModal from "../editModal"; // Componente do modal de edição
+import EditModal from "./editModal"; // Componente do modal de edição
 
 interface Address {
+  zipCode: string;
+  state: string;
+  city: string;
+  neighborhood: string;
   street: string;
   number: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  zipCode: string;
   complement?: string;
 }
 
@@ -42,12 +42,12 @@ const RequestClient: React.FC<RequestClientProps> = ({
     phone,
     cnpj,
     address: address || {
+      zipCode: "",
+      state: "",
+      city: "",
+      neighborhood: "",
       street: "",
       number: "",
-      neighborhood: "",
-      city: "",
-      state: "",
-      zipCode: "",
       complement: "",
     }, // Garantir que address tenha um valor padrão
   });
