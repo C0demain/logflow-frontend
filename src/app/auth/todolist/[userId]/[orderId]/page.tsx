@@ -18,11 +18,11 @@ export default function TaskPage({ params }: TaskListProps) {
   async function fetchTasks() {
     const [responseVendas, responseOperacional, responseFinanceiro] =
       await Promise.all([
-        (await getTasks(params.orderId, "VENDAS", params.userId, "")).tasks,
+        (await getTasks(params.orderId, "VENDAS", "", "")).tasks,
         (
-          await getTasks(params.orderId, "OPERACIONAL", params.userId, "")
+          await getTasks(params.orderId, "OPERACIONAL", "", "")
         ).tasks,
-        (await getTasks(params.orderId, "FINANCEIRO", params.userId, "")).tasks,
+        (await getTasks(params.orderId, "FINANCEIRO", "", "")).tasks,
       ]);
     const tasksVendasCompleted = responseVendas.every((task) => task.completed);
     const tasksOperacionalCompleted = responseOperacional.every(
