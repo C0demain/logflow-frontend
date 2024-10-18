@@ -50,7 +50,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   }, [sector]);
 
   return (
-    <div className="grid grid-cols-4 grid-rows-[auto,1fr] p-4 sm:p-5 rounded-md space-y-4 sm:space-y-5 w-full h-1/5 bg-white shadow-lg transition-all hover:bg-gray-50">
+    <div className="grid grid-cols-4 grid-rows-[auto,1fr] p-4 sm:p-5 rounded-md space-y-4 sm:space-y-5 w-full h-1/5 bg-white shadow-lg transition-all hover:bg-gray-100">
     <div className="col-span-4 row-span-1 w-full mb-4 sm:mb-5 flex flex-row justify-between items-center">
       <div className="flex flex-col">
         <h1 className="text-lg sm:text-2xl font-bold">{name}</h1> {/* Font size adjusts */}

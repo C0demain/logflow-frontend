@@ -9,9 +9,10 @@ interface TaskItemProps {
   completed: boolean;
   title: string;
   sectorName: string;
+  onChecked: () => void;
 }
 
-export default function TaskItem({ idTask, completed, title, sectorName, }: TaskItemProps) {
+export default function TaskItem({ idTask, completed, title, sectorName, onChecked}: TaskItemProps) {
   const params = useParams<{userId: string, orderId: string}>();
   const queryClient = useQueryClient();
   const [completedTask, setCompletedTask] = useState<boolean>(completed);
@@ -24,6 +25,7 @@ export default function TaskItem({ idTask, completed, title, sectorName, }: Task
     queryClient.invalidateQueries({ queryKey: ["tasks"] });
     try {
       await updateTask({ title: title, completed: newCompletedStatus, userId, orderId, sector: sectorName.toUpperCase() }, idTask);
+      onChecked()
     } catch (error) {
       console.error(error);
     }
@@ -40,8 +42,8 @@ export default function TaskItem({ idTask, completed, title, sectorName, }: Task
         />
         <span>{title}</span>
       </div>
-      <DeleteTask
-      id={idTask}/>
+      {/* <DeleteTask
+      id={idTask}/> */}
     </div>
   );
 }
