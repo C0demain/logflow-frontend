@@ -4,7 +4,7 @@ import { AuthProvider } from "./context/auth";
 import { Providers } from "@/app/providers";
 
 export const metadata: Metadata = {
-  title: "Log Flow",
+  title: "LogFlow",
   description: "Web Site Log Flow",
 };
 
