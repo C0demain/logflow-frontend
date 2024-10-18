@@ -97,6 +97,7 @@ export function CreateUser() {
   return (
     <div>
       <CreateButton>
+      <h1 className="text-2xl font-semibold mb-4">Cadastrar Funcionário</h1>
         <form onSubmit={handleSubmit} className="modal-middle space-y-3">
           <input
             type="text"
@@ -156,6 +157,7 @@ export function CreateUser() {
             </button>
           </div>
         </form>
+        
       </CreateButton>
     </div>
   );

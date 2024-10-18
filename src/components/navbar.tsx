@@ -20,7 +20,6 @@ export function Navbar() {
             <li className="hover:text-white"><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
             <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
             <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
-            <li className="hover:text-white"><Link href="/auth/driver">Motorista</Link></li>
           </ul>
         )}
       </div>

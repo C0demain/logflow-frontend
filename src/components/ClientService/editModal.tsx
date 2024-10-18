@@ -149,14 +149,14 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
           />
 
           <div className="modal-action flex justify-end space-x-2 mt-4">
-            <button type="button" className="btn bg-gray-300 hover:bg-gray-400" onClick={onClose}>
-              Fechar
-            </button>
             <button type="submit" className="btn bg-blue-600 text-white hover:bg-blue-700">
               Salvar
             </button>
           </div>
         </form>
+        <div className="modal-action">
+            <label htmlFor={`edit${clientData}`} className="absolute top-2 right-2 cursor-pointer text-lg" onClick={onClose}>✕</label>
+        </div>
       </div>
     </div>
   );
