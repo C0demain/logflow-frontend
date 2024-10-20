@@ -98,7 +98,7 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
             />
           </div>
           <div>
-            <label htmlFor="sector" className="mr-2">
+            <label className="mr-2">
               Setor
             </label>
             <Select

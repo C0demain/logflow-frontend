@@ -1,6 +1,5 @@
 import { listClient } from "@/app/api/clientService/listClient";
-import { createApiInstances } from "@/app/util/baseURL";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 
 type propsType = {
@@ -12,7 +11,6 @@ type propsType = {
 export const SelectClient = (props: propsType) =>{
     const [clientOpt, setClientOpt] = useState<any[]>([])
     const [controlState, setControlState] = props.controlState
-    const { dataKey, className } = props
 
     const getClients = async () => {
         const response = await listClient('','','','')

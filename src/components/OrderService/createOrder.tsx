@@ -58,15 +58,6 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
     }
   };
 
-  const handleModalOpen = () => {
-    const modal = document.getElementById("modal");
-    if (modal) {
-      (modal as HTMLDialogElement).showModal();
-    } else {
-      console.error("Modal element not found");
-    }
-  };
-
   return (
     <div>
       <CreateButton>
@@ -87,9 +78,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
             />
           </div>
           <div>
-            <label htmlFor="client" className="mr-2">
-              Cliente
-            </label>
+            <label className="mr-2">Cliente</label>
             <SelectClient
               controlState={[clientObj, setClientObj]}
               dataKey={"id"}
