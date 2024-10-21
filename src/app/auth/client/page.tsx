@@ -6,7 +6,6 @@ import { ReadClient } from "@/components/ClientService/readClient";
 import { useContext, useEffect, useState } from "react";
 
 export default function ClientPage() {
-  const [isModalOpen, setModalOpen] = useState(false);
   const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
   const setoresCrudPermitido = ["VENDAS", "DIRETORIA"]
   const {user} = useContext(AuthContext)

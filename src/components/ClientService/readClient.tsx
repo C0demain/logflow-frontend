@@ -1,9 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
-import EditModal from "./editModal"; // Importa o modal de edição
+import EditModal from "./editModal";
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
@@ -13,11 +12,11 @@ import { AxiosError } from "axios";
 import { FaEdit } from "react-icons/fa";
 import { DeleteClient } from "./deleteClient";
 
-interface ReadClientProps{
-  autorizado:boolean
+interface ReadClientProps {
+  autorizado: boolean
 }
 
-export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
+export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
   const [data, setData] = useState<ClientData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,7 +73,7 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
   };
 
   const handleSave = async (clientId: string, updatedData: ClientUpdateInterface) => {
-    // Prepare the updated data to match UpdateClientDto structure
+
     const clientUpdate: ClientUpdateInterface = {
       name: updatedData.name,
       phone: updatedData.phone,
@@ -159,7 +158,7 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
                       <FaEdit />
                     </label>
                   </button>
-                  <DeleteClient id={client.id}/>
+                  <DeleteClient id={client.id} />
                 </td>
               )}
 

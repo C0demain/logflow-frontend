@@ -28,7 +28,7 @@ export const getTasks = async (
   userId: string,
   title: string
 ): Promise<TasksResponse> => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
   try {
     let url = "/api/v1/task";
     const orderIdFilter = orderId ? "serviceOrderId=" + orderId : "";

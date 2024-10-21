@@ -7,7 +7,7 @@ import CreateButton from "../createButton";
 
 interface CreateTaskProps {
   orderId: string;
-  userId: string; 
+  userId: string;
 }
 
 type SectorOption = {
@@ -27,13 +27,13 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [sector, setSector] = useState<SectorOption | null>(sectorOptions[0]);
-  const [completed, setCompleted] = useState(false); 
+  const [completed, setCompleted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null); // Reseta a mensagem de erro ao iniciar o envio
-    
+    setErrorMessage(null);
+
     try {
       // Validação dos IDs
       if (!userId) {
@@ -51,7 +51,7 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
           title,
           orderId,
           sector: sector.value,
-          userId, 
+          userId,
           completed,
         });
 
@@ -125,7 +125,7 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
             </label>
           </div>
           {errorMessage && (
-            <div className="text-red-500">{errorMessage}</div> // Exibe mensagem de erro
+            <div className="text-red-500">{errorMessage}</div>
           )}
           <div className="modal-action flex flex-row justify-around pt-2">
             <button type="submit" className="btn btn-info">

@@ -6,7 +6,6 @@ interface LoginResponse {
     id: string;
     role: string;
     sector: string;
-    // Adicione outras propriedades que você espera na resposta, se houver
 }
 
 export async function loginPut(email: string, password: string): Promise<LoginResponse | undefined> {
@@ -15,7 +14,6 @@ export async function loginPut(email: string, password: string): Promise<LoginRe
         console.log(response.data);
         
         if (response.data.token && response.data.id) {
-            // Use js-cookie para armazenar os cookies no cliente
             Cookies.set('token', response.data.token, { expires: 1, path: '/' }); // expire em 1 dia
         }
 

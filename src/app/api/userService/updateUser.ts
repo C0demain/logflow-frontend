@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { createApiInstances } from '@/app/util/baseURL'; // Certifique-se de que o caminho está correto
+import { createApiInstances } from '@/app/util/baseURL';
 
 interface UserData {
   name: string;
@@ -12,7 +12,7 @@ export const updateUserById = async (id: string, userData: UserData) => {
   const { apiInstance } = await createApiInstances();
 
   try {
-    const response = await apiInstance.put(`/api/v1/users/${id}`, userData); // A API de atualização
+    const response = await apiInstance.put(`/api/v1/users/${id}`, userData); 
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

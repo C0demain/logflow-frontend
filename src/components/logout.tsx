@@ -37,7 +37,6 @@ export function Logout() {
 
   return (
     <div>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button className="btn btn-ghost" onClick={openModal}>
         Sair
       </button>

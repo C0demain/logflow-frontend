@@ -198,7 +198,7 @@ export function CreateClient() {
             required
           />
           <MaskedInput
-            mask={["(",/\d/,/\d/,")"," ",/\d/,/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,/\d/]}
+            mask={["(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
             name="phone"
             placeholder="Telefone"
             value={formData.phone}
@@ -207,7 +207,7 @@ export function CreateClient() {
             required
           />
           <MaskedInput
-            mask={[/\d/,/\d/,".",/\d/,/\d/,/\d/,".",/\d/,/\d/,/\d/,"/",/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,]}
+            mask={[/\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/,]}
             name="cnpj"
             placeholder="CNPJ"
             value={formData.cnpj}

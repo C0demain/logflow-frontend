@@ -1,8 +1,7 @@
-import { deleteUserById } from "@/app/api/userService/deleteUser"; // Certifique-se de que está importando do serviço correto
+import { deleteUserById } from "@/app/api/userService/deleteUser";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 
 interface DeleteUserProps {
@@ -14,7 +13,7 @@ export const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
     const router = useRouter()
     const handleDelete = async (id: string) => {
         try {
-            const response = await deleteUserById(id); 
+            const response = await deleteUserById(id);
             toast({
                 status: "success",
                 title: "Sucesso",
@@ -34,14 +33,14 @@ export const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
                     status: "error",
                     title: "Erro",
                     description: "Ocorreu um erro inesperado. Tente novamente"
-                  })
+                })
             }
         }
     };
 
     return (
         <div>
-           <label htmlFor={`delete${id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
+            <label htmlFor={`delete${id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
                 <FaTrash />
             </label>
 

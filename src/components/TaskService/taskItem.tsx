@@ -1,6 +1,5 @@
 import { updateTask } from "@/app/api/tasks/updateTask";
 import { ChangeEvent, useState } from "react";
-import { DeleteTask } from "./deleteTask";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -12,13 +11,13 @@ interface TaskItemProps {
   onChecked: () => void;
 }
 
-export default function TaskItem({ idTask, completed, title, sectorName, onChecked}: TaskItemProps) {
-  const params = useParams<{userId: string, orderId: string}>();
+export default function TaskItem({ idTask, completed, title, sectorName, onChecked }: TaskItemProps) {
+  const params = useParams<{ userId: string, orderId: string }>();
   const queryClient = useQueryClient();
   const [completedTask, setCompletedTask] = useState<boolean>(completed);
   const [orderId, setOrderId] = useState<string>(params.orderId);
   const [userId, setUserId] = useState<string>(params.userId);
-  
+
   const handleCheckboxChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const newCompletedStatus = e.target.checked;
     setCompletedTask(newCompletedStatus);

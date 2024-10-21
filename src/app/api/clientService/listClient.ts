@@ -2,7 +2,7 @@ import { createApiInstances } from "@/app/util/baseURL"
 import axios from "axios"
 
 export const listClient = async(id: string, cnpj: string, email: string, name:string) => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
   
     try {
         let url = '/api/v1/client'

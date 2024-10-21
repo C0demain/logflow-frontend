@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import OrderHistory from "@/components/OrderService/orderHistory"; // ajuste o caminho conforme necessário
 
 export default function OrderHistoryPage() {
   const [logs, setLogs] = useState<{ changedTo: string; atDate: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulação de busca dos dados. Substitua pela lógica de busca real.
+
     const fetchLogs = async () => {
       const fetchedLogs = [
         { changedTo: "OPERACIONAL", atDate: "2024-10-16" },

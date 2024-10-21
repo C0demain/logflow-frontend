@@ -18,7 +18,7 @@ export default function Login() {
 
   async function logon(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true); // Inicia o estado de loading
+    setLoading(true);
     try {
       const response = await loginPut(email, password);
 
@@ -52,12 +52,12 @@ export default function Login() {
         })
       }
     } finally {
-      setLoading(false); // Finaliza o estado de loading
+      setLoading(false);
     }
   }
 
   if (loading) {
-    return <Loading />; // Retorna a tela de loading enquanto o login está em processo
+    return <Loading />;
   }
 
   return (
@@ -98,6 +98,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-
   );
 }

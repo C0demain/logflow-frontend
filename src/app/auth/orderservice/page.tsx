@@ -21,7 +21,7 @@ export default function OrderService() {
   }, [user]);
 
   if (!user || !user.sector) {
-    return <div><Loading/></div>;
+    return <div><Loading /></div>;
   }
 
   return (
@@ -31,7 +31,7 @@ export default function OrderService() {
           <h1 className="text-2xl">Lista de Ordens de Serviço:</h1>
           {crudAutorizado ? <CreateOrder id={userId || ''} /> : <></>}
         </div>
-    
+
         <div className="overflow-x-auto">
           <ReadOrder autorizado={crudAutorizado} userId={userId || ''} />
         </div>
@@ -39,6 +39,6 @@ export default function OrderService() {
     ) : (
       <div className="flex justify-center items-center h-full">Você não tem permissão para acessar esta página.</div>
     )
-    
+
   );
 }

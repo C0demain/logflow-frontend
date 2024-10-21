@@ -3,7 +3,7 @@ import { OrderData } from "@/interfaces/orderData";
 import axios, { AxiosError } from "axios";
 
 export const updateOrder = async (orderData: OrderData, id: string) => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
   try {
     const response = await apiInstance.put(
       `/api/v1/service-order/${id}`,
