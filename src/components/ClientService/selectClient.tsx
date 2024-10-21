@@ -1,6 +1,5 @@
 import { listClient } from "@/app/api/clientService/listClient";
-import { createApiInstances } from "@/app/util/baseURL";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 
 type propsType = {
@@ -12,12 +11,11 @@ type propsType = {
 export const SelectClient = (props: propsType) =>{
     const [clientOpt, setClientOpt] = useState<any[]>([])
     const [controlState, setControlState] = props.controlState
-    const { dataKey, className } = props
 
     const getClients = async () => {
         const response = await listClient('','','','')
         const options = []
-        for(let c of response.clients){
+        for(const c of response.clients){
             options.push({
                 value: c.id,
                 label: c.name
@@ -33,17 +31,14 @@ export const SelectClient = (props: propsType) =>{
     }, [])
 
     return (
-
-        <>
-            <Select
-                options={clientOpt}
-                value={controlState}
-                onChange={(e) => { setControlState(e); } }
-                className="text-black"
-                classNamePrefix="custom-select"
-                placeholder="Select an option"
-                isClearable 
-            />
-        </>
+        <Select
+            options={clientOpt}
+            value={controlState}
+            onChange={(e) => { setControlState(e); } }
+            className="text-black"
+            classNamePrefix="custom-select"
+            placeholder="Selecione um cliente"
+            isClearable 
+        />
     )
 }

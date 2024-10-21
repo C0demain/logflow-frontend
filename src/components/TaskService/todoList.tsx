@@ -1,32 +1,31 @@
-import { useEffect } from "react";
 import TaskItem from "./taskItem";
+import { TaskData } from "@/app/api/tasks/listTasks";
 
 interface TodoListProps {
   sectorName: string;
-  userId: string;
-  orderId: string;
-  tasks: any[] | undefined;
-  onAllTasksCompleted: (sectorName: string) => void;
+  tasks: TaskData[];
+  name: string;
+  onUpdateTaskList: () => void;
 }
 
-export default function TodoList({ sectorName, userId, orderId, tasks, onAllTasksCompleted }: TodoListProps) {
-  
-  useEffect(() => {
-    if (tasks && tasks.length > 0 && tasks.every(task => task.completed)) {
-      onAllTasksCompleted(sectorName);
-    }
-  }, [tasks, onAllTasksCompleted]);
+export default function TodoList({
+  sectorName,
+  tasks,
+  name,
+  onUpdateTaskList,
+}: TodoListProps) {
 
   return (
-    <div className="bg-gray-100 p-5 rounded-md shadow-lg w-96">
-      <h1 className="text-xl">Tarefas {sectorName}</h1>
-      {tasks?.map((task) => (
+    <div className="flex flex-col w-full bg-gray-100 p-5 rounded-md shadow-lg">
+      <h1 className="text-xl">Tarefas {name}</h1>
+      {tasks.map((task) => (
         <TaskItem
+          onChecked={onUpdateTaskList}
           key={task.id}
-          userId={userId}
           idTask={task.id}
           completed={task.completed}
           title={task.title}
+          sectorName={sectorName}
         />
       ))}
     </div>

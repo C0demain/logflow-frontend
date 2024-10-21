@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-export async function GET() {
+export async function getUser() {
   const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value;
+  const user = cookieStore.get('user')?.value;
 
-  return NextResponse.json({ token });
+  return NextResponse.json({ user });
 }

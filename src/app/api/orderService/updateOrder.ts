@@ -1,13 +1,16 @@
 import { createApiInstances } from "@/app/util/baseURL";
+import { OrderData } from "@/interfaces/orderData";
 import axios, { AxiosError } from "axios";
 
-export const deleteUserById = async (id: string) => {
-  const { apiInstance } = await createApiInstances();
-
+export const updateOrder = async (orderData: OrderData, id: string) => {
+  const { apiLogin, apiInstance } = await createApiInstances();
   try {
-    const response = await apiInstance.delete(`/api/v1/users/${id}`);
+    const response = await apiInstance.put(
+      `/api/v1/service-order/${id}`,
+      orderData
+    );
     return response.data;
-  } catch (error: unknown) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
       if(error?.response?.status === 400)
       throw new AxiosError(error.response.data?.message)

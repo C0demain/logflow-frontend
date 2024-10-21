@@ -1,9 +1,11 @@
 "use client";
 
+import { updateOrder } from "@/app/api/orderService/updateOrder";
 import { getTasks } from "@/app/api/tasks/listTasks";
+import Loading from "@/app/loading";
 import CreateTask from "@/components/TaskService/createTask";
 import TodoList from "@/components/TaskService/todoList";
-import { SetStateAction, useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 interface TaskListProps {
   params: {
@@ -13,93 +15,80 @@ interface TaskListProps {
 }
 
 export default function TaskPage({ params }: TaskListProps) {
-  const { userId, orderId } = params;
-  const [taskFinanceiro, setTaskFinanceiro] = useState<any[]>([]);
-  const [taskComercial, setTaskComercial] = useState<any[]>([]);
-  const [taskOperacional, setTaskOperacional] = useState<any[]>([]);
-  const [completedSectors, setCompletedSectors] = useState<string[]>([]);
 
-  const listTasks = useCallback(async () => {
-    try {
-      if (userId && orderId) {
-        const response = await getTasks(orderId, '', '');
-        separateData(response.data.tasks);
-      }
-    } catch (error) {
-      console.log('Erro para listar tarefas', error);
+  async function fetchTasks() {
+    const [responseVendas, responseOperacional, responseFinanceiro] =
+      await Promise.all([
+        (await getTasks(params.orderId, "VENDAS", "", "")).tasks,
+        (await getTasks(params.orderId, "OPERACIONAL", "", "")).tasks,
+        (await getTasks(params.orderId, "FINANCEIRO", "", "")).tasks,
+      ]);
+
+    // Mover as 5 primeiras tarefas do Operacional para Vendas
+    const tasksToMove = responseOperacional.slice(0, 5);
+    const updatedOperacional = responseOperacional.slice(5);
+    const updatedVendas = [...responseVendas, ...tasksToMove];
+
+    const tasksVendasCompleted = updatedVendas.every((task) => task.completed);
+    const tasksOperacionalCompleted = updatedOperacional.every((task) => task.completed);
+    const tasksFinanceiroCompleted = responseFinanceiro.every((task) => task.completed);
+
+    if (!tasksVendasCompleted) {
+      await updateOrder(
+        { sector: "VENDAS", status: "ATIVO" },
+        params.orderId
+      );
+    } else if (!tasksOperacionalCompleted) {
+      await updateOrder(
+        { sector: "OPERACIONAL", status: "ATIVO" },
+        params.orderId
+      );
+    } else if (!tasksFinanceiroCompleted) {
+      await updateOrder(
+        { sector: "FINANCEIRO", status: "ATIVO" },
+        params.orderId
+      );
+    } else {
+      await updateOrder(
+        { sector: "FINANCEIRO", status: "FINALIZADO" },
+        params.orderId
+      );
     }
-  }, [userId, orderId]);
 
-  function separateData(data: any[]) {
-    const taskFinanceiroInit: SetStateAction<any[]> = [];
-    const taskOperacionalInit: SetStateAction<any[]> = [];
-    const taskComercialInit: SetStateAction<any[]> = [];
-
-    data.forEach((e) => {
-      if (e.sector === 'OPERACIONAL') {
-        taskOperacionalInit.push(e);
-      } else if (e.sector === 'FINANCEIRO') {
-        taskFinanceiroInit.push(e);
-      } else {
-        taskComercialInit.push(e);
-      }
-    });
-
-    setTaskOperacional(taskOperacionalInit);
-    setTaskFinanceiro(taskFinanceiroInit);
-    setTaskComercial(taskComercialInit);
+    return {
+      vendas: updatedVendas,
+      operacional: updatedOperacional,
+      financeiro: responseFinanceiro,
+    };
   }
 
-  useEffect(() => {
-    listTasks();
-  }, [listTasks]);
+  const { data, error, refetch } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: fetchTasks,
+  });
 
-  const handleAllTasksCompleted = (sectorName: string) => {
-    // Adiciona o setor apenas se ainda não estiver na lista
-    setCompletedSectors((prev) => 
-      prev.includes(sectorName) ? prev : [...prev, sectorName]
+  if (error) {
+    return (
+      <div className="flex w-full justify-center items-center">
+        <p className="text-2xl text-red-600">Erro ao listar tarefas</p>
+      </div>
     );
-  };
+  }
+  if (!data) {
+    return <Loading />;
+  }
 
   return (
-    <div className="m-5 space-y-5">
-      <div className="flex flex-row justify-between items-center">
+    <div>
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Lista de Tarefas:</h1>
-        <CreateTask userId={userId} orderId={orderId} />
+        <CreateTask userId={params.userId} orderId={params.orderId} />
       </div>
-      <div className="flex flex-col space-y-5 sm:flex-row sm:space-y-0 sm:space-x-5">
-        <TodoList
-          sectorName="Comercial"
-          userId={userId}
-          orderId={orderId}
-          tasks={taskComercial}
-          onAllTasksCompleted={handleAllTasksCompleted}
-        />
-        <TodoList
-          sectorName="Operacional"
-          userId={userId}
-          orderId={orderId}
-          tasks={taskOperacional}
-          onAllTasksCompleted={handleAllTasksCompleted}
-        />
-        <TodoList
-          sectorName="Financeiro"
-          userId={userId}
-          orderId={orderId}
-          tasks={taskFinanceiro}
-          onAllTasksCompleted={handleAllTasksCompleted}
-        />
+      <div className="flex flex-col justify-center w-full sm:flex-row sm:space-y-0 sm:space-x-5 sm:w-full">
+        <TodoList onUpdateTaskList={refetch} name="de Coleta" sectorName="VENDAS" tasks={data.vendas} />
+        <TodoList onUpdateTaskList={refetch} name="de Entrega" sectorName="OPERACIONAL" tasks={data.operacional} />
+        <TodoList onUpdateTaskList={refetch} name="de Faturamento" sectorName="FINANCEIRO" tasks={data.financeiro} />
       </div>
-      {completedSectors.length > 0 && (
-        <div>
-          <h2>Setores com todas as tarefas concluídas:</h2>
-          <ul>
-            {completedSectors.map(sector => (
-              <li key={sector}>{sector}</li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }

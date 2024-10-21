@@ -1,28 +1,30 @@
 "use client";
 
-import { CreateClient } from "@/components/ClientService/createClient"; // Verifique se o caminho do componente CreateClient está correto// Importa o componente que lista os clientes
+import { AuthContext } from "@/app/context/auth";
+import { CreateClient } from "@/components/ClientService/createClient";
 import { ReadClient } from "@/components/ClientService/readClient";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export default function ClientPage() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
+  const setoresCrudPermitido = ["VENDAS", "DIRETORIA"]
+  const {user} = useContext(AuthContext)
 
-  const toggleModal = () => {
-    setModalOpen(!isModalOpen);
-  };
+  useEffect(()=>{
+    if(user){
+      setoresCrudPermitido.includes(user.sector) ? setCrudAutorizado(true) : setCrudAutorizado(false)
+    }
+  }, [user])
 
   return (
-    <div className="m-5 space-y-5 relative">
+    <div className="m-5 space-y-5">
       <div className="justify-between flex items-center">
         <h1 className="text-2xl">Lista de Clientes:</h1>
-        <CreateClient />
+        {crudAutorizado && <CreateClient />}
       </div>
-
-      <div className="flex flex-col space-y-5 sm:flex-row sm:space-y-0 sm:space-x-5">
-        <div className="flex-1">
-          <ReadClient /> {/* Renderiza a lista de clientes aqui */}
-        </div>
-      </div>
+      <ReadClient 
+      autorizado={crudAutorizado}/>
     </div>
   );
 }

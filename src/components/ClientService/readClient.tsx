@@ -1,24 +1,30 @@
-"use client";
-
 import { useState, useCallback, useEffect } from "react";
-
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
-import { validarTelefone, validarCNPJ } from "@/app/util/validations";
-import { formatarCNPJ, formatarTelefone } from "@/app/util/formatting";
-import EditModal from "../editModal"; // Importa o modal de edição
+import EditModal from "./editModal"; // Importa o modal de edição
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
+import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
+import { FaEdit } from "react-icons/fa";
+import { DeleteClient } from "./deleteClient";
 
-export function ReadClient() {
+interface ReadClientProps{
+  autorizado:boolean
+}
+
+export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
   const [data, setData] = useState<ClientData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentClient, setCurrentClient] = useState<ClientData | null>(null); // Estado para armazenar o cliente atual
+  const [currentClient, setCurrentClient] = useState<ClientData | null>(null);
+  const toast = useToast();
+  const router = useRouter();
 
   const getClient = useCallback(async () => {
     try {
@@ -40,9 +46,17 @@ export function ReadClient() {
     try {
       await deleteClientById(clientId);
       setData((prevData) => prevData.filter(client => client.id !== clientId));
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Cliente excluído com sucesso"
+      });
     } catch (error) {
-      console.error("Erro ao deletar cliente:", error);
-      setError("Não foi possível excluir o cliente.");
+      toast({
+        status: "error",
+        title: "Erro",
+        description: "Não foi possível excluir o cliente. Tente novamente"
+      });
     }
   };
 
@@ -60,14 +74,47 @@ export function ReadClient() {
   };
 
   const handleSave = async (clientId: string, updatedData: ClientUpdateInterface) => {
-      try {
-        await updateClientById(clientId, updatedData);
-        window.location.reload(); // Atualizar a página após a edição
+    // Prepare the updated data to match UpdateClientDto structure
+    const clientUpdate: ClientUpdateInterface = {
+      name: updatedData.name,
+      phone: updatedData.phone,
+      cnpj: updatedData.cnpj,
+      email: updatedData.email,
+      address: {
+        zipCode: updatedData.address.zipCode,
+        state: updatedData.address.state,
+        city: updatedData.address.city,
+        neighborhood: updatedData.address.neighborhood,
+        street: updatedData.address.street,
+        number: updatedData.address.number,
+        complement: updatedData.address.complement,
+      },
+    };
+
+    try {
+      await updateClientById(clientId, clientUpdate);
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Cliente atualizado com sucesso"
+      });
+      router.refresh();
+      getClient();
     } catch (error: unknown) {
-    } finally {
-        setLoading(false);
+      if (error instanceof AxiosError) {
+        toast({
+          status: "error",
+          title: "Error",
+          description: error.message
+        });
+      } else {
+        toast({
+          status: "error",
+          title: "Erro",
+          description: "Ocorreu um erro inesperado. Tente novamente"
+        });
+      }
     }
-    handleCloseModal(); // Fecha o modal após salvar
   };
 
   useEffect(() => {
@@ -103,25 +150,22 @@ export function ReadClient() {
             <tr key={client.id} className="hover:bg-gray-100">
               <td className="px-4 py-3">{client.name}</td>
               <td className="px-4 py-3">{client.email}</td>
-              <td className="px-4 py-3">
-                {formatarTelefone(client.phone)}  {/* Exibe o telefone formatado */}
-              </td>
-              <td className="px-4 py-3">
-                {formatarCNPJ(client.cnpj)}  {/* Exibe o CNPJ formatado */}
-              </td>
-              <td className="flex justify-center space-x-4 px-4 py-3">
-                <button onClick={() => handleEdit(client.id)}>
-                  <AiFillEdit className="text-blue-500 hover:text-blue-700 text-2xl" />
-                </button>
-                <button onClick={() => handleDelete(client.id)}>
-                  <AiFillDelete className="text-red-500 hover:text-red-700 text-2xl" />
-                </button>
-              </td>
+              <td className="px-4 py-3">{client.phone}</td>
+              <td className="px-4 py-3"> {client.cnpj}</td>
+              {autorizado && (
+                <td className="flex justify-center space-x-4 px-4 py-3">
+                  <button onClick={() => handleEdit(client.id)}>
+                    <label className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
+                      <FaEdit />
+                    </label>
+                  </button>
+                  <DeleteClient id={client.id}/>
+                </td>
+              )}
+
             </tr>
           ))}
         </tbody>
-
-
       </table>
 
       {/* Modal de Edição */}

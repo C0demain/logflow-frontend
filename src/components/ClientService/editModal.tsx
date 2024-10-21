@@ -3,12 +3,13 @@
 import ClientData from "@/interfaces/clientData";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
 import React, { useState } from "react";
+import MaskedInput from "react-text-mask";
 
 interface EditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  clientData: ClientData
-  onSave: (clientId: string, updatedData: ClientUpdateInterface) => void; // Função para salvar as alterações
+  clientData: ClientData;
+  onSave: (clientId: string, updatedData: ClientUpdateInterface) => void; 
 }
 
 const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSave }) => {
@@ -17,13 +18,15 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
     phone: clientData.phone,
     cnpj: clientData.cnpj,
     email: clientData.email,
-    zipCode: clientData.address.zipCode,
-    state: clientData.address.state,
-    city: clientData.address.city,
-    neighborhood: clientData.address.neighborhood,
-    street: clientData.address.street,
-    number: clientData.address.number,
-    complement: clientData.address.complement
+    address: {
+      zipCode: clientData.address.zipCode,
+      state: clientData.address.state,
+      city: clientData.address.city,
+      neighborhood: clientData.address.neighborhood,
+      street: clientData.address.street,
+      number: clientData.address.number,
+      complement: clientData.address.complement
+    }
   });
 
   if (!isOpen) return null;
@@ -35,7 +38,7 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(clientData.id){
+    if (clientData.id) {
       onSave(clientData.id, formData); // Chama a função para salvar os dados atualizados
     }
     onClose(); // Fecha o modal após salvar
@@ -64,8 +67,10 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
             placeholder="Email"
             required
           />
-          <input
-            type="text"
+
+          {/* Usando MaskedInput para telefone */}
+          <MaskedInput
+            mask={['(', /[1-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
             name="phone"
             value={formData.phone}
             onChange={handleChange}
@@ -73,8 +78,10 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
             placeholder="Telefone"
             required
           />
-          <input
-            type="text"
+
+          {/* Usando MaskedInput para CNPJ */}
+          <MaskedInput
+            mask={[/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
             name="cnpj"
             value={formData.cnpj}
             onChange={handleChange}
@@ -82,78 +89,74 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
             placeholder="CNPJ"
             required
           />
+
+          {/* Campos de endereço - desabilitados */}
           <input
             type="text"
             name="street"
-            value={formData.street}
-            onChange={handleChange}
+            value={formData.address.street}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Rua"
-            required
+            disabled
           />
           <input
             type="text"
             name="number"
-            value={formData.number}
-            onChange={handleChange}
+            value={formData.address.number}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Número"
-            required
+            disabled
           />
           <input
             type="text"
             name="neighborhood"
-            value={formData.neighborhood}
-            onChange={handleChange}
+            value={formData.address.neighborhood}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Bairro"
-            required
+            disabled
           />
           <input
             type="text"
             name="city"
-            value={formData.city}
-            onChange={handleChange}
+            value={formData.address.city}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Cidade"
-            required
+            disabled
           />
           <input
             type="text"
             name="state"
-            value={formData.state}
-            onChange={handleChange}
+            value={formData.address.state}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Estado"
-            required
+            disabled
           />
           <input
             type="text"
             name="zipCode"
-            value={formData.zipCode}
-            onChange={handleChange}
+            value={formData.address.zipCode}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="CEP"
-            required
+            disabled
           />
           <input
             type="text"
             name="complement"
-            value={formData.complement}
-            onChange={handleChange}
+            value={formData.address.complement}
             className="input w-full bg-gray-100 border border-gray-300 rounded-md p-2"
             placeholder="Complemento"
+            disabled
           />
 
           <div className="modal-action flex justify-end space-x-2 mt-4">
-            <button type="button" className="btn bg-gray-300 hover:bg-gray-400" onClick={onClose}>
-              Fechar
-            </button>
             <button type="submit" className="btn bg-blue-600 text-white hover:bg-blue-700">
               Salvar
             </button>
           </div>
         </form>
+        <div className="modal-action">
+            <label htmlFor={`edit${clientData}`} className="absolute top-2 right-2 cursor-pointer text-lg" onClick={onClose}>✕</label>
+        </div>
       </div>
     </div>
   );

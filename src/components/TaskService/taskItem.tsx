@@ -1,22 +1,31 @@
 import { updateTask } from "@/app/api/tasks/updateTask";
 import { ChangeEvent, useState } from "react";
 import { DeleteTask } from "./deleteTask";
+import { useParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface TaskItemProps {
   idTask: string;
   completed: boolean;
   title: string;
-  userId: string;
+  sectorName: string;
+  onChecked: () => void;
 }
 
-export default function TaskItem({ idTask, completed, title, userId }: TaskItemProps) {
+export default function TaskItem({ idTask, completed, title, sectorName, onChecked}: TaskItemProps) {
+  const params = useParams<{userId: string, orderId: string}>();
+  const queryClient = useQueryClient();
   const [completedTask, setCompletedTask] = useState<boolean>(completed);
-
+  const [orderId, setOrderId] = useState<string>(params.orderId);
+  const [userId, setUserId] = useState<string>(params.userId);
+  
   const handleCheckboxChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const newCompletedStatus = e.target.checked;
     setCompletedTask(newCompletedStatus);
+    queryClient.invalidateQueries({ queryKey: ["tasks"] });
     try {
-      await updateTask({ title: title, completed: newCompletedStatus, userId }, idTask);
+      await updateTask({ title: title, completed: newCompletedStatus, userId, orderId, sector: sectorName.toUpperCase() }, idTask);
+      onChecked()
     } catch (error) {
       console.error(error);
     }
@@ -29,12 +38,12 @@ export default function TaskItem({ idTask, completed, title, userId }: TaskItemP
           type="checkbox"
           checked={completedTask}
           onChange={handleCheckboxChange}
-          className="checkbox checkbox-lg checkbox-info"
+          className="checkbox checkbox-lg checkbox-info transition"
         />
         <span>{title}</span>
       </div>
-      <DeleteTask
-      id={idTask}/>
+      {/* <DeleteTask
+      id={idTask}/> */}
     </div>
   );
 }

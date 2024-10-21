@@ -2,34 +2,43 @@
 
 import { ReadOrder } from "@/components/OrderService/readOrder";
 import { CreateOrder } from "@/components/OrderService/createOrder";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "@/app/context/auth";
+import Loading from "@/app/loading";
 
 export default function OrderService() {
-  const [userId, setUserId] = useState('')
+  const setoresAcessoPermitidos = ["FINANCEIRO", "VENDAS", "DIRETORIA", "OPERACIONAL"];
+  const setoresCrudPermitido = ["VENDAS", "DIRETORIA"]
+  const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const { user } = useContext(AuthContext);
 
-  const getId = async() => {
-    try {
-      const response = await axios.get('/api/getId');
-      setUserId(response.data.id)
-    } catch (error) {
-      console.error('ID não encontrada')
+  useEffect(() => {
+    if (user) {
+      setUserId(user.id);
+      setoresCrudPermitido.includes(user.sector) ? setCrudAutorizado(true) : setCrudAutorizado(false)
     }
+  }, [user]);
+
+  if (!user || !user.sector) {
+    return <div><Loading/></div>;
   }
 
-  useEffect(()=>{
-    getId()
-  })
-
   return (
+    setoresAcessoPermitidos.includes(user.sector) ? (
       <div className="m-5 space-y-5">
         <div className="justify-between flex items-center">
-            <h1 className="text-2xl">Lista de ordens de serviço:</h1>
-            <CreateOrder 
-            id={userId}/>
+          <h1 className="text-2xl">Lista de Ordens de Serviço:</h1>
+          {crudAutorizado ? <CreateOrder id={userId || ''} /> : <></>}
         </div>
-        <ReadOrder
-        userId={userId}/>
+    
+        <div className="overflow-x-auto">
+          <ReadOrder autorizado={crudAutorizado} userId={userId || ''} />
+        </div>
       </div>
+    ) : (
+      <div className="flex justify-center items-center h-full">Você não tem permissão para acessar esta página.</div>
+    )
+    
   );
 }
