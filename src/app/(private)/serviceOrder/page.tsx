@@ -33,7 +33,7 @@ export default function ServiceOrder() {
         </div>
 
         <div className="overflow-x-auto">
-          <ReadOrder autorizado={crudAutorizado} userId={userId || ''} />
+          <ReadOrder autorizado={crudAutorizado} userId={userId || ''}  />
         </div>
       </div>
     ) : (

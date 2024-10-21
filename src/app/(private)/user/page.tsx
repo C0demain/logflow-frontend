@@ -20,7 +20,7 @@ export default function UserPage() {
     if (user) {
       setoresPermitidos.includes(user.sector) ? setAutorizado(true) : setAutorizado(false)
     }
-  }, [user])
+  }, [setoresPermitidos, user])
 
   if (!user || !user.sector) {
     return <div><Loading /></div>;

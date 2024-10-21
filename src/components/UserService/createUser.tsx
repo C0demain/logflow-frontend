@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { registerUser } from "@/app/api/user/createUser";
+import { registerUser } from "@/app/api/userService/createUser";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";

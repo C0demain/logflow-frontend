@@ -2,9 +2,9 @@ import React, { useState, useCallback, useEffect } from "react";
 import { DeleteUser } from "@/components/UserService/deleteUser";
 import { UpdateUser } from "@/components/UserService/updateUser";
 import Loading from "@/components/Shared/loading";
-import { listUsers } from "@/app/api/user/listUser";
+import { listUsers } from "@/app/api/userService/listUser";
 import { FaEdit } from "react-icons/fa";
-import { deleteUserById } from "@/app/api/user/deleteUser";
+import { deleteUserById } from "@/app/api/userService/deleteUser";
 
 interface UserData {
   id: string;
