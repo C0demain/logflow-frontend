@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { deleteClientById } from "@/app/api/clientService/deleteClient";
+import { DeleteClientById } from "@/app/api/clientService/deleteClient";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
@@ -15,7 +15,7 @@ export const DeleteClient: React.FC<DeleteClientProps> = ({ id }) => {
 
   const handleDelete = async (clientId: string) => {
     try {
-      await deleteClientById(clientId);
+      await DeleteClientById(clientId);
       toast({
         status: "success",
         title: "Sucesso",

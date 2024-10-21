@@ -1,4 +1,4 @@
-import { createApiInstances } from '@/app/util/baseURL';
+import { createApiInstances } from '@/util/baseURL';
 import axios, { AxiosError } from 'axios';
 
 interface ClientData {
@@ -17,7 +17,7 @@ interface ClientData {
   }
 }
 
-export const registerClient = async (clientData: ClientData) => {
+export const RegisterClient = async (clientData: ClientData) => {
   const { apiInstance } = await createApiInstances();
 
   try {

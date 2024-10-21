@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { updateUserById } from "@/app/api/userService/updateUser";
+import { updateUserById } from "@/app/api/user/updateUser";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
@@ -20,7 +20,7 @@ const rolesBySector: Record<string, string[]> = {
     DIRETORIA: ["Diretor Comercial", "Diretor Administrativo"],
 };
 
-export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, sector }) => {
+export const UpdateUser: React.FC<EditUserProps> = ({ id, name, email, role, sector }) => {
     const [formData, setFormData] = useState({
         name,
         email,

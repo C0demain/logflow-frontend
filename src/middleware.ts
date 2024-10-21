@@ -6,13 +6,18 @@ export default function middleware(request: NextRequest) {
   const user = request.cookies.get('user')?.value;
 
   // URLs para redirecionamentos
-  const signInURL = new URL('/', request.url);
-  const dashURL = new URL('/auth/orderservice', request.url);
-  const driverURL = new URL('/auth/driver', request.url);
+  const signInURL = new URL('/login', request.url);
+  const dashURL = new URL('/serviceOrder', request.url);
+  const driverURL = new URL('/driver', request.url);
 
-  // Se não houver token e a URL não for '/', redireciona para '/'
+  // Se não houver token e a URL for '/', redireciona para '/login
+  if (!token && request.nextUrl.pathname === '/') {
+    return NextResponse.redirect(signInURL);
+  }
+
+  // Se não houver token e a URL não for '/login', redireciona para '/login'
   if (!token) {
-    if (request.nextUrl.pathname !== '/') {
+    if (request.nextUrl.pathname !== '/login') {
       return NextResponse.redirect(signInURL);
     }
     return NextResponse.next();
@@ -28,28 +33,32 @@ export default function middleware(request: NextRequest) {
     }
   }
 
-  // Se o usuário for MOTORISTA e a URL não for '/auth/driver', redireciona para '/auth/driver' | Inativo por enquanto
-  if (userParse?.role === "Motorista" && request.nextUrl.pathname !== '/auth/orderservice') {
+  // Se o usuário for MOTORISTA e a URL não for '/driver', redireciona para '/driver' | Inativo por enquanto
+  if (userParse?.role === "Motorista" && request.nextUrl.pathname !== '/serviceOrder') {
     return NextResponse.redirect(dashURL);
   }
 
-  // Se houver token e a URL for '/', redireciona para o dashboard
+  // Se houver token e a URL for '/login' ou '/', redireciona para o dashboard
+  if (token && request.nextUrl.pathname === '/login') {
+    return NextResponse.redirect(dashURL);
+  }
   if (token && request.nextUrl.pathname === '/') {
     return NextResponse.redirect(dashURL);
   }
 
-  // Se houver token e a URL não for '/', permite a navegação
+  // Se houver token e a URL não for '/login', permite a navegação
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
     '/',
-    '/auth/orderservice',
-    '/auth/register',
-    '/auth/todolist/[userId]/[orderId]',
-    '/auth/client',
-    '/auth/userEdit',
-    '/auth/driver', 
+    '/login',
+    '/serviceOrder',
+    '/register',
+    '/toDoList/:path*',
+    '/client',
+    '/userEdit',
+    '/driver', 
   ],
 };

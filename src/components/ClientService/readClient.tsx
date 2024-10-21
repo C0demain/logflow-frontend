@@ -1,10 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
-import Loading from "@/app/loading";
-import { listClient } from "@/app/api/clientService/listClient";
-import { deleteClientById } from "@/app/api/clientService/deleteClient";
+import Loading from "@/components/Shared/loading";
+import { ListClients } from "@/app/api/clientService/listClients";
+import { DeleteClientById } from "@/app/api/clientService/deleteClient";
 import EditModal from "./editModal";
 import ClientData from "@/interfaces/clientData";
-import { updateClientById } from "@/app/api/clientService/updateClient";
+import { UpdateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
@@ -25,9 +25,9 @@ export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
   const toast = useToast();
   const router = useRouter();
 
-  const getClient = useCallback(async () => {
+  const getClients = useCallback(async () => {
     try {
-      const response = await listClient("", "", "", "");
+      const response = await ListClients("", "", "", "");
       if (Array.isArray(response.clients)) {
         setData(response.clients);
       } else {
@@ -43,7 +43,7 @@ export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
 
   const handleDelete = async (clientId: string) => {
     try {
-      await deleteClientById(clientId);
+      await DeleteClientById(clientId);
       setData((prevData) => prevData.filter(client => client.id !== clientId));
       toast({
         status: "success",
@@ -91,14 +91,14 @@ export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
     };
 
     try {
-      await updateClientById(clientId, clientUpdate);
+      await UpdateClientById(clientId, clientUpdate);
       toast({
         status: "success",
         title: "Sucesso",
         description: "Cliente atualizado com sucesso"
       });
       router.refresh();
-      getClient();
+      getClients();
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         toast({
@@ -117,8 +117,8 @@ export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
   };
 
   useEffect(() => {
-    getClient();
-  }, [getClient]);
+    getClients();
+  }, [getClients]);
 
   if (loading) {
     return <Loading />;

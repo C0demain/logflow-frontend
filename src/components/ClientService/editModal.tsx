@@ -39,9 +39,9 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, clientData, onSa
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (clientData.id) {
-      onSave(clientData.id, formData); // Chama a função para salvar os dados atualizados
+      onSave(clientData.id, formData);
     }
-    onClose(); // Fecha o modal após salvar
+    onClose(); 
   };
 
   return (

@@ -1,6 +1,6 @@
-import { createApiInstances } from "@/app/util/baseURL";
+import { createApiInstances } from "@/util/baseURL";
 
-export const deleteClientById = async (id: string) => {
+export const DeleteClientById = async (id: string) => {
     const { apiInstance } = await createApiInstances();
     
     try {

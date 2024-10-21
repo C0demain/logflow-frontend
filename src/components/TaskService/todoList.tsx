@@ -1,19 +1,19 @@
 import TaskItem from "./taskItem";
 import { TaskData } from "@/app/api/tasks/listTasks";
 
-interface TodoListProps {
+interface ToDoListProps {
   sectorName: string;
   tasks: TaskData[];
   name: string;
   onUpdateTaskList: () => void;
 }
 
-export default function TodoList({
+export default function ToDoList({
   sectorName,
   tasks,
   name,
   onUpdateTaskList,
-}: TodoListProps) {
+}: ToDoListProps) {
 
   return (
     <div className="flex flex-col w-full bg-gray-100 p-5 rounded-md shadow-lg">

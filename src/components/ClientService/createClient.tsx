@@ -1,12 +1,12 @@
 "use client";
 
-import { registerClient } from "@/app/api/clientService/registerClient";
+import { RegisterClient } from "@/app/api/clientService/registerClient";
 import { useToast } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MaskedInput from "react-text-mask";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface ClientData {
   name: string;
@@ -128,7 +128,7 @@ export function CreateClient() {
     setLoading(true);
 
     try {
-      const response = await registerClient(formData);
+      const response = await RegisterClient(formData);
       toast({
         status: "success",
         title: "Sucesso",

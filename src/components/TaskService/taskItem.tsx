@@ -1,4 +1,4 @@
-import { updateTask } from "@/app/api/tasks/updateTask";
+import { UpdateTask } from "@/app/api/tasks/updateTask";
 import { ChangeEvent, useState } from "react";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,7 +23,7 @@ export default function TaskItem({ idTask, completed, title, sectorName, onCheck
     setCompletedTask(newCompletedStatus);
     queryClient.invalidateQueries({ queryKey: ["tasks"] });
     try {
-      await updateTask({ title: title, completed: newCompletedStatus, userId, orderId, sector: sectorName.toUpperCase() }, idTask);
+      await UpdateTask({ title: title, completed: newCompletedStatus, userId, orderId, sector: sectorName.toUpperCase() }, idTask);
       onChecked()
     } catch (error) {
       console.error(error);

@@ -1,4 +1,4 @@
-import { listClient } from "@/app/api/clientService/listClient";
+import { ListClients } from "@/app/api/clientService/listClients";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 
@@ -13,7 +13,7 @@ export const SelectClient = (props: propsType) => {
     const [controlState, setControlState] = props.controlState
 
     const getClients = async () => {
-        const response = await listClient('', '', '', '')
+        const response = await ListClients('', '', '', '')
         const options = []
         for (const c of response.clients) {
             options.push({

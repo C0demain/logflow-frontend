@@ -1,4 +1,4 @@
-import { createApiInstances } from "@/app/util/baseURL";
+import { createApiInstances } from "@/util/baseURL";
 import axios from "axios";
 
 export type TaskData = {
@@ -22,7 +22,7 @@ type TasksResponse = {
   tasks: TaskData[];
 };
 
-export const getTasks = async (
+export const GetTasks = async (
   orderId: string,
   sector: string,
   userId: string,

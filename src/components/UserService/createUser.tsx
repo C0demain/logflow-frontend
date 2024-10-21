@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { registerUser } from "@/app/api/userService/createUser";
+import { registerUser } from "@/app/api/user/createUser";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface UserData {
   name: string;

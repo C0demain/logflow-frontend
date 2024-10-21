@@ -1,15 +1,11 @@
-import axios, { AxiosError } from "axios";
 import { createApiInstances } from "@/util/baseURL";
-import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
+import axios, { AxiosError } from "axios";
 
-export const UpdateClientById = async (
-  id: string,
-  clientData: ClientUpdateInterface
-) => {
+export const deleteUserById = async (id: string) => {
   const { apiInstance } = await createApiInstances();
 
   try {
-    const response = await apiInstance.put(`/api/v1/client/${id}`, clientData);
+    const response = await apiInstance.delete(`/api/v1/users/${id}`);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

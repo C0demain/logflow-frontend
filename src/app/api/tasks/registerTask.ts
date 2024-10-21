@@ -1,4 +1,4 @@
-import { createApiInstances } from "@/app/util/baseURL";
+import { createApiInstances } from "@/util/baseURL";
 import axios from "axios";
 
 interface TaskData {
@@ -9,7 +9,7 @@ interface TaskData {
   completed: boolean;
 }
 
-export const registerTask = async (taskData: TaskData) => {
+export const RegisterTask = async (taskData: TaskData) => {
   const { apiInstance } = await createApiInstances();
 
   try {

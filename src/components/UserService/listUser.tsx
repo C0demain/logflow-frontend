@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { DeleteUser } from "@/components/UserService/deleteUser";
-import { EditUser } from "@/components/UserService/updateUser";
-import Loading from "@/app/loading";
-import { listUsers } from "@/app/api/userService/listUser";
+import { UpdateUser } from "@/components/UserService/updateUser";
+import Loading from "@/components/Shared/loading";
+import { listUsers } from "@/app/api/user/listUser";
 import { FaEdit } from "react-icons/fa";
-import { deleteUserById } from "@/app/api/userService/deleteUser";
+import { deleteUserById } from "@/app/api/user/deleteUser";
 
 interface UserData {
   id: string;
@@ -18,7 +18,7 @@ interface ReadUsersProps {
   autorizado: boolean
 }
 
-export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
+export const ListUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
   const [data, setData] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -75,7 +75,7 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
                   <FaEdit />
                 </label>
                 <DeleteUser id={user.id} />
-                <EditUser id={user.id} name={user.name} email={user.email} role={user.role} sector={user.sector} />
+                <UpdateUser id={user.id} name={user.name} email={user.email} role={user.role} sector={user.sector} />
               </td> : <></>}
             </tr>
           ))}

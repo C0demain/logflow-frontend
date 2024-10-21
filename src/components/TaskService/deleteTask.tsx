@@ -1,4 +1,4 @@
-import { deleteTaskById } from "@/app/api/tasks/deleteTask";
+import { DeleteTaskById } from "@/app/api/tasks/deleteTask";
 import { useQueryClient } from "@tanstack/react-query";
 import { FaTrash } from "react-icons/fa";
 
@@ -10,7 +10,7 @@ export const DeleteTask: React.FC<DeleteTaskProps> = ({ id }) => {
   const queryClient = useQueryClient();
   const handleDelete = async (id: string) => {
     try {
-      const response = await deleteTaskById(id);
+      const response = await DeleteTaskById(id);
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
 
       // Adicionar lógica adicional aqui, como limpar o formulário ou exibir uma mensagem de sucesso

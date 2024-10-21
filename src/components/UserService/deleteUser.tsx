@@ -1,4 +1,4 @@
-import { deleteUserById } from "@/app/api/userService/deleteUser";
+import { deleteUserById } from "@/app/api/user/deleteUser";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";

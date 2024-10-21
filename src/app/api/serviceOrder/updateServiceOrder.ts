@@ -1,17 +1,16 @@
-import axios, { AxiosError } from "axios";
 import { createApiInstances } from "@/util/baseURL";
-import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
+import { OrderData } from "@/interfaces/orderData";
+import axios, { AxiosError } from "axios";
 
-export const UpdateClientById = async (
-  id: string,
-  clientData: ClientUpdateInterface
-) => {
+export const UpdateServiceOrder = async (orderData: OrderData, id: string) => {
   const { apiInstance } = await createApiInstances();
-
   try {
-    const response = await apiInstance.put(`/api/v1/client/${id}`, clientData);
+    const response = await apiInstance.put(
+      `/api/v1/service-order/${id}`,
+      orderData
+    );
     return response.data;
-  } catch (error: unknown) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
       if(error?.response?.status === 400)
       throw new AxiosError(error.response.data?.message)

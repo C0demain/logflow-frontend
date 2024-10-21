@@ -1,9 +1,9 @@
 "use client";
-import { registerTask } from "@/app/api/tasks/registerTask";
+import { RegisterTask } from "@/app/api/tasks/registerTask";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import Select, { SingleValue } from "react-select";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface CreateTaskProps {
   orderId: string;
@@ -47,7 +47,7 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
       }
 
       if (sector) {
-        const response = await registerTask({
+        const response = await RegisterTask({
           title,
           orderId,
           sector: sector.value,

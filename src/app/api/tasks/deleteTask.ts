@@ -1,7 +1,7 @@
-import { createApiInstances } from "@/app/util/baseURL";
+import { createApiInstances } from "@/util/baseURL";
 import axios from "axios";
 
-export const deleteTaskById = async (id: string) => {
+export const DeleteTaskById = async (id: string) => {
     const { apiInstance } = await createApiInstances();
     try {
         const response = await apiInstance.delete(`/api/v1/task/${id}`);
