@@ -7,7 +7,7 @@ import { ListUsers } from "@/components/UserService/listUser";
 import { useContext, useEffect, useState } from "react";
 
 export default function UserPage() {
-  const setoresPermitidos = ["RH", "DIRETORIA"]
+  
   const [isModalOpen, setModalOpen] = useState(false);
   const [autorizado, setAutorizado] = useState(false)
   const { user } = useContext(AuthContext)
@@ -17,10 +17,12 @@ export default function UserPage() {
   };
 
   useEffect(() => {
+    const permittedSectors = ["RH", "DIRETORIA"]
+    
     if (user) {
-      setoresPermitidos.includes(user.sector) ? setAutorizado(true) : setAutorizado(false)
+      permittedSectors.includes(user.sector) ? setAutorizado(true) : setAutorizado(false)
     }
-  }, [setoresPermitidos, user])
+  }, [user])
 
   if (!user || !user.sector) {
     return <div><Loading /></div>;

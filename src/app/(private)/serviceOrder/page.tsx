@@ -8,17 +8,18 @@ import { useState, useContext, useEffect } from "react";
 
 export default function ServiceOrder() {
   const setoresAcessoPermitidos = ["FINANCEIRO", "VENDAS", "DIRETORIA", "OPERACIONAL"];
-  const setoresCrudPermitido = ["VENDAS", "DIRETORIA"]
   const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
   const [userId, setUserId] = useState<string | undefined>(undefined);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    const setoresCrudPermitido = ["VENDAS", "DIRETORIA"]
+    
     if (user) {
       setUserId(user.id);
       setoresCrudPermitido.includes(user.sector) ? setCrudAutorizado(true) : setCrudAutorizado(false)
     }
-  }, [setoresCrudPermitido, user]);
+  }, [user]);
 
   if (!user || !user.sector) {
     return <div><Loading /></div>;

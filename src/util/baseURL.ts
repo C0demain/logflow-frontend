@@ -13,7 +13,11 @@ async function fetchToken(): Promise<string | undefined> {
 }
 
 export async function createApiInstances(): Promise<{ apiLogin: AxiosInstance; apiInstance: AxiosInstance }> {
-  const token = await fetchToken() || "";
+  let token = localStorage.getItem('authToken') || "";
+
+  if (!token) {
+    token = await fetchToken() || "";
+  }
 
   const apiLogin = axios.create({
     baseURL: `${apiBackend}/api/v1/auth/login`,
@@ -22,16 +26,12 @@ export async function createApiInstances(): Promise<{ apiLogin: AxiosInstance; a
   apiLogin.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       if (token) {
-        if (!config.headers) {
-          config.headers = {} as AxiosRequestHeaders;
-        }
-        config.headers.Authorization = token;
+        config.headers = config.headers || {};
+        config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     },
-    (error) => {
-      return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
   );
 
   const apiInstance = axios.create({
@@ -41,16 +41,12 @@ export async function createApiInstances(): Promise<{ apiLogin: AxiosInstance; a
   apiInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       if (token) {
-        if (!config.headers) {
-          config.headers = {} as AxiosRequestHeaders;
-        }
+        config.headers = config.headers || {};
         config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     },
-    (error) => {
-      return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
   );
 
   return { apiLogin, apiInstance };
