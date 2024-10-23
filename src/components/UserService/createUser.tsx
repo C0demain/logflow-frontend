@@ -152,7 +152,7 @@ export function CreateUser() {
           </select>
 
           <div className="modal-action flex justify-around">
-            <button type="submit" className="btn btn-info">
+            <button type="submit" className="btn btn-info hover:text-white">
               Registrar Funcionário
             </button>
           </div>

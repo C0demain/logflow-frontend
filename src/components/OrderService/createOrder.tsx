@@ -64,7 +64,10 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
         <div className="modal-top mb-5">
           <h1 className="text-2xl">Nova Ordem de Serviço</h1>
         </div>
-        <form onSubmit={handleSubmit} className="modal-middle space-y-3">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col modal-middle space-y-3 items-stretch"
+        >
           <div>
             <label htmlFor="title" className="mr-4">
               Titulo
@@ -84,9 +87,11 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
               dataKey={"id"}
             />
           </div>
-          <button type="submit" className="btn btn-info ">
-            Registrar Ordem de Serviço
-          </button>
+          <div className="modal-action flex justify-around">
+            <button type="submit" className="btn btn-info hover:text-white">
+              Registrar Ordem de Serviço
+            </button>
+          </div>
         </form>
       </CreateButton>
     </div>

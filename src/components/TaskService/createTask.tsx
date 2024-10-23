@@ -128,7 +128,7 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
             <div className="text-red-500">{errorMessage}</div> // Exibe mensagem de erro
           )}
           <div className="modal-action flex flex-row justify-around pt-2">
-            <button type="submit" className="btn btn-info">
+            <button type="submit" className="btn btn-info hover:text-white">
               Registrar nova tarefa
             </button>
           </div>
