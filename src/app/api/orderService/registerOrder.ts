@@ -7,6 +7,8 @@ interface OrderData {
   status: string;
   userId: string | undefined;
   sector: string;
+  description: string | undefined;
+  value: number | undefined;
 }
 
 export const registerOrder = async (orderData: OrderData) => {

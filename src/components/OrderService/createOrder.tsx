@@ -13,8 +13,10 @@ interface CreateOrderProps {
 }
 
 export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState<string>("");
   const [clientObj, setClientObj] = useState<any>();
+  const [description, setDescription] = useState<string>("");
+  const [value, setValue] = useState<number>();
   const userId = id;
   const status = "PENDENTE";
   const sector = "VENDAS";
@@ -23,7 +25,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let clientId = clientObj.value;
+    let clientId = clientObj?.value;
     try {
       const response = await registerOrder({
         title,
@@ -31,6 +33,8 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
         status,
         userId,
         sector,
+        description,
+        value
       });
       toast({
         status: "success",
@@ -39,7 +43,9 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
       });
 
       setTitle("");
-      clientId = "";
+      setClientObj(null);
+      setDescription("");
+      setValue(undefined);
       router.refresh();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
@@ -62,11 +68,11 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
     <div>
       <CreateButton>
         <div className="modal-top mb-5">
-          <h1 className="text-2xl">Nova Ordem de Serviço</h1>
+          <h1 className="text-2xl text-center">Nova Ordem de Serviço</h1>
         </div>
-        <form onSubmit={handleSubmit} className="modal-middle space-y-3">
-          <div>
-            <label htmlFor="title" className="mr-4">
+        <form onSubmit={handleSubmit} className="modal-middle space-y-3 flex flex-col items-center">
+          <div className="w-full max-w-md">
+            <label htmlFor="title" className="block mb-2">
               Titulo
             </label>
             <input
@@ -77,16 +83,40 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
               className="input input-bordered rounded-md w-full"
             />
           </div>
-          <div>
-            <label className="mr-2">Cliente</label>
+          <div className="w-full max-w-md">
+            <label className="block mb-2">Cliente</label>
             <SelectClient
               controlState={[clientObj, setClientObj]}
               dataKey={"id"}
             />
           </div>
-          <button type="submit" className="btn btn-info ">
-            Registrar Ordem de Serviço
-          </button>
+          <div className="w-full max-w-md">
+            <label className="block mb-2" htmlFor="description">Descrição</label>
+            <textarea
+              className="textarea textarea-bordered w-full min-h-[100px] max-h-[170px]"
+              placeholder="Descrição"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
+          </div>
+          <div className="w-full max-w-md">
+            <label className="block mb-2">Preço</label>
+            <div className="flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2 w-full">
+                R$
+              <input
+                type="number"
+                className="grow"
+                value={value}
+                onChange={(e) => setValue(parseFloat(e.target.value) || undefined)}
+              /></label>
+            </div>
+          </div>
+          <div className="w-full max-w-md flex justify-end">
+            <button type="submit" className="btn btn-info mt-4">
+              Registrar Ordem de Serviço
+            </button>
+          </div>
         </form>
       </CreateButton>
     </div>
