@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import EditModal from "./editModal"; // Componente do modal de edição
+import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
+import ClientData from "@/interfaces/clientData";
 
 interface Address {
   zipCode: string;
@@ -21,7 +23,7 @@ interface RequestClientProps {
   address?: Address; // Tornar o endereço opcional
   onDelete: (clientId: string) => void; // Callback para exclusão
   id: string; // ID do cliente, necessário para a exclusão
-  onSave: (clientId: string, updatedData: any) => void; // Função para salvar as alterações
+  onSave: (clientId: string, updatedData: ClientUpdateInterface) => void; // Função para salvar as alterações
 }
 
 const RequestClient: React.FC<RequestClientProps> = ({
@@ -35,7 +37,7 @@ const RequestClient: React.FC<RequestClientProps> = ({
   onSave,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [clientData, setClientData] = useState({
+  const [clientData, setClientData] = useState<ClientData>({
     id,
     name,
     email,
@@ -56,9 +58,9 @@ const RequestClient: React.FC<RequestClientProps> = ({
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleSave = (updatedData: any) => {
-    setClientData(updatedData);
+  const handleSave = (clientId: string, updatedData: ClientUpdateInterface) => {
     onSave(id, updatedData); // Salva os dados atualizados
+    setClientData(updatedData as ClientData);
   };
 
   const handleDelete = () => {
