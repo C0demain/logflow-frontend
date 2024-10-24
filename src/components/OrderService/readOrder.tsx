@@ -3,6 +3,7 @@ import { listOs } from "@/app/api/orderService/listOrder";
 import Loading from "@/app/loading";
 import { useCallback, useEffect, useState } from "react";
 import { RequestItem } from "./requestItem";
+import Empty from "@/components/Empty";
 
 interface ReadOrderProps {
   userId: string | undefined;
@@ -48,7 +49,8 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
             clientName={order.client.clientName}
             price={order.value}
           />
-      )): <div className="h-80 items-center justify-center flex text-gray-900">Não há ordens de serviço cadastradas.</div>}
+      )): <Empty title="Ainda não há ordens de serviço cadastrados" description="Crie uma nova ordem de serviço com o botao '+'"/>
+    }
     </div>
   );
 };

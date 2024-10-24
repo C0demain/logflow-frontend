@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from "react";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
@@ -12,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { FaEdit } from "react-icons/fa";
 import { DeleteClient } from "./deleteClient";
+import Empty from "@/components/Empty";
 
 interface ReadClientProps{
   autorizado:boolean
@@ -130,7 +130,7 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
   }
 
   if (!Array.isArray(data) || data.length === 0) {
-    return <div>Nenhum cliente encontrado.</div>;
+    return <Empty title="Ainda não há clientes cadastrados" description="Crie um novo cliente com o botao '+'"/>
   }
 
   return (

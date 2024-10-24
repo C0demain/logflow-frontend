@@ -5,6 +5,7 @@ import Loading from "@/app/loading";
 import { useToast } from "@chakra-ui/react";
 import { DeleteDocument } from "./deleteDocuments"; // Componente para exclusão
 import DocumentData from "@/app/api/documentsService/DocumentData"; // Interface para dados do documento
+import Empty from "@/components/Empty";
 
 const exampleDocuments: DocumentData[] = [
   {
@@ -72,7 +73,7 @@ export const ReadDocuments: React.FC = () => {
   }
 
   if (data.length === 0) {
-    return <div>Nenhum documento encontrado.</div>;
+    return <Empty title="Ainda não há documentos cadastrados" description="Faça o upload de um arquivo com o botao '+'"/>
   }
 
   return (
