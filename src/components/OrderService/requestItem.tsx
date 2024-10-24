@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StageLine } from "../stageLine";
 import { DeleteOrder } from "./deleteOrder";
 import Link from "next/link";
-import { FaAngleRight } from "react-icons/fa";
+import { Divider } from "@chakra-ui/react"
 
 interface RequestItemProps {
   name: string;
@@ -33,10 +33,8 @@ export const RequestItem: React.FC<RequestItemProps> = ({
     switch (sector) {
       case "FINANCEIRO":
         setStage3(true);
-        break;
       case "OPERACIONAL":
         setStage2(true);
-        break;
       case "VENDAS":
         setStage1(true);
         break;
@@ -77,9 +75,16 @@ export const RequestItem: React.FC<RequestItemProps> = ({
           <p className="text-sm sm:text-base font-medium">{status}</p>
         </div>
         {userId && orderId ? (
-          <Link href={`/auth/todolist/${userId}/${orderId}`}>
-            <FaAngleRight className="text-4xl sm:text-6xl w-full h-full" />
-          </Link>
+          <div className="bg-blue-600 rounded-md w-4/5 h-1/3 flex justify-evenly">
+            <Link className="w-3/5 h-full flex rounded-md bg-blue-600 hover:bg-blue-500 transition-all" href={`/auth/history`}>
+            <div className="w-full h-full flex items-center justify-center">Histórico</div>
+            </Link>
+            <Divider orientation="vertical" size='lg' />
+            <Link className="w-3/5 h-full flex rounded-md bg-blue-600 hover:bg-blue-500 transition-all" href={`/auth/todolist/${userId}/${orderId}`}>
+            <div className="w-full h-full flex items-center justify-center">Tarefas</div>
+            </Link>
+          </div>
+          
         ) : null}
       </div>
     </div>
