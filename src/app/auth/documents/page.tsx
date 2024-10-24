@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthContext } from "@/app/context/auth";
-import { CreateClient } from "@/components/ClientService/createClient";
+import { CreateDocuments } from "@/components/DocumentsService/createDocument";
 import { ReadClient } from "@/components/ClientService/readClient";
 import { useContext, useEffect, useState } from "react";
 
@@ -21,7 +21,7 @@ export default function ClientPage() {
     <div className="m-5 space-y-5">
       <div className="justify-between flex items-center">
         <h1 className="text-2xl">Documentos:</h1>
-        {crudAutorizado && <CreateClient />}
+        {crudAutorizado && <CreateDocuments />}
       </div>
       <ReadClient 
       autorizado={crudAutorizado}/>
