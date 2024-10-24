@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="light">
       <body
-        className={`font-sans antialiased h-full bg-gradient-to-br from-slate-100 to-slate-300 text-black min-h-screen flex flex-col`}
+        className={`font-sans antialiased h-full bg-slate-300 text-black min-h-screen flex flex-col`}
       >
         <AuthProvider>
           <Providers>{children}</Providers>

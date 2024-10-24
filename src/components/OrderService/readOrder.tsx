@@ -15,8 +15,9 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
 
   const getOs = useCallback(async () => {
     try {
-      const response = await listOs();
+      const response = await listOs(null, null, null, true, null);
       setData(response);
+      console.log(response)
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
@@ -45,8 +46,7 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
             sector={order.sector}
             userId={userId}
             clientName={order.client.clientName}
-            userName={order.user.userName}
-            logs={order.logs}
+            price={order.value}
           />
       )): <div className="h-80 items-center justify-center flex text-gray-900">Não há ordens de serviço cadastradas.</div>}
     </div>

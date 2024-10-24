@@ -3,6 +3,7 @@
 import { updateOrder } from "@/app/api/orderService/updateOrder";
 import { getTasks } from "@/app/api/tasks/listTasks";
 import Loading from "@/app/loading";
+import { HeaderOrderService } from "@/components/OrderService/headerOrderService";
 import CreateTask from "@/components/TaskService/createTask";
 import TodoList from "@/components/TaskService/todoList";
 import { useQuery } from "@tanstack/react-query";
@@ -80,6 +81,7 @@ export default function TaskPage({ params }: TaskListProps) {
 
   return (
     <div>
+      <HeaderOrderService orderId={params.orderId}></HeaderOrderService>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Lista de Tarefas:</h1>
         <CreateTask userId={params.userId} orderId={params.orderId} />
