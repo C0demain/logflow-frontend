@@ -3,6 +3,7 @@
 import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import CreateButton from "../createButton";
+import { registerDocument } from "@/app/api/documentsService/registerDocument"; // Importa a função de registro de documentos
 
 export function CreateDocuments() {
   const [file, setFile] = useState<File | null>(null);
@@ -13,7 +14,7 @@ export function CreateDocuments() {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     } else {
-      setFile(null); 
+      setFile(null);
     }
   };
 
@@ -30,16 +31,29 @@ export function CreateDocuments() {
 
     setLoading(true);
 
-    // Simulação de envio de arquivo
-    setTimeout(() => {
-      setLoading(false);
+    // Cria o objeto de dados do documento
+    const documentData = {
+      name: file.name,
+      file: file, // Aqui você pode precisar de um FormData para o upload
+    };
+
+    try {
+      await registerDocument(documentData); // Chama a função de registro
       toast({
         status: "success",
         title: "Upload realizado com sucesso",
         description: `Arquivo ${file.name} foi enviado.`,
       });
       setFile(null); // Limpa o estado do arquivo após o upload
-    }, 2000);
+    } catch (error) {
+      toast({
+        status: "error",
+        title: "Erro ao enviar o arquivo",
+        description: (error as Error).message || "Ocorreu um erro ao enviar o arquivo.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

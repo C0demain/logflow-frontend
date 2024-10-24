@@ -5,33 +5,43 @@ import Loading from "@/app/loading";
 import { useToast } from "@chakra-ui/react";
 import { DeleteDocument } from "./deleteDocuments"; // Componente para exclusão
 import DocumentData from "@/app/api/documentsService/DocumentData"; // Interface para dados do documento
-import Empty from "@/components/Empty";
+import { listDocuments } from "@/app/api/documentsService/listDocuments"; // Importa a função de listagem
+import { deleteDocumentById } from "@/app/api/documentsService/deleteDocument"; // Importa a função de exclusão
+import { downloadById } from "@/app/api/documentsService/downloadDocument";
+import Empty from "../Empty";
 
-const exampleDocuments: DocumentData[] = [
-  {
-    id: "1",
-    name: "Documento 1.pdf",
-    uploadDate: new Date("2023-10-01").toLocaleDateString(),
-    url: "/documents/doc1.pdf"
-  },
-  {
-    id: "2",
-    name: "Documento 2.pdf",
-    uploadDate: new Date("2023-10-05").toLocaleDateString(),
-    url: "/documents/doc2.pdf"
-  }
-  // Adicione mais documentos conforme necessário
-];
+interface ReadDocumentsProps {
+  userId: string | undefined;
+}
 
-export const ReadDocuments: React.FC = () => {
-  const [data, setData] = useState<DocumentData[]>(exampleDocuments);
+export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId }) =>{
+  const [data, setData] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
 
+  const getDocuments = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await listDocuments("", userId); // Chama a função de listagem de documentos
+      if (Array.isArray(response)) {
+        console.log(response);
+        setData(response);
+      } else {
+        setError("Dados dos documentos não estão no formato esperado.");
+      }
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+      setError("Não foi possível carregar os dados dos documentos.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const handleDelete = async (documentId: string) => {
     try {
-      // Aqui você pode adicionar a lógica de exclusão real, se necessário
+      // Chama a função de exclusão
+      await deleteDocumentById(documentId);
       setData((prevData) => prevData.filter(doc => doc.id !== documentId));
       toast({
         status: "success",
@@ -39,30 +49,36 @@ export const ReadDocuments: React.FC = () => {
         description: "Documento excluído com sucesso"
       });
     } catch (error) {
+      console.error("Error deleting document:", error);
       toast({
         status: "error",
         title: "Erro",
-        description: "Não foi possível excluir o documento. Tente novamente"
+        description: "Não foi possível excluir o documento. Tente novamente."
       });
     }
   };
 
-  // Simula o carregamento dos documentos
-  const fetchDocuments = useCallback(async () => {
-    setLoading(true);
+  const downloadDoc = async(id: string, name: string) => {
     try {
-      // Aqui você pode adicionar a lógica de busca real
-      setData(exampleDocuments);
+      await downloadById(id, name)
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Documento baixado com sucesso"
+      });
     } catch (error) {
-      setError("Não foi possível carregar os documentos.");
-    } finally {
-      setLoading(false);
+      console.error("Error deleting document:", error);
+      toast({
+        status: "error",
+        title: "Erro",
+        description: "Não foi possível baixar o documento. Tente novamente."
+      });
     }
-  }, []);
+  }
 
   useEffect(() => {
-    fetchDocuments();
-  }, [fetchDocuments]);
+    getDocuments();
+  }, [getDocuments]);
 
   if (loading) {
     return <Loading />;
@@ -94,8 +110,8 @@ export const ReadDocuments: React.FC = () => {
               <td className="flex justify-center space-x-4 px-4 py-3">
                 <a href={doc.url} download>
                   <button>
-                    <label className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
-                      < FaDownload />
+                    <label className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300" onClick={() => downloadDoc(doc.id, doc.name)}>
+                      <FaDownload />
                     </label>
                   </button>
                 </a>
