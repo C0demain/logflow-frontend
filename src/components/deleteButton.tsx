@@ -1,4 +1,4 @@
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 
 export default function DeleteButton({
   children,
@@ -15,9 +15,7 @@ export default function DeleteButton({
     <div>
       <label
         htmlFor={`delete${id}`}
-        className={`btn btn-md ${
-          circle ? "btn-circle" : ""
-        } bg-gray-100 flex items-center hover:bg-red-500 hover:text-white hover:shadow-md`}
+        className={`btn btn-md ${circle ? "btn-circle" : ""} bg-gray-100 flex items-center hover:bg-red-500 hover:text-white hover:shadow-md`}
       >
         <FaTrash />
       </label>
@@ -29,16 +27,17 @@ export default function DeleteButton({
           <div className="modal-action justify-center">
             <label
               htmlFor={`delete${id}`}
-              onClick={() => handleDelete(id)}
-              className="btn btn-info hover:text-white"
+              className="btn hover:bg-gray-300" // Cinza claro para "Cancelar"
+              style={{ backgroundColor: '#d2dbe6', color: 'black' }} // Cor cinza personalizada
             >
-              Sim, excluir!
+              Cancelar
             </label>
             <label
               htmlFor={`delete${id}`}
+              onClick={() => handleDelete(id)}
               className="btn btn-error hover:text-white"
             >
-              Não, não excluir
+              Excluir
             </label>
           </div>
         </div>

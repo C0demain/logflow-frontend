@@ -1,14 +1,14 @@
 "use client";
 
 import { AuthContext } from "@/app/context/auth";
-import { CreateDocuments } from "@/components/DocumentsService/createDocument";
-import { ReadClient } from "@/components/ClientService/readClient";
+import { CreateDocuments } from "@/components/DocumentService/createDocument";
+import { ReadDocuments } from "@/components/DocumentService/readDocuments";
 import { useContext, useEffect, useState } from "react";
 
 export default function ClientPage() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
-  const setoresCrudPermitido = ["VENDAS", "DIRETORIA"]
+  const setoresCrudPermitido = ["VENDAS", "DIRETORIA", "RH", "OPERACIONAL", "FINCANCEIRO"]
   const {user} = useContext(AuthContext)
 
   useEffect(()=>{
@@ -23,8 +23,7 @@ export default function ClientPage() {
         <h1 className="text-2xl">Documentos:</h1>
         {crudAutorizado && <CreateDocuments />}
       </div>
-      <ReadClient 
-      autorizado={crudAutorizado}/>
+      <ReadDocuments />
     </div>
   );
 }
