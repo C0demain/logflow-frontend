@@ -37,26 +37,26 @@ export function Logout() {
 
   return (
     <div>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button className="btn btn-ghost" onClick={openModal}>
         Sair
       </button>
       <dialog id="my_modal_4" className="modal">
-        <div className="modal-box w-3/12 max-w-5xl">
-          <p className="text-xl mb-6">Deseja sair da sua conta?</p>
-          <div className="flex w-full justify-center space-x-7">
-              <button
-                className="btn btn-info text-white"
-                onClick={handleLogout}
-              >
-                Sim
-              </button>
-              <form method="dialog">
-                <button className="btn btn-error text-white">Não</button>
-              </form>
-            </div>
+        <div className="modal-box w-11/12 max-w-md md:w-3/12 md:max-w-5xl">
+          <p className="text-lg md:text-xl mb-4 md:mb-6 text-center">Deseja sair da sua conta?</p>
+          <div className="flex flex-col md:flex-row w-full justify-center items-center space-y-4 md:space-y-0 md:space-x-7">
+            <button
+              className="btn btn-info text-white w-full md:w-auto"
+              onClick={handleLogout}
+            >
+              Sim
+            </button>
+            <form method="dialog" className="w-full md:w-auto">
+              <button className="btn btn-error text-white w-full md:w-auto">Não</button>
+            </form>
+          </div>
         </div>
       </dialog>
-    </div>
+  </div>
+  
   );
 }

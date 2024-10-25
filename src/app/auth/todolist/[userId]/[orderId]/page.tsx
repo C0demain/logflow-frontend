@@ -81,16 +81,19 @@ export default function TaskPage({ params }: TaskListProps) {
 
   return (
     <div>
-      <HeaderOrderService orderId={params.orderId}></HeaderOrderService>
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Lista de Tarefas:</h1>
+      <HeaderOrderService orderId={params.orderId} />
+  
+      <div className="flex justify-between items-center my-4">
+        <h1 className="text-xl sm:text-2xl font-bold">Lista de Tarefas:</h1>
         <CreateTask userId={params.userId} orderId={params.orderId} />
       </div>
-      <div className="flex flex-col justify-center w-full sm:flex-row sm:space-y-0 sm:space-x-5 sm:w-full">
+  
+      <div className="flex flex-col space-y-5 w-full sm:flex-row sm:space-y-0 sm:space-x-5 sm:w-full">
         <TodoList onUpdateTaskList={refetch} name="de Coleta" sectorName="VENDAS" tasks={data.vendas} />
         <TodoList onUpdateTaskList={refetch} name="de Entrega" sectorName="OPERACIONAL" tasks={data.operacional} />
         <TodoList onUpdateTaskList={refetch} name="de Faturamento" sectorName="FINANCEIRO" tasks={data.financeiro} />
       </div>
     </div>
+
   );
 }

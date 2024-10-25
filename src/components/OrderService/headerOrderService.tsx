@@ -45,23 +45,24 @@ interface OrderService {
     }
   
     return (
-      <div className="my-2 space-y-3 bg-white shadow-lg rounded-md p-6">
-        <div className="flex items-center space-x-6 justify-between">
-          <div className="mr-8">
-            <h1 className="text-2xl font-bold">{orderService?.title}</h1>
+      <div className="my-2 space-y-3 bg-white shadow-lg rounded-md p-4 md:p-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center space-y-3 md:space-y-0 md:space-x-6 justify-between">
+          <div className="w-full md:w-auto">
+             <h1 className="text-lg md:text-2xl font-bold">{orderService?.title}</h1>
           </div>
-          <div className="flex justify-evenly w-3/4">
-          <div>
-            <h1 className="text-2xl font-bold mr-3">Preço:</h1>
-            <h1 className="text-2xl bg-slate-200 p-1 rounded-md">R${orderService?.value}</h1>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold mr-3">Descrição:</h1>
-            <p className="text-2xl bg-slate-200 p-1 rounded-md">{orderService?.description}</p>
-          </div>
+          <div className="flex flex-col md:flex-row justify-between w-full md:w-3/4 space-y-4 md:space-y-0 md:space-x-6">
+            <div>
+                <h1 className="text-lg md:text-2xl font-bold mr-3">Preço:</h1>
+                <h1 className="text-lg md:text-2xl bg-slate-200 p-1 rounded-md">R${orderService?.value}</h1>
+            </div>
+            <div>
+              <h1 className="text-lg md:text-2xl font-bold mr-3">Descrição:</h1>
+             <p className="text-lg md:text-2xl bg-slate-200 p-1 rounded-md">{orderService?.description}</p>
+            </div>
           </div>
         </div>
       </div>
+
     );
   };
   
