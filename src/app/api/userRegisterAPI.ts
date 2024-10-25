@@ -10,7 +10,7 @@ interface User {
 export const registerUser = async (user: User) => {
   try {
     // Supondo que o backend esteja rodando em 'http://localhost:5000/api/register'
-    const response = await axios.post('http://localhost:8000/api/v1/users', user);
+    const response = await axios.post('https://localhost:8000/api/v1/users', user);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

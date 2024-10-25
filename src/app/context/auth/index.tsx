@@ -35,7 +35,7 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
 
     const login = (userT: UserProps) => {
         setUser(userT);
-        Cookies.set('user', JSON.stringify(userT), { expires: 7 }); // Cookie expira em 7 dias
+        Cookies.set('user', JSON.stringify(userT), { expires: 7 }); // Cookie do usuário expira em 7 dias
     }
 
     const logout = () => {
