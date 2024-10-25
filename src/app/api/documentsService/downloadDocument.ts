@@ -12,7 +12,7 @@ export const downloadById = async (id: string, name: string) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const a = document.createElement('a');
         a.href = url;
-        a.download = `documento_${name}.pdf`; // Altere a extensão conforme necessário
+        a.download = `documento_${name}`; // Altere a extensão conforme necessário
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
