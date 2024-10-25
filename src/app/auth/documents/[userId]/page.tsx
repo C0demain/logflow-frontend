@@ -27,7 +27,7 @@ export default function DocumentsPage({params}: DocumentsProps) {
     <div className="m-5 space-y-5">
       <div className="justify-between flex items-center">
         <h1 className="text-2xl">Documentos:</h1>
-        {crudAutorizado && <CreateDocuments />}
+        {crudAutorizado && <CreateDocuments id={params.userId} />}
       </div>
       <ReadDocuments userId={params.userId}/>
     </div>

@@ -3,7 +3,10 @@ import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 
 interface DocumentData {
-  file: File; // Adicionando um campo para o arquivo
+  filename: string
+  file: File; 
+  userId: string | undefined,
+  // Adicionando um campo para o arquivo
 }
 
 export const registerDocument = async (documentData: DocumentData) => {
@@ -11,6 +14,7 @@ export const registerDocument = async (documentData: DocumentData) => {
 
   const formData = new FormData();
   formData.append('file', documentData.file);
+  if(documentData.userId){formData.append('userId', documentData.userId)}
 
   try {
     const response = await apiInstance.post('/api/v1/files', formData, {
@@ -31,31 +35,3 @@ export const registerDocument = async (documentData: DocumentData) => {
     }
   }
 };
-
-export default function FileUpload() {
-  const [file, setFile] = useState<File | null>(null);
-  const [name, setName] = useState<string>('');
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (file) {
-      const documentData: DocumentData = { file };
-      try {
-        const response = await registerDocument(documentData);
-        console.log('File uploaded successfully:', response);
-      } catch (error) {
-        console.error('File upload failed:', error);
-      }
-    }
-  };
-}

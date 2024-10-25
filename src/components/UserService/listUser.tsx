@@ -75,7 +75,7 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
                             {autorizado && (
                                 <td className="flex justify-center space-x-4 px-4 py-3">
                                     <Link
-                                        href={`/api/v1/auth/documents/${user.id}`}
+                                        href={`/auth/documents/${user.id}`}
                                         className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300"
                                     >
                                         <FaFileAlt />

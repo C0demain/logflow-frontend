@@ -5,10 +5,15 @@ import { useState } from "react";
 import CreateButton from "../createButton";
 import { registerDocument } from "@/app/api/documentsService/registerDocument"; // Importa a função de registro de documentos
 
-export function CreateDocuments() {
+interface CreateDocumentsProps {
+  id: string | undefined;
+}
+
+export const CreateDocuments: React.FC<CreateDocumentsProps> = ({ id }) => {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const userId = id;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -30,15 +35,10 @@ export function CreateDocuments() {
     }
 
     setLoading(true);
-
-    // Cria o objeto de dados do documento
-    const documentData = {
-      name: file.name,
-      file: file, // Aqui você pode precisar de um FormData para o upload
-    };
-
+    console.log({file: file, filename: file.name, userId: id})
+    
     try {
-      await registerDocument(documentData); // Chama a função de registro
+      await registerDocument({file: file, filename: file.name, userId: id}); // Chama a função de registro
       toast({
         status: "success",
         title: "Upload realizado com sucesso",
