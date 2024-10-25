@@ -16,10 +16,12 @@ export default function DocumentsPage({params}: DocumentsProps) {
   const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
   const setoresCrudPermitido = ["VENDAS", "DIRETORIA", "RH", "OPERACIONAL", "FINCANCEIRO"]
   const {user} = useContext(AuthContext)
+  const [userId, setUserId] = useState(params.userId || user?.id)
 
   useEffect(()=>{
     if(user){
       setoresCrudPermitido.includes(user.sector) ? setCrudAutorizado(true) : setCrudAutorizado(false)
+      setUserId(params?.userId || user.id)
     }
   }, [user])
 
@@ -27,9 +29,9 @@ export default function DocumentsPage({params}: DocumentsProps) {
     <div className="m-5 space-y-5">
       <div className="justify-between flex items-center">
         <h1 className="text-2xl">Documentos:</h1>
-        {crudAutorizado && <CreateDocuments id={params.userId} />}
+        {crudAutorizado && <CreateDocuments id={userId} />}
       </div>
-      <ReadDocuments userId={params.userId}/>
+      <ReadDocuments userId={userId}/>
     </div>
   );
 }

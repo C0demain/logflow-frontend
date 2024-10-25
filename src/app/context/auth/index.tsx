@@ -19,7 +19,10 @@ type AuthContextProps = {
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 const AuthProvider = ({children}: {children: ReactNode}) => {
-    const [user, setUser] = useState<UserProps | undefined>(undefined);
+    const [user, setUser] = useState(() => {
+        const cookieUser = Cookies.get('user');
+        return cookieUser ? JSON.parse(cookieUser) : undefined;
+      });
 
     useEffect(() => {
         const storedUser = Cookies.get('user');
