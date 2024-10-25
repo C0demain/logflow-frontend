@@ -23,7 +23,7 @@ export default function TodoList({
           onChecked={onUpdateTaskList}
           key={task.id}
           idTask={task.id}
-          completed={task.completed}
+          completed={task.completedAt !== null}
           title={task.title}
           sectorName={sectorName}
         />

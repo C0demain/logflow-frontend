@@ -4,7 +4,8 @@ import axios from "axios";
 export type TaskData = {
   id: string;
   title: string;
-  completed: boolean;
+  startedAt: Date | null;
+  completedAt: Date | null;
   sector: string;
   assignedUser: {
     id: string;

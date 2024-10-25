@@ -3,7 +3,7 @@ import axios from "axios";
 
 interface TaskData {
     title: string;
-    completed: boolean;
+    completedAt: Date | null;
     userId: string;
     orderId: string;
     sector: string;

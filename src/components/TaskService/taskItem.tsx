@@ -1,8 +1,6 @@
-import { updateTask } from "@/app/api/tasks/updateTask";
-import { ChangeEvent, useState } from "react";
-import { DeleteTask } from "./deleteTask";
+import { completeTask } from "@/app/api/tasks/completeTask";
 import { useParams } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { ChangeEvent, useState } from "react";
 
 interface TaskItemProps {
   idTask: string;
@@ -14,17 +12,13 @@ interface TaskItemProps {
 
 export default function TaskItem({ idTask, completed, title, sectorName, onChecked}: TaskItemProps) {
   const params = useParams<{userId: string, orderId: string}>();
-  const queryClient = useQueryClient();
   const [completedTask, setCompletedTask] = useState<boolean>(completed);
-  const [orderId, setOrderId] = useState<string>(params.orderId);
-  const [userId, setUserId] = useState<string>(params.userId);
   
   const handleCheckboxChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const newCompletedStatus = e.target.checked;
     setCompletedTask(newCompletedStatus);
-    queryClient.invalidateQueries({ queryKey: ["tasks"] });
     try {
-      await updateTask({ title: title, completed: newCompletedStatus, userId, orderId, sector: sectorName.toUpperCase() }, idTask);
+      await completeTask(idTask);
       onChecked()
     } catch (error) {
       console.error(error);
@@ -42,8 +36,6 @@ export default function TaskItem({ idTask, completed, title, sectorName, onCheck
         />
         <span>{title}</span>
       </div>
-      {/* <DeleteTask
-      id={idTask}/> */}
     </div>
   );
 }

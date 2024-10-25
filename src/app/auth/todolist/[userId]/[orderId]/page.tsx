@@ -30,9 +30,9 @@ export default function TaskPage({ params }: TaskListProps) {
     const updatedOperacional = responseOperacional.slice(5);
     const updatedVendas = [...responseVendas, ...tasksToMove];
 
-    const tasksVendasCompleted = updatedVendas.every((task) => task.completed);
-    const tasksOperacionalCompleted = updatedOperacional.every((task) => task.completed);
-    const tasksFinanceiroCompleted = responseFinanceiro.every((task) => task.completed);
+    const tasksVendasCompleted = updatedVendas.every((task) => task.completedAt !== null);
+    const tasksOperacionalCompleted = updatedOperacional.every((task) => !!task.completedAt !== null);
+    const tasksFinanceiroCompleted = responseFinanceiro.every((task) => !!task.completedAt !== null);
 
     if (!tasksVendasCompleted) {
       await updateOrder(

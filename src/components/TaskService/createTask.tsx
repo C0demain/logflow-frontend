@@ -52,7 +52,7 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
           orderId,
           sector: sector.value,
           userId, 
-          completed,
+          completedAt: completed ? new Date() : null,
         });
 
         // Verifica se a resposta é válida, caso contrário, mostra erro
@@ -67,15 +67,6 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
     } catch (error: any) {
       console.error("Erro ao registrar tarefa:", error);
       setErrorMessage(error.message || "Erro inesperado ao registrar a tarefa.");
-    }
-  };
-
-  const handleModalOpen = () => {
-    const modal = document.getElementById("modal");
-    if (modal) {
-      (modal as HTMLDialogElement).showModal();
-    } else {
-      console.error("Modal element not found");
     }
   };
 

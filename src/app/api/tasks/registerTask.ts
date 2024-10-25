@@ -6,7 +6,7 @@ interface TaskData {
   orderId: string;
   userId: string;
   sector: "OPERACIONAL" | "FINANCEIRO" | "RH" | "DIRETORIA" | "VENDAS";
-  completed: boolean;
+  completedAt: Date | null;
 }
 
 export const registerTask = async (taskData: TaskData) => {
