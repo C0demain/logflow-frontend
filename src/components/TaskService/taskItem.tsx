@@ -1,4 +1,5 @@
 import { completeTask } from "@/app/api/tasks/completeTask";
+import { uncompleteTask } from "@/app/api/tasks/uncompleteTask";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
@@ -18,7 +19,7 @@ export default function TaskItem({ idTask, completed, title, sectorName, onCheck
     const newCompletedStatus = e.target.checked;
     setCompletedTask(newCompletedStatus);
     try {
-      await completeTask(idTask);
+      newCompletedStatus ? await completeTask(idTask) : await uncompleteTask(idTask);
       onChecked()
     } catch (error) {
       console.error(error);
