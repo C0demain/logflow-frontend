@@ -42,7 +42,6 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
     }
 
     const logout = () => {
-        console.log("Logging out user");
         setUser(undefined);
         Cookies.remove('user');
     }

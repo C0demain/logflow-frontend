@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { StageLine } from "../stageLine";
 import { DeleteOrder } from "./deleteOrder";

@@ -6,6 +6,7 @@ interface DocumentData {
   filename: string
   file: File; 
   userId: string | undefined,
+  taskId: string | undefined;
   // Adicionando um campo para o arquivo
 }
 
@@ -15,6 +16,7 @@ export const registerDocument = async (documentData: DocumentData) => {
   const formData = new FormData();
   formData.append('file', documentData.file);
   if(documentData.userId){formData.append('userId', documentData.userId)}
+  if(documentData.taskId){formData.append('taskId', documentData.taskId)}
 
   try {
     const response = await apiInstance.post('/api/v1/files', formData, {
@@ -22,12 +24,10 @@ export const registerDocument = async (documentData: DocumentData) => {
         'Content-Type': 'multipart/form-data', // Certifique-se de que o tipo de conteúdo está correto
       },
     });
-    console.log(response)
     return response.data; // Ajuste com base na estrutura real da resposta
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error?.response?.status === 400) {
-        console.log(error)
         throw new AxiosError(error.response.data?.message);
       }
     } else {

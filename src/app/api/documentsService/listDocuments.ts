@@ -1,7 +1,7 @@
 import { createApiInstances } from "@/app/util/baseURL";
 import axios from "axios";
 
-export const listDocuments = async (file: string, user:string | undefined) => {
+export const listDocuments = async (file: string, user:string | undefined, taskId: string | undefined) => {
   const { apiLogin, apiInstance } = await createApiInstances();
 
   try {
@@ -9,8 +9,9 @@ export const listDocuments = async (file: string, user:string | undefined) => {
     
     const fileFilter = file ? `file=${file}` : "";
     const userFilter = user ? `userId=${user}` : "";
+    const taskFilter = taskId ? `taskId=${taskId}` : "";
 
-    const queryParams = [fileFilter, userFilter]
+    const queryParams = [fileFilter, userFilter, taskFilter]
       .filter(param => param !== '')
       .join('&');
 
@@ -19,7 +20,6 @@ export const listDocuments = async (file: string, user:string | undefined) => {
     }
 
     const response = await apiInstance.get(url);
-    console.log(response)
     return response.data.files;
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -1,10 +1,12 @@
 "use client";
 
 import { updateOrder } from "@/app/api/orderService/updateOrder";
-import { getTasks } from "@/app/api/tasks/listTasks";
+import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
+import { TaskProvider } from "@/app/context/task";
 import Loading from "@/app/loading";
 import { HeaderOrderService } from "@/components/OrderService/headerOrderService";
 import CreateTask from "@/components/TaskService/createTask";
+import { ReadUnitTask } from "@/components/TaskService/readUnitTask";
 import TodoList from "@/components/TaskService/todoList";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,56 +17,68 @@ interface TaskListProps {
   };
 }
 
-export default function TaskPage({ params }: TaskListProps) {
+interface Task {
+  id: string;
+  stage: string;
+  completedAt: string | null;
+  // Adicione outros campos relevantes aqui
+}
 
-  async function fetchTasks() {
-    const [responseVendas, responseOperacional, responseFinanceiro] =
-      await Promise.all([
-        (await getTasks(params.orderId, "VENDAS", "", "")).tasks,
-        (await getTasks(params.orderId, "OPERACIONAL", "", "")).tasks,
-        (await getTasks(params.orderId, "FINANCEIRO", "", "")).tasks,
-      ]);
+async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }] }): Promise<{ [key: string]: TaskData[] }> {
+  const [, { orderId }] = queryKey;
 
-    // Mover as 5 primeiras tarefas do Operacional para Vendas
-    const tasksToMove = responseOperacional.slice(0, 5);
-    const updatedOperacional = responseOperacional.slice(5);
-    const updatedVendas = [...responseVendas, ...tasksToMove];
+  // Faz uma única requisição para obter todas as tarefas
+  const { tasks }: { tasks: TaskData[] } = await getTasks(orderId, "", "", "", "");
 
-    const tasksVendasCompleted = updatedVendas.every((task) => task.completedAt !== null);
-    const tasksOperacionalCompleted = updatedOperacional.every((task) => !!task.completedAt !== null);
-    const tasksFinanceiroCompleted = responseFinanceiro.every((task) => !!task.completedAt !== null);
+  // Define os diferentes "stages"
+  const stages = [
+    "EMISSÃO DE DOCUMENTOS DE COLETA",
+    "COLETA",
+    "EMISSÃO DE DOCUMENTOS DE ENTREGA",
+    "ENTREGA",
+    "CONFIRMAÇÃO DE ENTREGA",
+    "CONFERÊNCIA DE ORÇAMENTO"
+  ];
 
-    if (!tasksVendasCompleted) {
-      await updateOrder(
-        { sector: "VENDAS", status: "ATIVO" },
-        params.orderId
-      );
-    } else if (!tasksOperacionalCompleted) {
-      await updateOrder(
-        { sector: "OPERACIONAL", status: "ATIVO" },
-        params.orderId
-      );
-    } else if (!tasksFinanceiroCompleted) {
-      await updateOrder(
-        { sector: "FINANCEIRO", status: "ATIVO" },
-        params.orderId
-      );
-    } else {
-      await updateOrder(
-        { sector: "FINANCEIRO", status: "FINALIZADO" },
-        params.orderId
-      );
-    }
+  // Inicializa tasksByStage com o tipo correto
+  const tasksByStage: { [key: string]: TaskData[] } = {};
 
-    return {
-      vendas: updatedVendas,
-      operacional: updatedOperacional,
-      financeiro: responseFinanceiro,
-    };
+  // Separa as tarefas de acordo com o "stage"
+  stages.forEach(stage => {
+    tasksByStage[stage] = tasks.filter(task => task.stage === stage);
+  });
+
+  // Verifica se todas as tarefas de cada "stage" estão concluídas
+  const stagesCompletion: { [key: string]: boolean } = {};
+  stages.forEach(stage => {
+    stagesCompletion[stage] = tasksByStage[stage].every(task => task.completedAt !== null);
+  });
+
+  // Atualiza o status da ordem com base na conclusão das tarefas
+  if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE COLETA"]) {
+    await updateOrder({ sector: "VENDAS", status: "ATIVO" }, orderId);
+  } else if (!stagesCompletion["COLETA"]) {
+    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
+  } else if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE ENTREGA"]) {
+    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
+  } else if (!stagesCompletion["ENTREGA"]) {
+    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
+  } else if (!stagesCompletion["CONFIRMAÇÃO DE ENTREGA"]) {
+    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
+  } else if (!stagesCompletion["CONFERÊNCIA DE ORÇAMENTO"]) {
+    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
+  } else {
+    await updateOrder({ sector: "FINANCEIRO", status: "FINALIZADO" }, orderId);
   }
 
+  return tasksByStage;
+}
+
+export default function TaskPage({ params }: TaskListProps) {
+  const { orderId } = params;
+
   const { data, error, refetch } = useQuery({
-    queryKey: ["tasks"],
+    queryKey: ["fetchTasks", { orderId }],
     queryFn: fetchTasks,
   });
 
@@ -81,19 +95,22 @@ export default function TaskPage({ params }: TaskListProps) {
 
   return (
     <div>
-      <HeaderOrderService orderId={params.orderId} />
-  
-      <div className="flex justify-between items-center my-4">
-        <h1 className="text-xl sm:text-2xl font-bold">Lista de Tarefas:</h1>
-        <CreateTask userId={params.userId} orderId={params.orderId} />
-      </div>
-  
-      <div className="flex flex-col space-y-5 w-full sm:flex-row sm:space-y-0 sm:space-x-5 sm:w-full">
-        <TodoList onUpdateTaskList={refetch} name="de Coleta" sectorName="VENDAS" tasks={data.vendas} />
-        <TodoList onUpdateTaskList={refetch} name="de Entrega" sectorName="OPERACIONAL" tasks={data.operacional} />
-        <TodoList onUpdateTaskList={refetch} name="de Faturamento" sectorName="FINANCEIRO" tasks={data.financeiro} />
-      </div>
+      <HeaderOrderService orderId={orderId} />
+      <TaskProvider>
+        <div className="flex flex-row justify-between space-x-1">
+          <div className="flex flex-col justify-center w-1/2 sm:flex-col sm:space-y-2 sm:w-1/2">
+            <TodoList onUpdateTaskList={refetch} sectorName="EMISSÃO DE DOCUMENTOS DE COLETA" tasks={data["EMISSÃO DE DOCUMENTOS DE COLETA"]} />
+            <TodoList onUpdateTaskList={refetch} sectorName="COLETA" tasks={data["COLETA"]} />
+            <TodoList onUpdateTaskList={refetch} sectorName="EMISSÃO DE DOCUMENTOS DE ENTREGA" tasks={data["EMISSÃO DE DOCUMENTOS DE ENTREGA"]} />
+            <TodoList onUpdateTaskList={refetch} sectorName="ENTREGA" tasks={data["ENTREGA"]} />
+            <TodoList onUpdateTaskList={refetch} sectorName="CONFIRMAÇÃO DE ENTREGA" tasks={data["CONFIRMAÇÃO DE ENTREGA"]} />
+            <TodoList onUpdateTaskList={refetch} sectorName="CONFERÊNCIA DE ORÇAMENTO" tasks={data["CONFERÊNCIA DE ORÇAMENTO"]} />
+          </div>
+          <div className="w-1/2">
+            <ReadUnitTask />
+          </div>
+        </div>
+      </TaskProvider>
     </div>
-
   );
 }

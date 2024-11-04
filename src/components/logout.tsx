@@ -14,7 +14,6 @@ export function Logout() {
       const response = await axios.delete("/api/deleteToken");
       logout();
       router.push("/");
-      console.log(response.data);
       closeModal();
     } catch (error) {
       console.error("Erro ao fazer logout:", error);

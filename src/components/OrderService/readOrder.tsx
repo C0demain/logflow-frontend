@@ -18,7 +18,6 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
     try {
       const response = await listOs(null, null, null, true, null);
       setData(response);
-      console.log(response)
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
