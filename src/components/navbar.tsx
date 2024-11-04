@@ -17,6 +17,7 @@ export function Navbar() {
       <div className="navbar-center hidden lg:flex">
         {user?.role === "Motorista" ? null : (
           <ul className="menu menu-horizontal text-base px-1">
+            <li className="hover:text-white"><Link href="/auth/dashboard">Dashboard</Link></li>
             <li className="hover:text-white"><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
             <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
             <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
@@ -55,6 +56,7 @@ export function Navbar() {
               </svg>
             </summary>
             <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow">
+              <li><Link href="/auth/dashboard">Dashboard</Link></li>
               <li><Link href="/auth/orderservice">Ordens de Serviço</Link></li>
               <li><Link href="/auth/user">Funcionários</Link></li>
               <li><Link href="/auth/client">Cliente</Link></li>
