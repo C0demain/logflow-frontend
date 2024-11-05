@@ -56,13 +56,13 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
     return (
         <div className="overflow-x-auto">
             <table className="table w-full bg-white shadow-md rounded-lg">
-                <thead className="bg-gray-800 text-white">
-                    <tr>
-                        <th className="text-lg px-4 py-2">Nome</th>
+                <thead className="bg-blue-400 text-white rounded-t-lg">
+                    <tr className="rounded-t-bg">
+                        <th className="text-lg px-4 py-2 rounded-tl-lg">Nome</th>
                         <th className="text-lg px-4 py-2">Email</th>
                         <th className="text-lg px-4 py-2">Cargo</th>
-                        <th className="text-lg px-4 py-2">Setor</th>
-                        {autorizado && <th className="text-lg px-4 py-2">Ações</th>}
+                        <th className={`text-lg px-4 py-2 ${!autorizado && 'rounded-tr-lg'}`}>Setor</th>
+                        {autorizado && <th className="text-lg px-4 py-2 rounded-tr-lg">Ações</th>}
                     </tr>
                 </thead>
                 <tbody className="text-gray-700 text-lg">

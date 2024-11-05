@@ -99,11 +99,11 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) 
   return (
     <div className="overflow-x-auto h-min">
       <table className="table w-full bg-white shadow-md rounded-lg">
-        <thead className="bg-gray-100 text-black">
+        <thead className="bg-blue-400 text-black rounded-t-lg">
           <tr>
-            <th className="text-lg px-4 py-2">Nome do Documento</th>
+            <th className="text-lg px-4 py-2 rounded-tl-lg">Nome do Documento</th>
             <th className="text-lg px-4 py-2">Data de Upload</th>
-            <th className="text-lg px-4 py-2">Ações</th>
+            <th className="text-lg px-4 py-2 rounded-tr-lg">Ações</th>
           </tr>
         </thead>
         <tbody className="text-gray-700 text-lg">
