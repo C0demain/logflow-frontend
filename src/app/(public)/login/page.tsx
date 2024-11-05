@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useContext, useState } from "react";
-import Loading from "./loading";
-import { AuthContext } from "./context/auth";
-import { loginPut } from "./api/userService/login";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
+import Loading from "@/components/Shared/loading";
+import { AuthContext } from "@/app/context/auth";
+import { loginPut } from "@/app/api/userService/login";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("")
@@ -23,7 +23,7 @@ export default function Login() {
       const response = await loginPut(email, password);
 
       if (response) {
-        router.push('/auth/orderservice');
+        router.push('/serviceOrder');
         const { token, id, role, sector } = response;
         login({ token, id, role, sector });
         toast({

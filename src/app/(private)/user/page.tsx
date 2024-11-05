@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { CreateUser } from "@/components/UserService/createUser";
 import { ReadUsers } from "@/components/UserService/listUser";
 import { AuthContext } from "@/app/context/auth";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 
 const setoresPermitidos = ["RH", "DIRETORIA"];
 

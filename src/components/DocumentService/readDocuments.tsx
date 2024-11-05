@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { FaDownload } from "react-icons/fa";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 import { useToast } from "@chakra-ui/react";
 import { DeleteDocument } from "./deleteDocuments";
 import DocumentData from "@/app/api/documentsService/DocumentData";

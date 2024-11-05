@@ -1,6 +1,6 @@
 "use client";
 import { listOs } from "@/app/api/orderService/listOrder";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 import { useCallback, useEffect, useState } from "react";
 import { RequestItem } from "./requestItem";
 import Empty from "@/components/Shared/Empty";
@@ -27,7 +27,7 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
 
   useEffect(() => {
     getOs();
-  }, []);
+  }, [getOs]);
 
   if (loading) {
     return <Loading />;

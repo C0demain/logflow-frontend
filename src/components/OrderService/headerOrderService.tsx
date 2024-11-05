@@ -1,5 +1,5 @@
 import { listOs } from "@/app/api/orderService/listOrder";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 import { useState, useCallback, useEffect } from "react";
 
 interface OrderService {

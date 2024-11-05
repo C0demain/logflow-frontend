@@ -80,13 +80,13 @@ export const RequestItem: React.FC<RequestItemProps> = ({
           <div className="flex flex-col sm:flex-row items-center sm:self-end sm:space-x-1 mt-4 sm:mt-0"> {/* Espaçamento reduzido apenas em telas grandes */}
             <Link
               className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-400 hover:bg-blue-500 transition-all mb-2 sm:mb-0"
-              href={`/auth/history`}
+              href={`/history`}
             >
               Histórico
             </Link>
             <Link
               className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-400 hover:bg-blue-500 transition-all"
-              href={`/auth/todolist/${userId}/${orderId}`}
+              href={`/toDoList/${userId}/${orderId}`}
             >
               Tarefas
             </Link>

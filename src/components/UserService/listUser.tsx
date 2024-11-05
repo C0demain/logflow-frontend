@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { DeleteUser } from "@/components/UserService/deleteUser";
 import { EditUser } from "@/components/UserService/updateUser";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 import { listUsers } from "@/app/api/userService/listUser";
 import { FaEdit, FaFileAlt } from "react-icons/fa";
 import { deleteUserById } from "@/app/api/userService/deleteUser";
@@ -78,7 +78,7 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
                             {autorizado && (
                                 <td className="flex justify-center space-x-4 px-4 py-3">
                                     <Link
-                                        href={`/auth/documents/${user.id}`}
+                                        href={`/documents/${user.id}`}
                                         className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300"
                                     >
                                         <FaFileAlt />

@@ -1,5 +1,5 @@
 import { getTasks } from "@/app/api/tasks/listTasks";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 import { useContext, useEffect, useState } from "react";
 import { TaskContext } from "@/app/context/task";
 import { CreateDocButton } from "../DocumentService/createDocButton";

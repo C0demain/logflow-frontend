@@ -3,7 +3,7 @@
 import { updateOrder } from "@/app/api/orderService/updateOrder";
 import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
 import { TaskProvider } from "@/app/context/task";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 import { HeaderOrderService } from "@/components/OrderService/headerOrderService";
 import { ReadUnitTask } from "@/components/TaskService/readUnitTask";
 import TodoList from "@/components/TaskService/todoList";

@@ -3,7 +3,7 @@
 import { AuthContext } from "@/app/context/auth";
 import AverageCost from "@/components/OrderService/averageCost";
 import { listOs } from "@/app/api/orderService/listOrder";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 import { useContext, useEffect, useState } from "react";
 
 export default function Dashboard() {

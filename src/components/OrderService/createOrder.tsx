@@ -9,10 +9,12 @@ import { isAxiosError } from "axios";
 import CreateButton from "../Shared/createButton";
 
 interface CreateOrderProps {
-  id: string | undefined;
+  id: string;
+  onClose: () => void; 
+  refreshOrders: () => void; 
 }
 
-export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
+export const CreateOrder: React.FC<CreateOrderProps> = ({ id, onClose, refreshOrders }) => {
   const [title, setTitle] = useState<string>("");
   const [clientObj, setClientObj] = useState<any>();
   const [description, setDescription] = useState<string>("");
@@ -29,7 +31,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
     const parsedValue = parseFloat(value) || 0;
 
     try {
-      const response = await registerOrder({
+      await registerOrder({
         title,
         clientId,
         status,
@@ -48,7 +50,9 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
       setClientObj(null);
       setDescription("");
       setValue("");
-      router.refresh();
+      
+      onClose();        
+      refreshOrders(); 
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         toast({

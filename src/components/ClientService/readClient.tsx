@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import Loading from "@/app/loading";
+import Loading from "@/components/Shared/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
 import EditModal from "./editModal";
