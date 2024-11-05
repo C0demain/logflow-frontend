@@ -10,7 +10,7 @@ interface AverageCostProps {
   orders: Order[];
 }
 
-const AverageCost: React.FC<AverageCostProps> = ({ orders }) => {
+const CostCards: React.FC<AverageCostProps> = ({ orders }) => {
   const calculateAverage = (orders: Order[]): number => {
     if (!Array.isArray(orders) || orders.length === 0) return 0;
     const totalValue = orders.reduce((acc, order) => {
@@ -52,4 +52,4 @@ const AverageCost: React.FC<AverageCostProps> = ({ orders }) => {
   );
 };
 
-export default AverageCost;
+export default CostCards;
