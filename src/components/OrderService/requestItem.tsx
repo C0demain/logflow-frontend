@@ -61,17 +61,6 @@ export const RequestItem: React.FC<RequestItemProps> = ({
           <h1 className="text-base sm:text-lg">Preço: {price}</h1>
         </div>
 
-    
-        <div className="flex justify-center mb-4">
-          <div
-            className={`badge h-6 ${
-              status === "FINALIZADO" ? "badge-success" : "badge-info"
-            }`}
-          >
-            <p className="text-sm sm:text-base font-medium">{status}</p>
-          </div>
-        </div>
-
         {crudAutorizado && <DeleteOrder id={orderId} />}
       </div>
 
@@ -82,18 +71,25 @@ export const RequestItem: React.FC<RequestItemProps> = ({
 
  
       {userId && orderId && (
-        <div className="flex flex-col sm:flex-row items-center sm:items-end w-full sm:justify-end">
+        <div className="flex sm:flex-col items-center sm:items-end w-full sm:justify-between">
+          <div className="flex justify-center mb-4">
+            <div
+              className={`badge h-6 ${
+                status === "FINALIZADO" ? "badge-success" : "badge-info"
+              }`}
+            >
+              <p className="text-sm sm:text-base font-medium">{status}</p>
+            </div>
+          </div>
           <div className="flex flex-col sm:flex-row items-center sm:self-end sm:space-x-1 mt-4 sm:mt-0"> {/* Espaçamento reduzido apenas em telas grandes */}
-            
             <Link
-              className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-600 hover:bg-blue-500 transition-all mb-2 sm:mb-0"
+              className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-400 hover:bg-blue-500 transition-all mb-2 sm:mb-0"
               href={`/auth/history`}
             >
               Histórico
             </Link>
-            
             <Link
-              className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-600 hover:bg-blue-500 transition-all"
+              className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-400 hover:bg-blue-500 transition-all"
               href={`/auth/todolist/${userId}/${orderId}`}
             >
               Tarefas
