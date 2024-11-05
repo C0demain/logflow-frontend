@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from "react";
 import { registerUser } from "@/app/api/userService/createUser";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface UserData {
   name: string;
@@ -17,7 +17,7 @@ interface UserData {
 }
 
 const rolesBySector: Record<string, string[]> = {
-  OPERACIONAL: ["SAC", "Motorista", "Analista de Logística", 'Ass. Administrativo "Operacional"', "Gerente Operacional" ],
+  OPERACIONAL: ["SAC", "Motorista", "Analista de Logística", 'Ass. Administrativo "Operacional"', "Gerente Operacional"],
   VENDAS: ["Vendedor"],
   FINANCEIRO: ['Analista Administrativo "Financeiro"', 'Ass. Administrativo "Financeiro"'],
   RH: ["Analista de RH", 'Ass. Administrativo "RH"'],
@@ -30,7 +30,7 @@ export function CreateUser() {
     email: "",
     password: "",
     role: "",
-    sector: "OPERACIONAL", // Setando um valor padrão para sector
+    sector: "OPERACIONAL",
     isActive: true,
   });
 
@@ -60,13 +60,13 @@ export function CreateUser() {
     setLoading(true);
 
     try {
-      const response = await registerUser(formData);
+      await registerUser(formData);
       setFormData({
         name: "",
         email: "",
         password: "",
         role: "",
-        sector: "OPERACIONAL", // Resetando para o valor padrão
+        sector: "OPERACIONAL",
         isActive: true,
       });
       toast({
@@ -74,7 +74,7 @@ export function CreateUser() {
         title: "Sucesso",
         description: "Funcionário adicionado com sucesso",
       });
-      router.refresh()
+      router.refresh();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         toast({
@@ -97,7 +97,7 @@ export function CreateUser() {
   return (
     <div>
       <CreateButton>
-      <h1 className="text-2xl font-semibold mb-4">Cadastrar Funcionário</h1>
+        <h1 className="text-2xl font-semibold mb-4">Cadastrar Funcionário</h1>
         <form onSubmit={handleSubmit} className="modal-middle space-y-3">
           <input
             type="text"
@@ -157,7 +157,7 @@ export function CreateUser() {
             </button>
           </div>
         </form>
-        
+
       </CreateButton>
     </div>
   );

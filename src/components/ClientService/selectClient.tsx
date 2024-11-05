@@ -8,14 +8,14 @@ type propsType = {
     className?: string
 }
 
-export const SelectClient = (props: propsType) =>{
+export const SelectClient = (props: propsType) => {
     const [clientOpt, setClientOpt] = useState<any[]>([])
     const [controlState, setControlState] = props.controlState
 
     const getClients = async () => {
-        const response = await listClient('','','','')
+        const response = await listClient('', '', '', '')
         const options = []
-        for(const c of response.clients){
+        for (const c of response.clients) {
             options.push({
                 value: c.id,
                 label: c.name
@@ -26,7 +26,7 @@ export const SelectClient = (props: propsType) =>{
 
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         getClients()
     }, [])
 
@@ -34,11 +34,11 @@ export const SelectClient = (props: propsType) =>{
         <Select
             options={clientOpt}
             value={controlState}
-            onChange={(e) => { setControlState(e); } }
+            onChange={(e) => { setControlState(e); }}
             className="text-black"
             classNamePrefix="custom-select"
             placeholder="Selecione um cliente"
-            isClearable 
+            isClearable
         />
     )
 }

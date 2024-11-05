@@ -10,7 +10,7 @@ export const DeleteTask: React.FC<DeleteTaskProps> = ({ id }) => {
   const queryClient = useQueryClient();
   const handleDelete = async (id: string) => {
     try {
-      const response = await deleteTaskById(id);
+      await deleteTaskById(id);
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
 
       // Adicionar lógica adicional aqui, como limpar o formulário ou exibir uma mensagem de sucesso

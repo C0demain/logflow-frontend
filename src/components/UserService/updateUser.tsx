@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaEdit } from "react-icons/fa";
-import { updateUserById } from "@/app/api/userService/updateUser"; // Função de atualização
+import { updateUserById } from "@/app/api/userService/updateUser";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
@@ -37,7 +36,7 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
         if (formData.sector) {
             setFormData((prev) => ({
                 ...prev,
-                role: rolesBySector[formData.sector][0] || "", // Define o primeiro role disponível para o setor
+                role: rolesBySector[formData.sector][0] || "",
             }));
         }
     }, [formData.sector]);
@@ -58,7 +57,7 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
                 title: "Sucesso",
                 description: "Funcionário atualizado com sucesso"
             });
-            router.refresh();  // Atualizar a página após a edição
+            router.refresh();
         } catch (error: unknown) {
             if (isAxiosError(error)) {
                 toast({

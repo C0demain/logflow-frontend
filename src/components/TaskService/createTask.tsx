@@ -3,11 +3,11 @@ import { registerTask } from "@/app/api/tasks/registerTask";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import Select, { SingleValue } from "react-select";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface CreateTaskProps {
   orderId: string;
-  userId: string; 
+  userId: string;
 }
 
 type SectorOption = {
@@ -27,13 +27,13 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [sector, setSector] = useState<SectorOption | null>(sectorOptions[0]);
-  const [completed, setCompleted] = useState(false); 
+  const [completed, setCompleted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null); // Reseta a mensagem de erro ao iniciar o envio
-    
+    setErrorMessage(null);
+
     try {
       // Validação dos IDs
       if (!userId) {
@@ -51,7 +51,7 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
           title,
           orderId,
           sector: sector.value,
-          userId, 
+          userId,
           completedAt: completed ? new Date() : null,
         });
 

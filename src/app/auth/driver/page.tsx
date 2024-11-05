@@ -1,7 +1,5 @@
 "use client"
 import { useState } from "react";
-import { CreateUser } from "@/components/UserService/createUser";
-import { ReadUsers } from "@/components/UserService/listUser";
 
 export default function UserPage() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -11,6 +9,6 @@ export default function UserPage() {
   };
 
   return (
-  <p>tela do motorista</p>
+    <p>tela do motorista</p>
   )
 }

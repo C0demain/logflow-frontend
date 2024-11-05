@@ -34,20 +34,20 @@ const AverageCost: React.FC<AverageCostProps> = ({ orders }) => {
   return (
     <div className="w-full max-w-md mx-auto mt-5">
       <div className="card bg-base-100 w-96 shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title">Custo Médio</h2>
-                <p className="text-2xl mt-2">R$ {averageCost.toFixed(2)}</p>
-              <div className="card-actions justify-end"></div>
-            </div>
-          </div>
-          <br></br>
+        <div className="card-body">
+          <h2 className="card-title">Custo Médio</h2>
+          <p className="text-2xl mt-2">R$ {averageCost.toFixed(2)}</p>
+          <div className="card-actions justify-end"></div>
+        </div>
+      </div>
+      <br></br>
       <div className="card bg-base-100 w-96 shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title">Custo Total</h2>
-                <p className="text-2xl mt-2">R$ {totalCost.toFixed(2)}</p>
-              <div className="card-actions justify-end"></div>
-            </div>
-          </div>
+        <div className="card-body">
+          <h2 className="card-title">Custo Total</h2>
+          <p className="text-2xl mt-2">R$ {totalCost.toFixed(2)}</p>
+          <div className="card-actions justify-end"></div>
+        </div>
+      </div>
     </div>
   );
 };

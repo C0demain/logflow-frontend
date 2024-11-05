@@ -11,12 +11,13 @@ interface DocumentsProps {
   };
 }
 
+const setoresCrudPermitido = ["VENDAS", "DIRETORIA", "RH", "OPERACIONAL", "FINCANCEIRO"];
+
 export default function DocumentsPage({params}: DocumentsProps) {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
-  const setoresCrudPermitido = ["VENDAS", "DIRETORIA", "RH", "OPERACIONAL", "FINCANCEIRO"]
-  const {user} = useContext(AuthContext)
-  const [userId, setUserId] = useState(params.userId || user?.id)
+  const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false);
+  const {user} = useContext(AuthContext);
+  const [userId, setUserId] = useState(params.userId || user?.id);
 
   useEffect(()=>{
     if(user){

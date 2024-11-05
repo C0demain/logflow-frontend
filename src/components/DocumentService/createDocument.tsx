@@ -2,8 +2,8 @@
 
 import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
-import CreateButton from "../createButton";
-import { registerDocument } from "@/app/api/documentsService/registerDocument"; // Importa a função de registro de documentos
+import CreateButton from "../Shared/createButton";
+import { registerDocument } from "@/app/api/documentsService/registerDocument";
 
 interface CreateDocumentsProps {
   id: string | undefined;
@@ -35,15 +35,15 @@ export const CreateDocuments: React.FC<CreateDocumentsProps> = ({ id, taskId }) 
     }
 
     setLoading(true);
-    
+
     try {
-      await registerDocument({file: file, filename: file.name, userId: id, taskId: taskId}); // Chama a função de registro
+      await registerDocument({ file: file, filename: file.name, userId: id, taskId: taskId });
       toast({
         status: "success",
         title: "Upload realizado com sucesso",
         description: `Arquivo ${file.name} foi enviado.`,
       });
-      setFile(null); // Limpa o estado do arquivo após o upload
+      setFile(null);
     } catch (error) {
       toast({
         status: "error",

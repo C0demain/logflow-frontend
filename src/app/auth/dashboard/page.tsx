@@ -1,9 +1,9 @@
 "use client";
 
 import { AuthContext } from "@/app/context/auth";
-import AverageCost from "@/components/averageCost";
-import { listOs } from "@/app/api/orderService/listOrder"; // Importa a função para listar ordens
-import Loading from "@/app/loading"; // Importa o componente de loading
+import AverageCost from "@/components/OrderService/averageCost";
+import { listOs } from "@/app/api/orderService/listOrder";
+import Loading from "@/app/loading";
 import { useContext, useEffect, useState } from "react";
 
 export default function Dashboard() {
@@ -41,8 +41,8 @@ export default function Dashboard() {
   const averageCost = calculateAverageCost(orders); // Cálculo do custo médio
 
   // Exibe os valores no console, com verificação se são números
-  console.log("Custo Total:", typeof totalCost === 'number' ? totalCost.toFixed(2) : "N/A");
-  console.log("Custo Médio:", typeof averageCost === 'number' ? averageCost.toFixed(2) : "N/A");
+  // console.log("Custo Total:", typeof totalCost === 'number' ? totalCost.toFixed(2) : "N/A");
+  // console.log("Custo Médio:", typeof averageCost === 'number' ? averageCost.toFixed(2) : "N/A");
 
   return (
     <div className="m-5 space-y-5">

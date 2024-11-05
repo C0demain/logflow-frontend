@@ -50,6 +50,6 @@ export const config = {
     '/auth/todolist/[userId]/[orderId]',
     '/auth/client',
     '/auth/userEdit',
-    '/auth/driver', // Inclui a rota do motorista
+    '/auth/driver',
   ],
 };

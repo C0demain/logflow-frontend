@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import EditModal from "./editModal"; // Componente do modal de edição
+import EditModal from "./editModal";
 
 interface Address {
   zipCode: string;
@@ -18,10 +18,10 @@ interface RequestClientProps {
   email: string;
   phone: string;
   cnpj: string;
-  address?: Address; // Tornar o endereço opcional
-  onDelete: (clientId: string) => void; // Callback para exclusão
-  id: string; // ID do cliente, necessário para a exclusão
-  onSave: (clientId: string, updatedData: any) => void; // Função para salvar as alterações
+  address?: Address;
+  onDelete: (clientId: string) => void;
+  id: string;
+  onSave: (clientId: string, updatedData: any) => void;
 }
 
 const RequestClient: React.FC<RequestClientProps> = ({
@@ -49,7 +49,7 @@ const RequestClient: React.FC<RequestClientProps> = ({
       street: "",
       number: "",
       complement: "",
-    }, // Garantir que address tenha um valor padrão
+    },
   });
 
   const toggleModal = () => {
@@ -58,12 +58,12 @@ const RequestClient: React.FC<RequestClientProps> = ({
 
   const handleSave = (updatedData: any) => {
     setClientData(updatedData);
-    onSave(id, updatedData); // Salva os dados atualizados
+    onSave(id, updatedData);
   };
 
   const handleDelete = () => {
     if (confirm(`Tem certeza que deseja excluir ${clientData.name}?`)) {
-      onDelete(id); // Chama a função de exclusão do pai
+      onDelete(id);
     }
   };
 

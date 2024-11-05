@@ -11,7 +11,7 @@ export function Logout() {
 
   async function handleLogout() {
     try {
-      const response = await axios.delete("/api/deleteToken");
+      await axios.delete("/api/deleteToken");
       logout();
       router.push("/");
       closeModal();
@@ -55,7 +55,6 @@ export function Logout() {
           </div>
         </div>
       </dialog>
-  </div>
-  
+    </div>
   );
 }

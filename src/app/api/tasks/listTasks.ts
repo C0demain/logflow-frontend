@@ -37,7 +37,7 @@ export type TaskData = {
 type TasksResponse = {
   message: string;
   tasks: TaskData[];
-  task: {};
+  task: object;
 };
 
 export const getTasks = async (
@@ -47,9 +47,9 @@ export const getTasks = async (
   title: string,
   taskId: string | undefined
 ): Promise<TasksResponse> => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
   try {
-    if(!taskId){
+    if (!taskId) {
       let url = "/api/v1/task";
       const orderIdFilter = orderId ? "serviceOrderId=" + orderId : "";
       const sectorFilter = sector ? "sector=" + sector : "";

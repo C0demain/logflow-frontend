@@ -1,21 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
-import { AiFillDelete } from "react-icons/ai";
 import { FaDownload } from "react-icons/fa";
 import Loading from "@/app/loading";
 import { useToast } from "@chakra-ui/react";
-import { DeleteDocument } from "./deleteDocuments"; // Componente para exclusão
-import DocumentData from "@/app/api/documentsService/DocumentData"; // Interface para dados do documento
-import { listDocuments } from "@/app/api/documentsService/listDocuments"; // Importa a função de listagem
-import { deleteDocumentById } from "@/app/api/documentsService/deleteDocument"; // Importa a função de exclusão
+import { DeleteDocument } from "./deleteDocuments";
+import DocumentData from "@/app/api/documentsService/DocumentData";
+import { listDocuments } from "@/app/api/documentsService/listDocuments";
+import { deleteDocumentById } from "@/app/api/documentsService/deleteDocument";
 import { downloadById } from "@/app/api/documentsService/downloadDocument";
-import Empty from "../Empty";
+import Empty from "@/components/Shared/Empty";
 
 interface ReadDocumentsProps {
   userId: string | undefined;
   taskId: string | undefined;
 }
 
-export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) =>{
+export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) => {
   const [data, setData] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +23,7 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) 
   const getDocuments = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await listDocuments("", userId, taskId); // Chama a função de listagem de documentos
+      const response = await listDocuments("", userId, taskId);
       if (Array.isArray(response)) {
         setData(response);
       } else {
@@ -40,7 +39,6 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) 
 
   const handleDelete = async (documentId: string) => {
     try {
-      // Chama a função de exclusão
       await deleteDocumentById(documentId);
       setData((prevData) => prevData.filter(doc => doc.id !== documentId));
       toast({
@@ -58,7 +56,7 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) 
     }
   };
 
-  const downloadDoc = async(id: string, name: string) => {
+  const downloadDoc = async (id: string, name: string) => {
     try {
       await downloadById(id, name)
       toast({
@@ -83,9 +81,9 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) 
   if (loading) {
     return (
       <div className="h-full w-full">
-        <Loading/>
+        <Loading />
       </div>
-  );
+    );
   }
 
   if (error) {
@@ -93,7 +91,7 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) 
   }
 
   if (data.length === 0) {
-    return <div className="flex w-full items-center justify-center"><Empty title="Ainda não há documentos cadastrados" description="Faça o upload de um arquivo com o botao '+'"/></div>
+    return <div className="flex w-full items-center justify-center"><Empty title="Ainda não há documentos cadastrados" description="Faça o upload de um arquivo com o botao '+'" /></div>
   }
 
   return (

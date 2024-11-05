@@ -1,9 +1,8 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { StageLine } from "../stageLine";
+import { StageLine } from "../Shared/stageLine";
 import { DeleteOrder } from "./deleteOrder";
 import Link from "next/link";
-import { Divider } from "@chakra-ui/react"
 
 interface RequestItemProps {
   name: string;
@@ -53,7 +52,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
 
   return (
     <div className="flex flex-col sm:flex-row p-4 sm:p-5 rounded-md w-full bg-white shadow-lg transition-all hover:bg-gray-100">
-  
+
       <div className="w-full flex flex-col justify-between mb-4 sm:mb-0 sm:mr-4">
         <div className="flex flex-col space-y-1 mb-4">
           <h1 className="text-lg sm:text-2xl font-bold">{name}</h1>
@@ -64,19 +63,16 @@ export const RequestItem: React.FC<RequestItemProps> = ({
         {crudAutorizado && <DeleteOrder id={orderId} />}
       </div>
 
-  
       <div className="flex justify-center items-center mb-4 sm:mb-0 sm:mr-4">
         <StageLine stage1={stage1} stage2={stage2} stage3={stage3} />
       </div>
 
- 
       {userId && orderId && (
         <div className="flex sm:flex-col items-center sm:items-end w-full sm:justify-between">
           <div className="flex justify-center mb-4">
             <div
-              className={`badge h-6 ${
-                status === "FINALIZADO" ? "badge-success" : "badge-info"
-              }`}
+              className={`badge h-6 ${status === "FINALIZADO" ? "badge-success" : "badge-info"
+                }`}
             >
               <p className="text-sm sm:text-base font-medium">{status}</p>
             </div>

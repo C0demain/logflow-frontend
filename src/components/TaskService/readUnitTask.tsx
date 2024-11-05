@@ -1,7 +1,6 @@
-import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
+import { getTasks } from "@/app/api/tasks/listTasks";
 import Loading from "@/app/loading";
 import { useContext, useEffect, useState } from "react";
-import Empty from "../Empty";
 import { TaskContext } from "@/app/context/task";
 import { CreateDocButton } from "../DocumentService/createDocButton";
 import { ReadDocuments } from "../DocumentService/readDocuments";
@@ -11,6 +10,7 @@ import { isAxiosError } from "axios";
 import { useToast } from "@chakra-ui/react/toast";
 import { FaPlus } from "react-icons/fa";
 import { formatDateForInput, formatDateToBR } from "@/app/util/dateFormatter";
+import Empty from "@/components/Shared/Empty";
 
 export const ReadUnitTask = () => {
   const [shownTask, setShownTask] = useState<any>();
@@ -75,7 +75,7 @@ export const ReadUnitTask = () => {
   const saveDueDate = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await setdueDate(shownTask.id, { date: formatDateToBR(dueDate) });
+      await setdueDate(shownTask.id, { date: formatDateToBR(dueDate) });
       toast({
         status: "success",
         title: "Sucesso",

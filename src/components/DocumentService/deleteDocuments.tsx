@@ -1,5 +1,4 @@
-import { AiFillDelete } from "react-icons/ai";
-import DeleteButton from "../deleteButton";
+import DeleteButton from "../Shared/deleteButton";
 
 interface DeleteDocumentProps {
   id: string;

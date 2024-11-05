@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-import { FaTrash } from "react-icons/fa";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import DeleteButton from "../deleteButton";
+import DeleteButton from "../Shared/deleteButton";
 
 interface DeleteClientProps {
   id: string;

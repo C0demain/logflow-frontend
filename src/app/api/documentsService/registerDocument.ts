@@ -1,10 +1,9 @@
 import { createApiInstances } from '@/app/util/baseURL';
 import axios, { AxiosError } from 'axios';
-import { useState } from 'react';
 
 interface DocumentData {
   filename: string
-  file: File; 
+  file: File;
   userId: string | undefined,
   taskId: string | undefined;
   // Adicionando um campo para o arquivo
@@ -15,16 +14,16 @@ export const registerDocument = async (documentData: DocumentData) => {
 
   const formData = new FormData();
   formData.append('file', documentData.file);
-  if(documentData.userId){formData.append('userId', documentData.userId)}
-  if(documentData.taskId){formData.append('taskId', documentData.taskId)}
+  if (documentData.userId) { formData.append('userId', documentData.userId) }
+  if (documentData.taskId) { formData.append('taskId', documentData.taskId) }
 
   try {
     const response = await apiInstance.post('/api/v1/files', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data', // Certifique-se de que o tipo de conteúdo está correto
+        'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data; // Ajuste com base na estrutura real da resposta
+    return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error?.response?.status === 400) {

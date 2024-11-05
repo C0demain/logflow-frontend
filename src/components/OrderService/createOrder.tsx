@@ -6,7 +6,7 @@ import { registerOrder } from "@/app/api/orderService/registerOrder";
 import { useRouter } from "next/navigation";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface CreateOrderProps {
   id: string | undefined;
@@ -16,7 +16,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
   const [title, setTitle] = useState<string>("");
   const [clientObj, setClientObj] = useState<any>();
   const [description, setDescription] = useState<string>("");
-  const [value, setValue] = useState<number>();
+  const [value, setValue] = useState<string>("");
   const userId = id;
   const status = "PENDENTE";
   const sector = "VENDAS";
@@ -25,7 +25,9 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let clientId = clientObj?.value;
+    const clientId = clientObj?.value;
+    const parsedValue = parseFloat(value) || 0;
+
     try {
       const response = await registerOrder({
         title,
@@ -34,7 +36,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
         userId,
         sector,
         description,
-        value
+        value: parsedValue
       });
       toast({
         status: "success",
@@ -45,7 +47,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
       setTitle("");
       setClientObj(null);
       setDescription("");
-      setValue(undefined);
+      setValue("");
       router.refresh();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
@@ -104,12 +106,12 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
             <div className="flex items-center gap-2">
               <label className="input input-bordered flex items-center gap-2 w-full">
                 R$
-              <input
-                type="number"
-                className="grow"
-                value={value}
-                onChange={(e) => setValue(parseFloat(e.target.value) || undefined)}
-              /></label>
+                <input
+                  type="number"
+                  className="grow"
+                  value={value}
+                  onChange={(e) => setValue((e.target.value))}
+                /></label>
             </div>
           </div>
           <div className="w-full max-w-md flex justify-end">

@@ -5,7 +5,6 @@ import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
 import { TaskProvider } from "@/app/context/task";
 import Loading from "@/app/loading";
 import { HeaderOrderService } from "@/components/OrderService/headerOrderService";
-import CreateTask from "@/components/TaskService/createTask";
 import { ReadUnitTask } from "@/components/TaskService/readUnitTask";
 import TodoList from "@/components/TaskService/todoList";
 import { useQuery } from "@tanstack/react-query";
@@ -21,7 +20,6 @@ interface Task {
   id: string;
   stage: string;
   completedAt: string | null;
-  // Adicione outros campos relevantes aqui
 }
 
 async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }] }): Promise<{ [key: string]: TaskData[] }> {

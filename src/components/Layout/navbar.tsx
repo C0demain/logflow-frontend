@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { Logout } from "./logout"; // Importando diretamente
+import { Logout } from "./logout";
 import { useContext } from "react";
 import { AuthContext } from "@/app/context/auth";
 
@@ -66,6 +66,5 @@ export function Navbar() {
         </div>
       </div>
     </div>
-
   );
 }

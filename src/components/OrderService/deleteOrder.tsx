@@ -1,7 +1,7 @@
 import { deleteOsById } from "@/app/api/orderService/deleteOrder";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import DeleteButton from "../deleteButton";
+import DeleteButton from "../Shared/deleteButton";
 
 interface DeleteOrderProps {
   id: string;
