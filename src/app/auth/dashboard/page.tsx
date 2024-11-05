@@ -4,7 +4,7 @@ import { AuthContext } from "@/app/context/auth";
 import { listOs } from "@/app/api/orderService/listOrder"; // Importa a função para listar ordens
 import Loading from "@/app/loading"; // Importa o componente de loading
 import { useContext, useEffect, useState } from "react";
-import CostCards from "@/components/costCards";
+import CostCards from "@/components/Dashboard/costCards";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);

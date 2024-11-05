@@ -30,7 +30,7 @@ const TaskProvider = ({children}: {children: ReactNode}) => {
 
     const readTask = (task: taskProps) => {
         setTask(task)
-        Cookies.set('task', JSON.stringify(task), {expires: 7});
+        Cookies.set('task', JSON.stringify(task), {expires: 1});
     }
 
     const deleteTask = () => {
