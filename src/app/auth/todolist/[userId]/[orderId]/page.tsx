@@ -56,15 +56,15 @@ async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }
 
   // Atualiza o status da ordem com base na conclusão das tarefas
   if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE COLETA"]) {
-    await updateOrder({ sector: "VENDAS", status: "ATIVO"}, orderId);
+    await updateOrder({ sector: "VENDAS", status: "ATIVO" }, orderId);
   } else if (!stagesCompletion["COLETA"]) {
-    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO"}, orderId);
+    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
   } else if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE ENTREGA"]) {
-    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO"}, orderId);
+    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
   } else if (!stagesCompletion["ENTREGA"]) {
-    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO"}, orderId);
+    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
   } else if (!stagesCompletion["CONFIRMAÇÃO DE ENTREGA"]) {
-    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO"}, orderId);
+    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
   } else if (!stagesCompletion["CONFERÊNCIA DE ORÇAMENTO"]) {
     await updateOrder({ sector: "FINANCEIRO", status: "FINALIZADO" }, orderId);
   } else {
@@ -94,11 +94,11 @@ export default function TaskPage({ params }: TaskListProps) {
   }
 
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <HeaderOrderService orderId={orderId} />
       <TaskProvider>
-        <div className="flex flex-row justify-between space-x-1">
-          <div className="flex flex-col justify-center w-1/2 sm:flex-col sm:space-y-2 sm:w-1/2">
+        <div className="flex flex-row justify-between space-x-1 w-full h-full">
+          <div className="flex flex-col w-1/2 space-y-2 h-full overscroll-contain overflow-y-auto">
             <TodoList onUpdateTaskList={refetch} sectorName="EMISSÃO DE DOCUMENTOS DE COLETA" tasks={data["EMISSÃO DE DOCUMENTOS DE COLETA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="COLETA" tasks={data["COLETA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="EMISSÃO DE DOCUMENTOS DE ENTREGA" tasks={data["EMISSÃO DE DOCUMENTOS DE ENTREGA"]} />
@@ -106,7 +106,7 @@ export default function TaskPage({ params }: TaskListProps) {
             <TodoList onUpdateTaskList={refetch} sectorName="CONFIRMAÇÃO DE ENTREGA" tasks={data["CONFIRMAÇÃO DE ENTREGA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="CONFERÊNCIA DE ORÇAMENTO" tasks={data["CONFERÊNCIA DE ORÇAMENTO"]} />
           </div>
-          <div className="w-1/2">
+          <div className="w-1/2 h-full">
             <ReadUnitTask />
           </div>
         </div>

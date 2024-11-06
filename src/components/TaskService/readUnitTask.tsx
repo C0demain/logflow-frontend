@@ -11,13 +11,14 @@ import { isAxiosError } from "axios";
 import { useToast } from "@chakra-ui/react/toast";
 import { FaPlus } from "react-icons/fa";
 import { formatDateForInput, formatDateToBR } from "@/app/util/dateFormatter";
+import { Divider } from "@chakra-ui/react";
 
 export const ReadUnitTask = () => {
   const [shownTask, setShownTask] = useState<any>();
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState<any>();
   const [dueDate, setDueDate] = useState<string>("");
-  const [taskCost, setTaskCost] = useState<number>(shownTask?.taskCost)
+  const [taskCost, setTaskCost] = useState<number>();
   const toast = useToast();
   const { task } = useContext(TaskContext);
   const user = shownTask?.assignedUser;
@@ -56,6 +57,7 @@ export const ReadUnitTask = () => {
         description: "Usuário vínculado",
       });
       setUserObj("");
+      getTask()
       return response;
     } catch (error: unknown) {
       if (isAxiosError(error)) {
@@ -101,14 +103,14 @@ export const ReadUnitTask = () => {
     }
   };
 
-  const addTaskCost = async(event: React.FormEvent) => {
-    event.preventDefault()
+  const addTaskCost = async (event: React.FormEvent) => {
+    event.preventDefault();
     try {
-      const response = await addCost(shownTask.id, {value: taskCost})
+      const response = await addCost(shownTask.id, { value: taskCost });
       toast({
         status: "success",
         title: "Sucesso",
-        description: "Custo de tarefa, atualizado",
+        description: "Custo de tarefa atualizado",
       });
       return response;
     } catch (error) {
@@ -126,27 +128,30 @@ export const ReadUnitTask = () => {
         });
       }
     }
-  }
+  };
+
+  const getTask = async () => {
+    try {
+      const response = await getTasks('', '', '', '', task?.id);
+      setShownTask(response.task);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!task) return;
-    const getTask = async () => {
-      try {
-        const response = await getTasks('', '', '', '', task?.id);
-        console.log(response);
-        setShownTask(response.task);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     getTask();
   }, [task]);
 
-  useEffect(()=>{
-    setDueDate(formatDateForInput(shownTask?.dueDate))
-  }, [shownTask?.dueDate])
+  useEffect(() => {
+    setTaskCost(shownTask?.taskCost)
+    setDueDate(formatDateForInput(shownTask?.dueDate));
+    console.log(shownTask)
+    console.log(shownTask?.dueDate)
+  }, [shownTask]);
 
   if (!shownTask) {
     return <Empty title="Selecione uma tarefa" />;
@@ -158,18 +163,27 @@ export const ReadUnitTask = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full bg-white p-5 rounded-md shadow-lg space-y-4">
-        <div className="flex space-x-5">
-          <p className="font-bold text-lg">Titulo: {shownTask?.title}</p>
-          <p className="text-lg">Setor: {shownTask?.sector}</p>
-          <form onSubmit={addTaskCost} className="flex space-x-2">
-            <p className="text-lg">Custo: </p>
-            <input value={shownTask.taskCost} onChange={e => {setTaskCost(Number(e.target.value))}} type="number" className="input input-bordered input-sm rounded-sm"/>
+      <div className="flex flex-col w-full bg-white p-3 rounded-md shadow-lg space-y-2">
+        <div className="flex space-x-5 w-full">
+          <div>
+            <p className="font-bold text-lg w-full">Titulo: {shownTask?.title}</p>
+            <p className="text-lg">Setor: {shownTask?.sector}</p>
+          </div>
+          <form onSubmit={addTaskCost} className="flex flex-col space-x-2 w-1/2 sm:flex-row">
+            <label htmlFor="taskCost" className="text-lg">Custo:</label>
+            <input
+              value={taskCost ?? ""}
+              id="taskCost"
+              onChange={e => setTaskCost(Number(e.target.value))}
+              type="number"
+              className="input input-bordered input-sm rounded-sm w-full"
+            />
             <button type="submit" className="btn btn-info btn-sm">
               Salvar
             </button>
           </form>
         </div>
+        <Divider/>
         <div className="flex justify-between w-full">
           <div>
             <p>Responsável: {user?.name}</p>
@@ -182,6 +196,7 @@ export const ReadUnitTask = () => {
             </button>
           </form>
         </div>
+        <Divider/>
         <div>
           <p>Data de início: {formatDateToBR(shownTask?.startedAt)}</p>
           <form onSubmit={saveDueDate} className="flex items-center space-x-2">
@@ -199,6 +214,7 @@ export const ReadUnitTask = () => {
           </form>
           <p>Data de fim: {formatDateToBR(shownTask?.completedAt)}</p>
         </div>
+        <Divider/>
         <div className="flex flex-col justify-start">
           <p className="font-bold">Documentos</p>
           <div className="flex scale-90 justify-start items-start"><ReadDocuments taskId={shownTask?.id} userId="" /></div>
@@ -208,7 +224,6 @@ export const ReadUnitTask = () => {
           </div>
         </div>
       </div>
-      <p>{JSON.stringify(shownTask)}</p>
     </>
   );
 };

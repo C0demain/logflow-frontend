@@ -44,8 +44,8 @@ interface OrderService {
     }
   
     return (
-      <div className="my-2 space-y-3 bg-white shadow-lg rounded-md p-4 md:p-6">
-        <div className="flex flex-col md:flex-row items-start md:items-center space-y-3 md:space-y-0 md:space-x-6 justify-between">
+      <div className="mb-2 bg-white shadow-lg rounded-md p-2 md:p-2">
+        <div className="flex flex-col md:flex-row items-start md:items-center md:space-y-0 md:space-x-6 justify-between">
           <div className="w-full md:w-auto">
              <h1 className="text-lg md:text-2xl font-bold">{orderService?.title}</h1>
           </div>

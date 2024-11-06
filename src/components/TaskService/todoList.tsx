@@ -14,7 +14,7 @@ export default function TodoList({
 }: TodoListProps) {
 
   return (
-    <div className="flex flex-col w-full bg-white p-5 rounded-md shadow-lg">
+    <div className="flex flex-col w-full bg-white p-2 rounded-md shadow-lg">
       <h1 className="text-xl">Tarefas {sectorName}</h1>
       {tasks.map((task) => (
         <TaskItem
