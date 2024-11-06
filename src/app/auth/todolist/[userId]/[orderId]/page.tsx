@@ -56,17 +56,17 @@ async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }
 
   // Atualiza o status da ordem com base na conclusão das tarefas
   if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE COLETA"]) {
-    await updateOrder({ sector: "VENDAS", status: "ATIVO" }, orderId);
+    await updateOrder({ sector: "VENDAS", status: "ATIVO"}, orderId);
   } else if (!stagesCompletion["COLETA"]) {
-    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
+    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO"}, orderId);
   } else if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE ENTREGA"]) {
-    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
+    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO"}, orderId);
   } else if (!stagesCompletion["ENTREGA"]) {
-    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
+    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO"}, orderId);
   } else if (!stagesCompletion["CONFIRMAÇÃO DE ENTREGA"]) {
-    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
+    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO"}, orderId);
   } else if (!stagesCompletion["CONFERÊNCIA DE ORÇAMENTO"]) {
-    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
+    await updateOrder({ sector: "FINANCEIRO", status: "FINALIZADO" }, orderId);
   } else {
     await updateOrder({ sector: "FINANCEIRO", status: "FINALIZADO" }, orderId);
   }

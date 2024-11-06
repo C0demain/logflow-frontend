@@ -80,13 +80,13 @@ export const startTask = async(taskId: string) => {
           }
     }
 }
+
 interface DueDateData{
     date: string;
 }
 
 export const setdueDate = async(taskId: string, dueDateData:DueDateData) => {
     const {apiInstance} = await createApiInstances();
-    console.log(dueDateData)
     try{
         const response = apiInstance.patch(`/api/v1/task/${taskId}/dueDate`, dueDateData);
         return response
@@ -103,3 +103,24 @@ export const setdueDate = async(taskId: string, dueDateData:DueDateData) => {
     }
 }
 
+interface CostData{
+  value: number | undefined;
+}
+
+export const addCost = async(taskId: string, costData: CostData) => {
+  const {apiInstance} = await createApiInstances();
+  try {
+    const response = apiInstance.patch(`/api/v1/task/${taskId}/cost`, costData);
+    return response
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(
+        "Erro ao adicionar custo: " + error.response?.data.message
+      );
+    } else {
+      throw new Error(
+        "Erro ao adicionar custo: " + (error as Error).message
+      );
+    }
+  }
+}

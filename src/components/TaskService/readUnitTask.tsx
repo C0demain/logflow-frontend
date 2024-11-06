@@ -6,7 +6,7 @@ import { TaskContext } from "@/app/context/task";
 import { CreateDocButton } from "../DocumentService/createDocButton";
 import { ReadDocuments } from "../DocumentService/readDocuments";
 import { SelectUser } from "../UserService/selectUser";
-import { setdueDate, startTask, userForTask } from "@/app/api/tasks/taskUtil";
+import { addCost, setdueDate, startTask, userForTask } from "@/app/api/tasks/taskUtil";
 import { isAxiosError } from "axios";
 import { useToast } from "@chakra-ui/react/toast";
 import { FaPlus } from "react-icons/fa";
@@ -17,10 +17,12 @@ export const ReadUnitTask = () => {
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState<any>();
   const [dueDate, setDueDate] = useState<string>("");
+  const [taskCost, setTaskCost] = useState<number>(shownTask?.taskCost)
   const toast = useToast();
   const { task } = useContext(TaskContext);
   const user = shownTask?.assignedUser;
 
+  /* Adiciona data de inicio da tarefa */
   const startTasks = async (taskId: string) => {
     try {
       const response = await startTask(taskId);
@@ -42,6 +44,7 @@ export const ReadUnitTask = () => {
     }
   };
 
+  /* Adiciona usuário */
   const assignUser = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -52,7 +55,6 @@ export const ReadUnitTask = () => {
         title: "Sucesso",
         description: "Usuário vínculado",
       });
-      console.log(response);
       setUserObj("");
       return response;
     } catch (error: unknown) {
@@ -72,6 +74,7 @@ export const ReadUnitTask = () => {
     }
   };
 
+  /* Adiciona data de previsão de fim */
   const saveDueDate = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -97,6 +100,33 @@ export const ReadUnitTask = () => {
       }
     }
   };
+
+  const addTaskCost = async(event: React.FormEvent) => {
+    event.preventDefault()
+    try {
+      const response = await addCost(shownTask.id, {value: taskCost})
+      toast({
+        status: "success",
+        title: "Sucesso",
+        description: "Custo de tarefa, atualizado",
+      });
+      return response;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast({
+          status: "error",
+          title: "Erro",
+          description: error.message,
+        });
+      } else {
+        toast({
+          status: "error",
+          title: "Erro",
+          description: "Ocorreu um erro inesperado. Tente novamente",
+        });
+      }
+    }
+  }
 
   useEffect(() => {
     if (!task) return;
@@ -132,6 +162,25 @@ export const ReadUnitTask = () => {
         <div className="flex space-x-5">
           <p className="font-bold text-lg">Titulo: {shownTask?.title}</p>
           <p className="text-lg">Setor: {shownTask?.sector}</p>
+          <form onSubmit={addTaskCost} className="flex space-x-2">
+            <p className="text-lg">Custo: </p>
+            <input value={shownTask.taskCost} onChange={e => {setTaskCost(Number(e.target.value))}} type="number" className="input input-bordered input-sm rounded-sm"/>
+            <button type="submit" className="btn btn-info btn-sm">
+              Salvar
+            </button>
+          </form>
+        </div>
+        <div className="flex justify-between w-full">
+          <div>
+            <p>Responsável: {user?.name}</p>
+            <p>Contato: {user?.email == null ? "Nenhum usuário atribuído a esta tarefa" : user.email}</p>
+          </div>
+          <form onSubmit={assignUser} className="flex space-x-1 items-center">
+            <SelectUser controlState={[userObj, setUserObj]} dataKey={"id"} />
+            <button type="submit" className="btn btn-info btn-sm">
+              Salvar
+            </button>
+          </form>
         </div>
         <div>
           <p>Data de início: {formatDateToBR(shownTask?.startedAt)}</p>
@@ -142,25 +191,13 @@ export const ReadUnitTask = () => {
               id="dueDate"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="input input-bordered"
+              className="input input-sm rounded-sm input-bordered"
             />
             <button type="submit" className="btn btn-info btn-sm">
               Salvar
             </button>
           </form>
           <p>Data de fim: {formatDateToBR(shownTask?.completedAt)}</p>
-        </div>
-        <div className="flex justify-between w-full">
-          <div>
-            <p>Responsável: {user?.name}</p>
-            <p>Contato: {user?.email == null ? "Nenhum usuário atribuído a esta tarefa" : user.email}</p>
-          </div>
-          <form onSubmit={assignUser} className="flex space-x-1 items-center">
-            <SelectUser controlState={[userObj, setUserObj]} dataKey={"id"} />
-            <button type="submit" className="btn btn-info btn-sm btn-circle">
-              <FaPlus />
-            </button>
-          </form>
         </div>
         <div className="flex flex-col justify-start">
           <p className="font-bold">Documentos</p>
