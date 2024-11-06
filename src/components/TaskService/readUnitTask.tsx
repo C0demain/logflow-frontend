@@ -146,7 +146,7 @@ export const ReadUnitTask = () => {
 
   useEffect(()=>{
     setDueDate(formatDateForInput(shownTask?.dueDate))
-  })
+  }, [shownTask?.dueDate])
 
   if (!shownTask) {
     return <Empty title="Selecione uma tarefa" />;
