@@ -9,12 +9,17 @@ import { isAxiosError } from "axios";
 import CreateButton from "../createButton";
 import { SelectProcess } from "@/components/ProcessService/SelectProcess";
 
-export const CreateOrder: React.FC = () => {
+interface CreateOrderProps{
+  id: string
+}
+
+export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
   const [title, setTitle] = useState<string>("");
   const [clientObj, setClientObj] = useState<any>();
   const [processObj, setProcessObj] = useState<any>()
   const [description, setDescription] = useState<string>("");
   const [value, setValue] = useState<number>();
+  const userId = id
   const status = "PENDENTE";
   const sector = "VENDAS";
   const router = useRouter();
@@ -29,6 +34,7 @@ export const CreateOrder: React.FC = () => {
         title,
         clientId,
         status,
+        userId,
         sector,
         description,
         value,
