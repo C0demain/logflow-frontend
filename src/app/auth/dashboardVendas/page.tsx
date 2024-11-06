@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   return (
     <div className="m-5 space-y-5">
-      <h1 className="text-2xl">Dashboard Financeiro:</h1>
+      <h1 className="text-2xl">Dashboard Vendas:</h1>
       {loading ? (
         <Loading />
       ) : (
