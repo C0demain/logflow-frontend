@@ -5,7 +5,6 @@ export const deleteDocumentById = async (id: string) => {
     const { apiLogin, apiInstance } = await createApiInstances();
     try {
         const response = await apiInstance.delete(`/api/v1/files/${id}`);
-        console.log('Documento deletado:', response.data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

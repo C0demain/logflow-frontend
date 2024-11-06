@@ -12,9 +12,10 @@ import Empty from "../Empty";
 
 interface ReadDocumentsProps {
   userId: string | undefined;
+  taskId: string | undefined;
 }
 
-export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId }) =>{
+export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) =>{
   const [data, setData] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,9 +24,8 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId }) =>{
   const getDocuments = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await listDocuments("", userId); // Chama a função de listagem de documentos
+      const response = await listDocuments("", userId, taskId); // Chama a função de listagem de documentos
       if (Array.isArray(response)) {
-        console.log(response);
         setData(response);
       } else {
         setError("Dados dos documentos não estão no formato esperado.");
@@ -36,7 +36,7 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId }) =>{
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [taskId]);
 
   const handleDelete = async (documentId: string) => {
     try {
@@ -78,10 +78,14 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId }) =>{
 
   useEffect(() => {
     getDocuments();
-  }, [getDocuments]);
+  }, [getDocuments, taskId]);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="h-full w-full">
+        <Loading/>
+      </div>
+  );
   }
 
   if (error) {
@@ -89,17 +93,17 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId }) =>{
   }
 
   if (data.length === 0) {
-    return <Empty title="Ainda não há documentos cadastrados" description="Faça o upload de um arquivo com o botao '+'"/>
+    return <div className="flex w-full items-center justify-center"><Empty title="Ainda não há documentos cadastrados" description="Faça o upload de um arquivo com o botao '+'"/></div>
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto h-min">
       <table className="table w-full bg-white shadow-md rounded-lg">
-        <thead className="bg-gray-800 text-white">
+        <thead className="bg-blue-400 text-black rounded-t-lg">
           <tr>
-            <th className="text-lg px-4 py-2">Nome do Documento</th>
+            <th className="text-lg px-4 py-2 rounded-tl-lg">Nome do Documento</th>
             <th className="text-lg px-4 py-2">Data de Upload</th>
-            <th className="text-lg px-4 py-2">Ações</th>
+            <th className="text-lg px-4 py-2 rounded-tr-lg">Ações</th>
           </tr>
         </thead>
         <tbody className="text-gray-700 text-lg">

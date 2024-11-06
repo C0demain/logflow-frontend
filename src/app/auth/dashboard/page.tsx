@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/app/context/auth";
-import { listOs } from "@/app/api/orderService/listOrder";
-import Loading from "@/app/loading";
-import AverageCost from "@/components/averageCost"; // Ajuste o caminho conforme necessário
-import { Order } from "@/app/api/dashboardService/orderUtils"; // Ajuste o caminho conforme necessário
+import { listOs } from "@/app/api/orderService/listOrder"; // Importa a função para listar ordens
+import Loading from "@/app/loading"; // Importa o componente de loading
+import { useContext, useEffect, useState } from "react";
+import CostCards from "@/components/Dashboard/costCards";
+import { Order } from "@/app/api/dashboardService/orderUtils";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -33,7 +33,11 @@ export default function Dashboard() {
       {loading ? (
         <Loading />
       ) : (
-        <AverageCost orders={orders} />
+        <>
+          <div className="overflow-x-auto">
+            <CostCards orders={orders} /> {/* Passa as ordens para o componente AverageCost */}
+          </div>
+        </>
       )}
     </div>
   );

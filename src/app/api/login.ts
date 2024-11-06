@@ -12,7 +12,6 @@ interface LoginResponse {
 export async function loginPut(email: string, password: string): Promise<LoginResponse | undefined> {
     try {
         const response = await axios.post('http://localhost:8000/api/v1/auth/login', { email, password });
-        console.log(response.data);
         
         if (response.data.token && response.data.id) {
             // Use js-cookie para armazenar os cookies no cliente

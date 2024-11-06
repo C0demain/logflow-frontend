@@ -7,13 +7,13 @@ import { registerDocument } from "@/app/api/documentsService/registerDocument"; 
 
 interface CreateDocumentsProps {
   id: string | undefined;
+  taskId: string | undefined;
 }
 
-export const CreateDocuments: React.FC<CreateDocumentsProps> = ({ id }) => {
+export const CreateDocuments: React.FC<CreateDocumentsProps> = ({ id, taskId }) => {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const userId = id;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -35,10 +35,9 @@ export const CreateDocuments: React.FC<CreateDocumentsProps> = ({ id }) => {
     }
 
     setLoading(true);
-    console.log({file: file, filename: file.name, userId: id})
     
     try {
-      await registerDocument({file: file, filename: file.name, userId: id}); // Chama a função de registro
+      await registerDocument({file: file, filename: file.name, userId: id, taskId: taskId}); // Chama a função de registro
       toast({
         status: "success",
         title: "Upload realizado com sucesso",

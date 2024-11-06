@@ -18,7 +18,6 @@ export const downloadById = async (id: string, name: string) => {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url); // Libera a URL criada
 
-        console.log('Documento baixado:', response);
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if(error?.response?.status === 400) {

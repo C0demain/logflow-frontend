@@ -136,13 +136,13 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
   return (
     <div className="overflow-x-auto">
       <table className="table w-full bg-white shadow-md rounded-lg">
-        <thead className="bg-gray-800 text-white">
+        <thead className="bg-blue-400 text-white rounded-t-lg">
           <tr>
-            <th className="text-lg px-4 py-2">Nome</th>
+            <th className="text-lg px-4 py-2 rounded-tl-lg">Nome</th>
             <th className="text-lg px-4 py-2">Email</th>
             <th className="text-lg px-4 py-2">Telefone</th>
             <th className="text-lg px-4 py-2">CNPJ</th>
-            <th className="text-lg px-4 py-2">Ações</th>
+            <th className="text-lg px-4 py-2 rounded-tr-lg">Ações</th>
           </tr>
         </thead>
         <tbody className="text-gray-700 text-lg">

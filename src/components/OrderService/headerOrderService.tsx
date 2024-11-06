@@ -28,7 +28,6 @@ interface OrderService {
       try {
         const response = await listOs(orderId, null, null, true, null);
         setOrderService(response[0]); // Supondo que response é um array e você quer o primeiro item
-        console.log(response);
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {

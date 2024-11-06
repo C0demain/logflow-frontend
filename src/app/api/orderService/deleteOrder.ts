@@ -5,7 +5,6 @@ export const deleteOsById = async (id: string) => {
     const { apiLogin, apiInstance } = await createApiInstances();
     try {
         const response = await apiInstance.delete(`/api/v1/service-order/${id}`);
-        console.log('Ordem de serviço deletada:', response.data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
