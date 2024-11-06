@@ -22,6 +22,7 @@ export function Navbar() {
             <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
             <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
             <li className="hover:text-white"><Link href="/auth/documents">Documentos</Link></li>
+            <li><Link href="/auth/process">Processos</Link></li>
           </ul>
         )}
       </div>
@@ -61,6 +62,7 @@ export function Navbar() {
               <li><Link href="/auth/user">Funcionários</Link></li>
               <li><Link href="/auth/client">Cliente</Link></li>
               <li><Link href="/auth/documents">Documentos</Link></li>
+              <li><Link href="/auth/process">Processos</Link></li>
             </ul>
           </details>
         </div>

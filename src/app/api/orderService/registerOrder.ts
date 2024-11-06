@@ -5,8 +5,8 @@ interface OrderData {
   title: string;
   clientId: string;
   status: string;
-  userId: string | undefined;
   sector: string;
+  processId: string
   description: string | undefined;
   value: number | undefined;
 }
