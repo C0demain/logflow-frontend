@@ -1,0 +1,7 @@
+export enum Sector {
+    OPERACIONAL = 'OPERACIONAL',
+    FINANCEIRO = 'FINANCEIRO',
+    RH = 'RH',
+    DIRETORIA = 'DIRETORIA',
+    VENDAS = 'VENDAS'
+}

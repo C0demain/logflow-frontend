@@ -7,17 +7,19 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
 import CreateButton from "../createButton";
+import { SelectProcess } from "@/components/ProcessService/SelectProcess";
 
-interface CreateOrderProps {
-  id: string | undefined;
+interface CreateOrderProps{
+  id: string
 }
 
-export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
+export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
   const [title, setTitle] = useState<string>("");
   const [clientObj, setClientObj] = useState<any>();
+  const [processObj, setProcessObj] = useState<any>()
   const [description, setDescription] = useState<string>("");
   const [value, setValue] = useState<number>();
-  const userId = id;
+  const userId = id
   const status = "PENDENTE";
   const sector = "VENDAS";
   const router = useRouter();
@@ -26,6 +28,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let clientId = clientObj?.value;
+    let processId = processObj?.value;
     try {
       const response = await registerOrder({
         title,
@@ -34,7 +37,8 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
         userId,
         sector,
         description,
-        value
+        value,
+        processId
       });
       toast({
         status: "success",
@@ -87,6 +91,13 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
             <label className="block mb-2">Cliente</label>
             <SelectClient
               controlState={[clientObj, setClientObj]}
+              dataKey={"id"}
+            />
+          </div>
+          <div className="w-full max-w-md">
+            <label className="block mb-2">Processo</label>
+            <SelectProcess
+              controlState={[processObj, setProcessObj]}
               dataKey={"id"}
             />
           </div>

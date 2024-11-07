@@ -34,7 +34,7 @@ export default function DeleteButton({
             </label>
             <label
               htmlFor={`delete${id}`}
-              onClick={() => handleDelete(id)}
+              onClick={() => {handleDelete(id)}}
               className="btn btn-error hover:text-white"
             >
               Excluir
