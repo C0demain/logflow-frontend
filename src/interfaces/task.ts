@@ -1,10 +1,12 @@
 import { Sector } from "@/enums/sector";
 import { TaskStage } from "@/enums/taskStage";
+import Role from "@/interfaces/role";
 
 export interface Task{
     id?: string
     title?: string;
     sector?: Sector;
+    role?: Role
     startedAt?: Date | null;
     completedAt?: Date | null;
     dueDate?: Date | null;

@@ -50,7 +50,7 @@ export const SelectRole = (props: propsType) =>{
             name="stage"
             key="stage"
         >
-            {options.map(op => <option value={op.value}>{op.label}</option>)}
+            {options.map(op => <option key={op.value} value={op.value}>{op.label}</option>)}
         </select>
     )
 }
