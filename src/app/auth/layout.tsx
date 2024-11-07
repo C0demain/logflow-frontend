@@ -8,7 +8,7 @@ export default function LayoutNavbar({
     return(
         <div>
             <Navbar />
-            <div className="flex-grow container mx-auto p-4 border-b mb-5">
+            <div className="flex-grow container mx-auto p-4 mb-5">
                 {children}
             </div>
         </div>

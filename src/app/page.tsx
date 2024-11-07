@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useContext, useState } from "react";
 import Loading from "./loading";
 import { AuthContext } from "./context/auth";
-import { loginPut } from "./api/login";
+import { loginPut } from "./api/userService/login";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
 

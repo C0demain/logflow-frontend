@@ -7,7 +7,7 @@ interface UserData {
   password: string;
   role: string;  // Novo campo para o cargo
   sector: string;  // Novo campo para o setor
-  isActive: boolean
+  isActive ?: boolean
 }
 
 export const registerUser = async (userData: UserData) => {
