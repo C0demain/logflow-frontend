@@ -20,7 +20,7 @@ export const ReadUnitTask = () => {
   const [dueDate, setDueDate] = useState<string>("");
   const [taskCost, setTaskCost] = useState<number>();
   const toast = useToast();
-  const { task } = useContext(TaskContext);
+  const { task, deleteTask } = useContext(TaskContext);
   const user = shownTask?.assignedUser;
 
   /* Adiciona data de inicio da tarefa */
@@ -164,7 +164,7 @@ export const ReadUnitTask = () => {
   return (
     <>
       <div className="flex flex-col w-full bg-white p-3 rounded-md shadow-lg space-y-2">
-        <div className="flex space-x-5 w-full">
+        <div className="flex space-x-5 w-full justify-between">
           <div>
             <p className="font-bold text-lg w-full">Titulo: {shownTask?.title}</p>
             <p className="text-lg">Setor: {shownTask?.sector}</p>
@@ -182,6 +182,7 @@ export const ReadUnitTask = () => {
               Salvar
             </button>
           </form>
+          <button type="button" onClick={e => {deleteTask();getTask();}} className="btn btn-circle btn-info btn-sm font-bold">X</button>
         </div>
         <Divider/>
         <div className="flex justify-between w-full">

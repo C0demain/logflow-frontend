@@ -58,7 +58,7 @@ async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }
   if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE COLETA"]) {
     await updateOrder({ sector: "VENDAS", status: "ATIVO" }, orderId);
   } else if (!stagesCompletion["COLETA"]) {
-    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
+    await updateOrder({ sector: "VENDAS", status: "ATIVO" }, orderId);
   } else if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE ENTREGA"]) {
     await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
   } else if (!stagesCompletion["ENTREGA"]) {

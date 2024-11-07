@@ -73,11 +73,11 @@ export const ProcessesList: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center space-y-3">
+    <div className="flex flex-col items-center space-y-2">
       {data.length > 0 && data.map(process => {
         return (
           <div 
-          className="flex flex-row items-center justify-between p-4 sm:p-5 rounded-md w-full bg-white cursor-pointer hover:bg-gray-100" 
+          className="flex flex-row items-center justify-between p-3 sm:p-3 rounded-md w-full bg-white cursor-pointer hover:bg-gray-100" 
           key={process.id} 
           onClick={_ => {router.push(`./process/${process.id}`)}}>
             <p className="text-2xl">{process.title}</p>

@@ -23,14 +23,14 @@ export default function OrderService() {
   }, [user]);
 
   if (loading) {
-    return <div><Loading/></div>;
+    return <Loading/>;
   }
 
   return (
     setoresAcessoPermitidos.includes(user?.sector as string) ? (
       <div className="m-5 space-y-5">
         <div className="justify-between flex items-center">
-          <h1 className="text-2xl">Lista de Ordens de Serviço:</h1>
+          <h1 className="text-3xl font-bold">Lista de Ordens de Serviço:</h1>
           {crudAutorizado ? <CreateOrder id={userId || ''} /> : null}
         </div>
     

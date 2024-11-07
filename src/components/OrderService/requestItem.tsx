@@ -4,6 +4,7 @@ import { StageLine } from "../stageLine";
 import { DeleteOrder } from "./deleteOrder";
 import Link from "next/link";
 import { Divider } from "@chakra-ui/react"
+import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
 
 interface RequestItemProps {
   name: string;
@@ -16,6 +17,11 @@ interface RequestItemProps {
   crudAutorizado: boolean;
 }
 
+export interface taskForStage{
+  key: string,
+  value: boolean
+}
+
 export const RequestItem: React.FC<RequestItemProps> = ({
   name,
   status,
@@ -26,33 +32,23 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   price,
   crudAutorizado,
 }) => {
-  const [stage1, setStage1] = useState(false);
-  const [stage2, setStage2] = useState(false);
-  const [stage3, setStage3] = useState(false);
-  const [stage4, setStage4] = useState(false);
-  const [stage5, setStage5] = useState(false);
-  const [stage6, setStage6] = useState(false);
+  const [tasksList, setTasksList] = useState<taskForStage[]>()
 
-  const setSector = (sector: string | undefined) => {
-    switch (sector) {
-      case "FINANCEIRO":
-        setStage3(true);
-      case "OPERACIONAL":
-        setStage2(true);
-      case "VENDAS":
-        setStage1(true);
-        break;
-      default:
-        setStage1(false);
-        setStage2(false);
-        setStage3(false);
-        break;
+  const fetchTasks = async() => {
+    const response = await getTasks(orderId, "", "", "", "");
+    if(response.tasks.length > 0){
+      const tasks: taskForStage[] = response?.tasks.map(task=>({
+        key: task.title,
+        value: task.completedAt !== null
+      }))
+      console.log(tasks)
+      setTasksList(tasks)
     }
-  };
+  }
 
   useEffect(() => {
-    setSector(sector);
-  }, [sector]);
+    fetchTasks();
+  }, []);
 
   return (
     <div className="flex flex-col sm:flex-row p-4 sm:p-5 rounded-md w-full bg-white shadow-lg transition-all hover:bg-gray-100">
@@ -69,7 +65,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
 
   
       <div className="flex justify-center items-center mb-4 sm:mb-0 sm:mr-4">
-        <StageLine stage1={stage1} stage2={stage2} stage3={stage3} />
+        <StageLine tasks={tasksList} />
       </div>
 
  

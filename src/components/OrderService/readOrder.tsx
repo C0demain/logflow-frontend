@@ -17,7 +17,7 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
   const getOs = useCallback(async () => {
     try {
       const response = await listOs(null, null, null, true, null);
-      setData(response);
+      setData(response.reverse());
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {

@@ -54,9 +54,9 @@ interface OrderService {
                 <h1 className="text-lg md:text-2xl font-bold mr-3">Preço:</h1>
                 <h1 className="text-lg md:text-2xl bg-slate-200 p-1 rounded-md">R${orderService?.value}</h1>
             </div>
-            <div>
+            <div className="w-2/3">
               <h1 className="text-lg md:text-2xl font-bold mr-3">Descrição:</h1>
-             <p className="text-lg md:text-2xl bg-slate-200 p-1 rounded-md">{orderService?.description}</p>
+              <p className="text-lg md:text-2xl bg-slate-200 p-1 rounded-md w-full">{orderService?.description}</p>
             </div>
           </div>
         </div>
