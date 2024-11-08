@@ -9,9 +9,6 @@ const AverageCost: React.FC<AverageCostProps> = ({ orders }) => {
   const averageCost = calculateAverage(orders);
   const totalCost = calculateTotal(orders);
 
-  console.log("Custo Médio:", averageCost.toFixed(2)); // Log da média
-  console.log("Custo Total:", totalCost.toFixed(2)); // Log do total
-
   return (
     <div className="flex justify-between mt-5">
       {/* Card para Custo Médio */}

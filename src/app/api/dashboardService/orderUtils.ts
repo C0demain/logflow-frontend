@@ -1,4 +1,6 @@
 export interface Order {
+  status: string;
+  dueDate: string | number | Date;
   createdAt: string | number | Date;
   id: string;
   title: string;
@@ -30,7 +32,5 @@ export function totalCost(orders: Order[]): number {
 export const calculateProfit = (orders: Order[], totalTaskCost: number): number => {
   const totalRevenue = calculateTotal(orders);  // Cálculo do total de receita (valor das ordens)
   const profit = totalRevenue - totalTaskCost;  // Subtrai o custo das tarefas do total de receita
-  console.log(totalRevenue)
-  console.log(calculateTotal)
   return profit;
 };

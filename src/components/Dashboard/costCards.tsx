@@ -17,14 +17,10 @@ const CostCards: React.FC<AverageCostProps> = ({ orders, onTotalCostCalculated }
       onTotalCostCalculated(totalCost);
     }
   }, [totalCost, onTotalCostCalculated]);
-
-  console.log("Custo Médio:", averageCost.toFixed(2)); // Log da média
-  console.log("Custo Total:", totalCost.toFixed(2)); // Log do total
-
   return (
     <div className="flex space-x-4 mt-5">
       {/* Card para Custo Total */}
-      <div className="card bg-base-100 shadow-xl w-1/4">
+      <div className="card bg-base-100 shadow-xl w-1/2">
         <div className="card-body">
           <h2 className="card-title">Ticket Total</h2>
           <p className="text-2xl mt-2">R$ {totalCost.toFixed(2)}</p>
@@ -32,7 +28,7 @@ const CostCards: React.FC<AverageCostProps> = ({ orders, onTotalCostCalculated }
       </div>
 
       {/* Card para Custo Médio */}
-      <div className="card bg-base-100 shadow-xl w-1/4">
+      <div className="card bg-base-100 shadow-xl w-1/2">
         <div className="card-body">
           <h2 className="card-title">Ticket Médio</h2>
           <p className="text-2xl mt-2">R$ {averageCost.toFixed(2)}</p>

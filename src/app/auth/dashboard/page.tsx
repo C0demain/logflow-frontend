@@ -9,6 +9,7 @@ import { Order } from "@/app/api/dashboardService/orderUtils";
 import TotalTaskCost from "@/components/Dashboard/totalTaskCost";
 import OrderCount from "@/components/Dashboard/orderCount";
 import AccessWrapper from "@/components/AccessWrapper";
+import OverdueOrdersCount from "@/components/Dashboard/overdueOrdersCount";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -93,7 +94,18 @@ export default function Dashboard() {
             </div>
             <br />
           </div>
-          <AccessWrapper sectors={["FINANCEIRO", "VENDAS", "DIRETORIA"]}>
+
+          <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
+
+          <div className="overflow-x-auto">
+          <div className="flex space-x-4 mt-5">
+            <OrderCount />
+            <OverdueOrdersCount />
+          </div>
+          </div>
+
+          </AccessWrapper>
+          <AccessWrapper sectors={["FINANCEIRO","VENDAS", "DIRETORIA"]}>
 
             <div className="overflow-x-auto">
               {/* Exibe as ordens filtradas */}
@@ -104,16 +116,8 @@ export default function Dashboard() {
 
           <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
 
-          <div className="overflow-x-auto">
-            <TotalTaskCost orderId={""} orders={filteredOrders} />
-          </div>
-
-          </AccessWrapper>
-
-          <AccessWrapper sectors={["OPERACIONAL", "DIRETORIA"]}>
-
             <div className="overflow-x-auto">
-              <OrderCount />
+              <TotalTaskCost orderId={""} orders={filteredOrders} />
             </div>
 
           </AccessWrapper>

@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Order } from "@/app/api/dashboardService/orderUtils"; // Ajuste o caminho se necessário
 import { listOs } from "@/app/api/orderService/listOrder"; // Ajuste o caminho se necessário
+import { Order } from "@/app/api/dashboardService/orderUtils"; // Ajuste o caminho se necessário
 
-// Função para contar a quantidade de ordens abertas (não finalizadas)
-const qtdOrders = (orders: Order[]): number => {
-  // Filtra as ordens abertas, excluindo as que têm status "FINALIZADO"
-  return orders.filter(order => order.status !== "FINALIZADO").length;
+// Função para contar a quantidade de ordens de serviço atrasadas
+const qtdOverdueOrders = (orders: Order[]): number => {
+  return orders.filter(order => {
+    // Verifica se a tarefa está atrasada (com base na lógica de datas)
+    const now = new Date();
+    return new Date(order.dueDate) < now; // Atrasadas se a data de término for no passado
+  }).length;
 };
 
-const OrderCount: React.FC = () => {
+const OverdueOrdersCount: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Função para buscar as ordens
+  // Função para buscar as ordens de serviço
   const fetchOrders = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await listOs(null, null, null, true, null); // Ajuste os parâmetros se necessário
+      const response = await listOs(null, null, null, true, null); // Ajuste os parâmetros conforme necessário
       setOrders(response);
     } catch (err) {
       setError("Erro ao carregar as ordens de serviço.");
@@ -39,17 +42,17 @@ const OrderCount: React.FC = () => {
   // Exibe uma mensagem de erro se houver algum problema ao carregar as ordens
   if (error) return <div>{error}</div>;
 
-  // Calcula a quantidade de ordens abertas com a função qtdOrders
-  const totalOrders = qtdOrders(orders);
+  // Calcula a quantidade de ordens atrasadas com a função qtdOverdueOrders
+  const totalOverdueOrders = qtdOverdueOrders(orders);
 
   return (
     <div className="card bg-base-100 shadow-xl w-1/2">
       <div className="card-body">
-        <h2 className="card-title">Quantidade de Ordens de Serviço em Aberto</h2>
-        <p className="text-2xl mt-2">{totalOrders}</p> {/* Exibe a quantidade */}
+        <h2 className="card-title">Ordens de Serviço Atrasadas</h2>
+        <p className="text-2xl mt-2">{totalOverdueOrders} Ordens Atrasadas</p> {/* Exibe a quantidade */}
       </div>
     </div>
   );
 };
 
-export default OrderCount;
+export default OverdueOrdersCount;

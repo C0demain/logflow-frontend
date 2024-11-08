@@ -49,7 +49,6 @@ const TotalTaskCost: React.FC<TotalTaskCostProps> = ({ orderId, orders }) => {
   // Calcula o custo total dos pedidos usando o valor importado totalCost
   const profit = calculateProfit(orders, totalTaskCost)
   const totalOrdersCost = calculateTotal(orders); // Usando a função totalCost para calcular o custo total dos pedidos
-  console.log(totalCost)
   
   
   if (loading) return <div>Carregando...</div>;
@@ -58,14 +57,14 @@ const TotalTaskCost: React.FC<TotalTaskCostProps> = ({ orderId, orders }) => {
   return (
     <div className="flex space-x-4 mt-5">
       {/* Card para Custo Total das Tarefas */}
-      <div className="card bg-base-100 shadow-xl w-1/4">
+      <div className="card bg-base-100 shadow-xl w-1/2">
         <div className="card-body">
           <h2 className="card-title">Custo Total das Tarefas</h2>
           <p className="text-2xl mt-2">R$ {totalTaskCost.toFixed(2)}</p>
         </div>
       </div>
       {/* Card para Custo Total das Tarefas */}
-      <div className="card bg-base-100 shadow-xl w-1/4">
+      <div className="card bg-base-100 shadow-xl w-1/2">
         <div className="card-body">
           <h2 className="card-title">Lucro Total</h2>
           <p className="text-2xl mt-2">R$ {profit.toFixed(2)}</p>
