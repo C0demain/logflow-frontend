@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
-import { calculateTotal, Order, totalCost } from "@/app/api/dashboardService/orderUtils";
+import { calculateProfit, calculateTotal, Order, totalCost } from "@/app/api/dashboardService/orderUtils";
 
 interface TotalTaskCostProps {
   orderId: string;
@@ -42,11 +42,15 @@ const TotalTaskCost: React.FC<TotalTaskCostProps> = ({ orderId, orders }) => {
     fetchTaskCosts();
   }, [orderId, orders.length]);
 
+    useEffect(() => {
+    fetchTaskCosts();
+  }, [orderId, orders.length]);
+
   // Calcula o custo total dos pedidos usando o valor importado totalCost
-  const totalOrdersCost = totalCost(orders); // Usando a função totalCost para calcular o custo total dos pedidos
-  const profit = totalOrdersCost - totalOrdersCost; // Lucro é a diferença entre o custo total dos pedidos e das tarefas
+  const profit = calculateProfit(orders, totalTaskCost)
+  const totalOrdersCost = calculateTotal(orders); // Usando a função totalCost para calcular o custo total dos pedidos
   console.log(totalCost)
-  console.log
+  
   
   if (loading) return <div>Carregando...</div>;
   if (error) return <div>{error}</div>;
@@ -58,6 +62,13 @@ const TotalTaskCost: React.FC<TotalTaskCostProps> = ({ orderId, orders }) => {
         <div className="card-body">
           <h2 className="card-title">Custo Total das Tarefas</h2>
           <p className="text-2xl mt-2">R$ {totalTaskCost.toFixed(2)}</p>
+        </div>
+      </div>
+      {/* Card para Custo Total das Tarefas */}
+      <div className="card bg-base-100 shadow-xl w-1/4">
+        <div className="card-body">
+          <h2 className="card-title">Lucro Total</h2>
+          <p className="text-2xl mt-2">R$ {profit.toFixed(2)}</p>
         </div>
       </div>
       </div>
