@@ -9,6 +9,7 @@ import DeleteButton from "@/components/deleteButton";
 import { deleteProcess } from "@/app/api/process/deleteProcess";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { FaCircleInfo } from "react-icons/fa6";
 
 export const ProcessesList: React.FC = () => {
   const [data, setData] = useState<Process[]>([]);
@@ -77,13 +78,21 @@ export const ProcessesList: React.FC = () => {
       {data.length > 0 && data.map(process => {
         return (
           <div 
-          className="flex flex-row items-center justify-between p-3 sm:p-3 rounded-md w-full bg-white cursor-pointer hover:bg-gray-100" 
+          className="flex flex-row items-center justify-between p-3 sm:p-3 rounded-md w-full bg-white hover:bg-gray-100" 
           key={process.id} 
-          onClick={_ => {router.push(`./process/${process.id}`)}}>
+          >
             <p className="text-2xl">{process.title}</p>
-            <DeleteButton id={process.id || ''} handleDelete={removeProcess}>
-              <h1 className="text-2xl font-semibold mb-4">Deseja excluir esse processo?</h1>
-            </DeleteButton>
+            <div className="flex flex-row items-center justify-between space-x-2">
+              <button 
+              className="btn btn-md hover:bg-slate-400 hover:text-white hover:shadow-md"
+              onClick={() => {router.push(`./process/${process.id}`)}}
+              >
+              <FaCircleInfo />
+              </button>
+              <DeleteButton id={process.id || ''} handleDelete={removeProcess}>
+                <h1 className="text-2xl font-semibold mb-4">Deseja excluir esse processo?</h1>
+              </DeleteButton>
+            </div>
           </div>
         )
       })}
