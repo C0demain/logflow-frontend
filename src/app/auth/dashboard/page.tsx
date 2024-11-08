@@ -10,6 +10,7 @@ import TotalTaskCost from "@/components/Dashboard/totalTaskCost";
 import OrderCount from "@/components/Dashboard/orderCount";
 import AccessWrapper from "@/components/AccessWrapper";
 import OverdueOrdersCount from "@/components/Dashboard/overdueOrdersCount";
+import OverdueTasksCount from "@/components/Dashboard/overdueTasksCount";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -119,6 +120,14 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <TotalTaskCost orderId={""} orders={filteredOrders} />
             </div>
+
+          </AccessWrapper>
+
+          <AccessWrapper sectors={["DIRETORIA"]}>
+
+          <div className="overflow-x-auto">
+            <OverdueTasksCount />
+          </div>
 
           </AccessWrapper>
         </>
