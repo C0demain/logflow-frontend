@@ -69,7 +69,7 @@ export default function SingleProcessPage(){
 
     return (
         <div className="m-5">
-            <h1 className="text-3xl font-bold">{processData.title}</h1>
+            <h1 className="text-3xl font-bold mb-8">{processData.title}</h1>
             <CreateButton >
                 <TemplateTaskForm formTitle="Nova tarefa" onSubmit={createTemplateTask}/>
             </CreateButton>

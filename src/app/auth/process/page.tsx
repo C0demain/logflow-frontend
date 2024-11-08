@@ -34,7 +34,7 @@ export default function ProcessListPage() {
 
   return (
     <div className="m-5">
-        <h1 className="text-3xl font-bold">Processos</h1>
+        <h1 className="text-3xl font-bold mb-8">Processos</h1>
         <CreateButton>
           <ProcessForm formTitle="Criar novo processo" onSubmit={createProcess}/>
         </CreateButton>
