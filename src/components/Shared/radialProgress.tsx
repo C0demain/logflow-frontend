@@ -1,4 +1,3 @@
-// RadialProgress.tsx
 import React from 'react';
 
 type RadialProgressProps = {
@@ -6,7 +5,7 @@ type RadialProgressProps = {
 };
 
 const RadialProgress: React.FC<RadialProgressProps> = ({ percentage }) => {
-  const radius = 40; 
+  const radius = 40;
   const strokeWidth = 6;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;

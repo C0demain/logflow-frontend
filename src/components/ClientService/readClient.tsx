@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
-import EditModal from "./editModal"; // Importa o modal de edição
+import EditModal from "./editModal";
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
@@ -11,13 +11,13 @@ import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { FaEdit } from "react-icons/fa";
 import { DeleteClient } from "./deleteClient";
-import Empty from "@/components/Empty";
+import Empty from "@/components/Shared/Empty";
 
-interface ReadClientProps{
-  autorizado:boolean
+interface ReadClientProps {
+  autorizado: boolean
 }
 
-export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
+export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
   const [data, setData] = useState<ClientData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -130,7 +130,7 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
   }
 
   if (!Array.isArray(data) || data.length === 0) {
-    return <Empty title="Ainda não há clientes cadastrados" description="Crie um novo cliente com o botao '+'"/>
+    return <Empty title="Ainda não há clientes cadastrados" description="Crie um novo cliente com o botao '+'" />
   }
 
   return (
@@ -159,7 +159,7 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
                       <FaEdit />
                     </label>
                   </button>
-                  <DeleteClient id={client.id}/>
+                  <DeleteClient id={client.id} />
                 </td>
               )}
 

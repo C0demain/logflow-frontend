@@ -1,3 +1,4 @@
+import { apiBackend } from "@/app/util/baseURL";
 import axios, { AxiosError, isAxiosError } from "axios";
 import Cookies from 'js-cookie'
 
@@ -6,13 +7,12 @@ interface LoginResponse {
     id: string;
     role: string;
     sector: string;
-    // Adicione outras propriedades que você espera na resposta, se houver
 }
 
 export async function loginPut(email: string, password: string): Promise<LoginResponse | undefined> {
     try {
-        const response = await axios.post('http://localhost:8000/api/v1/auth/login', { email, password });
-        
+        const response = await axios.post(`${apiBackend}/api/v1/auth/login`, { email, password });
+
         if (response.data.token && response.data.id) {
             // Use js-cookie para armazenar os cookies no cliente
             Cookies.set('token', response.data.token, { expires: 1, path: '/' }); // expire em 1 dia
@@ -20,8 +20,8 @@ export async function loginPut(email: string, password: string): Promise<LoginRe
 
         return response.data;
     } catch (error: unknown) {
-        if(isAxiosError(error)){
-            if(error.response?.status === 404 || error.response?.status === 401){
+        if (isAxiosError(error)) {
+            if (error.response?.status === 404 || error.response?.status === 401) {
                 throw new AxiosError("Email ou senha incorretos")
             }
 

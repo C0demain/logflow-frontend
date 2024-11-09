@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import { SelectClient } from "../ClientService/selectClient";
-import { registerOrder } from "@/app/api/orderService/registerOrder";
+import { registerOrder } from "@/app/api/serviceOrder/registerOrder";
 import { useRouter } from "next/navigation";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 import { SelectProcess } from "@/components/ProcessService/SelectProcess";
 
-interface CreateOrderProps{
+interface CreateOrderProps {
   id: string
 }
 
-export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
+export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
   const [title, setTitle] = useState<string>("");
   const [clientObj, setClientObj] = useState<any>();
   const [processObj, setProcessObj] = useState<any>()
@@ -27,8 +27,8 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let clientId = clientObj?.value;
-    let processId = processObj?.value;
+    const clientId = clientObj?.value;
+    const processId = processObj?.value;
     try {
       const response = await registerOrder({
         title,
@@ -115,12 +115,12 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({id}) => {
             <div className="flex items-center gap-2">
               <label className="input input-bordered flex items-center gap-2 w-full">
                 R$
-              <input
-                type="number"
-                className="grow"
-                value={value}
-                onChange={(e) => setValue(parseFloat(e.target.value) || undefined)}
-              /></label>
+                <input
+                  type="number"
+                  className="grow"
+                  value={value}
+                  onChange={(e) => setValue(parseFloat(e.target.value) || undefined)}
+                /></label>
             </div>
           </div>
           <div className="w-full max-w-md flex justify-end">

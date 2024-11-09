@@ -1,7 +1,7 @@
-import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
+import { getTasks } from "@/app/api/tasks/listTasks";
 import Loading from "@/app/loading";
 import { useContext, useEffect, useState } from "react";
-import Empty from "../Empty";
+import Empty from "../Shared/Empty";
 import { TaskContext } from "@/app/context/task";
 import { CreateDocButton } from "../DocumentService/createDocButton";
 import { ReadDocuments } from "../DocumentService/readDocuments";
@@ -9,7 +9,6 @@ import { SelectUser } from "../UserService/selectUser";
 import { addCost, setdueDate, startTask, userForTask } from "@/app/api/tasks/taskUtil";
 import { isAxiosError } from "axios";
 import { useToast } from "@chakra-ui/react/toast";
-import { FaPlus } from "react-icons/fa";
 import { formatDateForInput, formatDateToBR } from "@/app/util/dateFormatter";
 import { Divider } from "@chakra-ui/react";
 
@@ -235,6 +234,4 @@ export const ReadUnitTask = () => {
       </div>
     </>
   );
-  
-
 };

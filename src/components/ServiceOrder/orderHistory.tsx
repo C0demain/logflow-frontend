@@ -9,8 +9,6 @@ interface OrderHistoryProps {
   logs: Log[];
 }
 
-
-
 const OrderHistory: React.FC<OrderHistoryProps> = ({ logs }) => {
   return (
     <div className="p-5">

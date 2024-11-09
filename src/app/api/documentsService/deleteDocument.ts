@@ -2,7 +2,7 @@ import { createApiInstances } from "@/app/util/baseURL";
 import axios, { AxiosError } from "axios";
 
 export const deleteDocumentById = async (id: string) => {
-    const { apiLogin, apiInstance } = await createApiInstances();
+    const { apiInstance } = await createApiInstances();
     try {
         const response = await apiInstance.delete(`/api/v1/files/${id}`);
         return response.data;

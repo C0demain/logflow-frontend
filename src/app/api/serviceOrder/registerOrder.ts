@@ -13,7 +13,7 @@ interface OrderData {
 }
 
 export const registerOrder = async (orderData: OrderData) => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
   try {
     const response = await apiInstance.post("/api/v1/service-order", orderData);
     return response.data;

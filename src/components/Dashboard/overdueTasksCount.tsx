@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getOverdueTasksCount } from "@/app/api/dashboardService/getOverdueTasksCount"; // Ajuste o caminho conforme necessário
+import { getOverdueTasksCount } from "@/app/api/dashboardService/getOverdueTasksCount";
 
 const OverdueTasksCount: React.FC = () => {
   const [overdueTasks, setOverdueTasks] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
- 
+
   const fetchOverdueTasks = async () => {
     setLoading(true);
     setError(null);
@@ -21,7 +21,7 @@ const OverdueTasksCount: React.FC = () => {
     }
   };
 
-  
+
   useEffect(() => {
     fetchOverdueTasks();
   }, []);

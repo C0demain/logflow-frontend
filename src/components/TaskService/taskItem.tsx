@@ -11,11 +11,11 @@ interface TaskItemProps {
   onChecked: () => void;
 }
 
-export default function TaskItem({ idTask, completed, title, onChecked}: TaskItemProps) {
-  const params = useParams<{userId: string, orderId: string}>();
+export default function TaskItem({ idTask, completed, title, onChecked }: TaskItemProps) {
+  const params = useParams<{ userId: string, orderId: string }>();
   const [completedTask, setCompletedTask] = useState<boolean>(completed);
   const { readTask } = useContext(TaskContext)
-  
+
   const handleCheckboxChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const newCompletedStatus = e.target.checked;
     setCompletedTask(newCompletedStatus);
@@ -28,7 +28,7 @@ export default function TaskItem({ idTask, completed, title, onChecked}: TaskIte
   };
 
   return (
-    <div className="flex flex-row w-full p-1 m-1 bg-slate-100 items-center justify-between rounded-md hover:bg-slate-200 cursor-pointer" onClick={() => readTask({id: idTask})}>
+    <div className="flex flex-row w-full p-1 m-1 bg-slate-100 items-center justify-between rounded-md hover:bg-slate-200 cursor-pointer" onClick={() => readTask({ id: idTask })}>
       <div className="flex flex-row w-3/5 space-x-2 items-center">
         <input
           type="checkbox"

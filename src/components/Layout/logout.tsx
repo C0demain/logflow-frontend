@@ -55,7 +55,6 @@ export function Logout() {
           </div>
         </div>
       </dialog>
-  </div>
-  
+    </div>
   );
 }

@@ -9,14 +9,14 @@ type propsType = {
     className?: string
 }
 
-export const SelectProcess = (props: propsType) =>{
+export const SelectProcess = (props: propsType) => {
     const [processOpt, setProcessOpt] = useState<any[]>([])
     const [controlState, setControlState] = props.controlState
 
     const fetchProcesses = async () => {
         const response = await getProcesses()
         const options = []
-        for(const p of response){
+        for (const p of response) {
             options.push({
                 value: p.id,
                 label: p.title
@@ -27,7 +27,7 @@ export const SelectProcess = (props: propsType) =>{
 
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchProcesses()
     }, [])
 
@@ -35,11 +35,11 @@ export const SelectProcess = (props: propsType) =>{
         <Select
             options={processOpt}
             value={controlState}
-            onChange={(e) => { setControlState(e); } }
+            onChange={(e) => { setControlState(e); }}
             className="text-black"
             classNamePrefix="custom-select"
             placeholder="Selecione um processo"
-            isClearable 
+            isClearable
         />
     )
 }

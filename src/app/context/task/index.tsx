@@ -13,13 +13,13 @@ type TaskContextProps = {
 
 const TaskContext = createContext<TaskContextProps>({} as TaskContextProps);
 
-const TaskProvider = ({children}: {children: ReactNode}) => {
+const TaskProvider = ({ children }: { children: ReactNode }) => {
     const [task, setTask] = useState<taskProps | undefined>(undefined)
 
-    useEffect(()=>{
+    useEffect(() => {
         const storedTask = Cookies.get('task')
-        if(storedTask){
-            try{
+        if (storedTask) {
+            try {
                 const taskParse: taskProps = JSON.parse(storedTask)
                 setTask(taskParse)
             } catch (error) {
@@ -30,7 +30,7 @@ const TaskProvider = ({children}: {children: ReactNode}) => {
 
     const readTask = (task: taskProps) => {
         setTask(task)
-        Cookies.set('task', JSON.stringify(task), {expires: 1});
+        Cookies.set('task', JSON.stringify(task), { expires: 1 });
     }
 
     const deleteTask = () => {
@@ -38,11 +38,11 @@ const TaskProvider = ({children}: {children: ReactNode}) => {
         Cookies.remove('task')
     }
 
-    return(
-        <TaskContext.Provider value={{task, readTask, deleteTask}}>
+    return (
+        <TaskContext.Provider value={{ task, readTask, deleteTask }}>
             {children}
         </TaskContext.Provider>
     )
 }
 
-export {TaskContext, TaskProvider}
+export { TaskContext, TaskProvider }

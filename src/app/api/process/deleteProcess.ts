@@ -1,12 +1,11 @@
 import { createApiInstances } from "@/app/util/baseURL"
-import { Process } from "@/interfaces/process";
 import axios from "axios"
 
 export const deleteProcess = async (id: string) => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
   
     try {
-        let url = `/api/v1/process/${id}`
+        const url = `/api/v1/process/${id}`
 
         const response = await apiInstance.delete(url)
         return response
