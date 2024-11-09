@@ -31,8 +31,8 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(driverURL);
   }
 
-  // Se houver token e a URL for '/login', redireciona para o dashboard
-  if (token && request.nextUrl.pathname === '/login') {
+  // Se houver token e a URL for '/login' ou '/', redireciona para a tela de ordem de serviço
+  if (token && request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/') {
     return NextResponse.redirect(serviceOrderURL);
   }
 
