@@ -2,7 +2,7 @@ import { deleteUserById } from "@/app/api/userService/deleteUser";
 import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import DeleteButton from "../deleteButton";
+import DeleteButton from "../Shared/deleteButton";
 
 interface DeleteUserProps {
   id: string;
@@ -39,7 +39,7 @@ export const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
 
   return (
     <DeleteButton id={id} handleDelete={handleDelete}>
-      <h1 className="modal-top text-2xl"> 
+      <h1 className="modal-top text-2xl">
         Deseja realmente excluir esse funcionário?
       </h1>
     </DeleteButton>

@@ -17,7 +17,7 @@ const CostCards: React.FC<AverageCostProps> = ({ orders, onTotalCostCalculated }
       onTotalCostCalculated(totalCost);
     }
   }, [totalCost, onTotalCostCalculated]);
-  
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
       {/* Card para Ticket Total */}
@@ -27,7 +27,7 @@ const CostCards: React.FC<AverageCostProps> = ({ orders, onTotalCostCalculated }
           <p className="text-2xl mt-2">R$ {totalCost.toFixed(2)}</p>
         </div>
       </div>
-  
+
       {/* Card para Ticket Médio */}
       <div className="card bg-base-100 shadow-xl w-full">
         <div className="card-body">

@@ -18,11 +18,11 @@ interface ClientData {
 }
 
 export const registerClient = async (clientData: ClientData) => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
 
   try {
     const response = await apiInstance.post('/api/v1/client', clientData);
-    return response.data; // Adjust based on the actual response structure
+    return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error?.response?.status === 400)

@@ -1,5 +1,5 @@
 import React from "react";
-import { calculateAverage, calculateTotal, Order } from "@/app/api/dashboardService/orderUtils"; // Ajuste o caminho conforme necessário
+import { calculateAverage, calculateTotal, Order } from "@/app/api/dashboardService/orderUtils"; 
 
 interface AverageCostProps {
   orders: Order[];

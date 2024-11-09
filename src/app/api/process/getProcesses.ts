@@ -3,10 +3,10 @@ import { Process } from "@/interfaces/process";
 import axios from "axios"
 
 export const getProcesses = async (): Promise<Process[]> => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
   
     try {
-        let url = '/api/v1/process'
+        const url = '/api/v1/process'
 
         const response = await apiInstance.get(url)
         return response.data.processes

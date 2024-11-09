@@ -1,18 +1,18 @@
 'use client'
 
-import { ReadOrder } from "@/components/OrderService/readOrder";
-import { CreateOrder } from "@/components/OrderService/createOrder";
+import { ReadOrder } from "@/components/ServiceOrder/readOrder";
+import { CreateOrder } from "@/components/ServiceOrder/createOrder";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/app/context/auth";
 import Loading from "@/app/loading";
 
-export default function OrderService() {
+export default function ServiceOrder() {
   const setoresAcessoPermitidos = ["FINANCEIRO", "VENDAS", "DIRETORIA", "OPERACIONAL"];
   const setoresCrudPermitido = ["VENDAS", "DIRETORIA"];
   const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | undefined>(undefined);
   const { user } = useContext(AuthContext);
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
@@ -23,7 +23,7 @@ export default function OrderService() {
   }, [user]);
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (
@@ -33,7 +33,7 @@ export default function OrderService() {
           <h1 className="text-3xl font-bold">Lista de Ordens de Serviço:</h1>
           {crudAutorizado ? <CreateOrder id={userId || ''} /> : null}
         </div>
-    
+
         <div className="overflow-x-auto">
           <ReadOrder autorizado={crudAutorizado} userId={userId || ''} />
         </div>

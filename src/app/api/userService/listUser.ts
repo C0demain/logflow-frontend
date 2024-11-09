@@ -2,11 +2,11 @@ import { createApiInstances } from "@/app/util/baseURL";
 import axios from "axios";
 
 export const listUsers = async () => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+  const { apiInstance } = await createApiInstances();
 
   try {
     const response = await apiInstance.get('/api/v1/users');
-    return response.data.users; 
+    return response.data.users;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error('Erro ao listar funcionários: ' + error.response?.data.message);

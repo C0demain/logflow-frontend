@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { DeleteUser } from "@/components/UserService/deleteUser";
-import { EditUser } from "@/components/UserService/updateUser"; // Novo componente de edição
+import { EditUser } from "@/components/UserService/updateUser";
 import Loading from "@/app/loading";
 import { listUsers } from "@/app/api/userService/listUser";
-import { FaEdit, FaFileAlt } from "react-icons/fa"; // Importando o ícone de documento
+import { FaEdit, FaFileAlt } from "react-icons/fa";
 import { deleteUserById } from "@/app/api/userService/deleteUser";
-import { useRouter } from "next/navigation"; // Importando useRouter para redirecionamento
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface UserData {

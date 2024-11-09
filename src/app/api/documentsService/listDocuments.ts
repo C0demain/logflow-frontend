@@ -1,12 +1,12 @@
 import { createApiInstances } from "@/app/util/baseURL";
 import axios from "axios";
 
-export const listDocuments = async (file: string, user:string | undefined, taskId: string | undefined) => {
-  const { apiLogin, apiInstance } = await createApiInstances();
+export const listDocuments = async (file: string, user: string | undefined, taskId: string | undefined) => {
+  const { apiInstance } = await createApiInstances();
 
   try {
     let url = '/api/v1/files';
-    
+
     const fileFilter = file ? `file=${file}` : "";
     const userFilter = user ? `userId=${user}` : "";
     const taskFilter = taskId ? `taskId=${taskId}` : "";

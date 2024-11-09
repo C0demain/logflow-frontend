@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MaskedInput from "react-text-mask";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface ClientData {
   name: string;
@@ -198,7 +198,7 @@ export function CreateClient() {
             required
           />
           <MaskedInput
-            mask={["(",/\d/,/\d/,")"," ",/\d/,/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,/\d/]}
+            mask={["(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
             name="phone"
             placeholder="Telefone"
             value={formData.phone}
@@ -207,7 +207,7 @@ export function CreateClient() {
             required
           />
           <MaskedInput
-            mask={[/\d/,/\d/,".",/\d/,/\d/,/\d/,".",/\d/,/\d/,/\d/,"/",/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,]}
+            mask={[/\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/,]}
             name="cnpj"
             placeholder="CNPJ"
             value={formData.cnpj}

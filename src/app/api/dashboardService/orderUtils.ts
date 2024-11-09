@@ -22,7 +22,6 @@ export const calculateTotal = (orders: Order[]): number => {
   return orders.reduce((acc, order) => acc + (typeof order.value === "number" ? order.value : parseFloat(order.value)), 0);
 };
 
-
 // Exporta o custo total das ordens
 export function totalCost(orders: Order[]): number {
   return calculateTotal(orders);

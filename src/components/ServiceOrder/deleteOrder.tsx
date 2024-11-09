@@ -1,7 +1,7 @@
-import { deleteOsById } from "@/app/api/orderService/deleteOrder";
+import { deleteOsById } from "@/app/api/serviceOrder/deleteOrder";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import DeleteButton from "../deleteButton";
+import DeleteButton from "../Shared/deleteButton";
 
 interface DeleteOrderProps {
   id: string;
@@ -30,7 +30,7 @@ export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
 
   return (
     <div className="flex relative">
-      <DeleteButton id={id} handleDelete={handleDelete}  circle={true}>
+      <DeleteButton id={id} handleDelete={handleDelete} circle={true}>
         <h1 className="text-xl mb-6">Deseja confirmar a exclusão?</h1>
       </DeleteButton>
     </div>

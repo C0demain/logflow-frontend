@@ -1,9 +1,9 @@
 "use client";
-import { listOs } from "@/app/api/orderService/listOrder";
+import { listOs } from "@/app/api/serviceOrder/listOrder";
 import Loading from "@/app/loading";
 import { useCallback, useEffect, useState } from "react";
 import { RequestItem } from "./requestItem";
-import Empty from "@/components/Empty";
+import Empty from "@/components/Shared/Empty";
 
 interface ReadOrderProps {
   userId: string | undefined;
@@ -35,8 +35,8 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
 
   return (
     <div className="flex flex-col items-center justify-center space-y-10">
-      {data.length>0 ?    
-      data.map((order) => (
+      {data.length > 0 ?
+        data.map((order) => (
           <RequestItem
             crudAutorizado={autorizado}
             key={order.id}
@@ -48,8 +48,8 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
             clientName={order.client.clientName}
             price={order.value}
           />
-      )): <Empty title="Ainda não há ordens de serviço cadastrados" description="Crie uma nova ordem de serviço com o botao '+'"/>
-    }
+        )) : <Empty title="Ainda não há ordens de serviço cadastrados" description="Crie uma nova ordem de serviço com o botao '+'" />
+      }
     </div>
   );
 };

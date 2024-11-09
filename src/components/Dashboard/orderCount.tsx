@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Order } from "@/app/api/dashboardService/orderUtils"; // Ajuste o caminho se necessário
-import { listOs } from "@/app/api/orderService/listOrder"; // Ajuste o caminho se necessário
+import { Order } from "@/app/api/dashboardService/orderUtils";
+import { listOs } from "@/app/api/serviceOrder/listOrder";
 
 // Função para contar a quantidade de ordens abertas (não finalizadas)
 const qtdOrders = (orders: Order[]): number => {

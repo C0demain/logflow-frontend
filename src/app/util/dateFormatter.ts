@@ -1,4 +1,3 @@
-// dateFormatter.ts
 export const formatDateToBR = (dateString: string): string => {
   if (dateString == null) {
     return '';
@@ -18,7 +17,7 @@ export const formatDateToBR = (dateString: string): string => {
   return utcDate.toLocaleDateString('pt-BR', options);
 };
 
-  
+
 export const formatDateForInput = (dateString: string): string => {
   if (!dateString) {
     return '';
@@ -35,7 +34,3 @@ export const formatDateForInput = (dateString: string): string => {
 
   return `${year}-${month}-${day}`;
 };
-
-
-
-  

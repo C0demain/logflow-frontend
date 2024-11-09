@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import OrderHistory from "@/components/OrderService/orderHistory"; // ajuste o caminho conforme necessário
 
 export default function OrderHistoryPage() {
   const [logs, setLogs] = useState<{ changedTo: string; atDate: string }[]>([]);

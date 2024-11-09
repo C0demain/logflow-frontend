@@ -11,15 +11,15 @@ interface DocumentsProps {
   };
 }
 
-export default function DocumentsPage({params}: DocumentsProps) {
+export default function DocumentsPage({ params }: DocumentsProps) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
   const setoresCrudPermitido = ["VENDAS", "DIRETORIA", "RH", "OPERACIONAL", "FINCANCEIRO"]
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   const [userId, setUserId] = useState(params.userId || user?.id)
 
-  useEffect(()=>{
-    if(user){
+  useEffect(() => {
+    if (user) {
       setoresCrudPermitido.includes(user.sector) ? setCrudAutorizado(true) : setCrudAutorizado(false)
       setUserId(params?.userId || user.id)
     }
@@ -31,7 +31,7 @@ export default function DocumentsPage({params}: DocumentsProps) {
         <h1 className="text-2xl">Documentos:</h1>
         {crudAutorizado && <CreateDocuments taskId="" id={userId} />}
       </div>
-      <ReadDocuments taskId="" userId={userId}/>
+      <ReadDocuments taskId="" userId={userId} />
     </div>
   );
 }
