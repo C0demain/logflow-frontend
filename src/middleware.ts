@@ -43,11 +43,6 @@ export const config = {
   matcher: [
     '/',
     '/login',
-    '/auth/service-order',
-    '/auth/register',
-    '/auth/to-do-list/[userId]/[orderId]',
-    '/auth/client',
-    '/auth/userEdit',
-    '/auth/driver', 
+    '/auth/:path*',
   ],
 };

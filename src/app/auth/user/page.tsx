@@ -10,10 +10,15 @@ export default function UserPage() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [autorizado, setAutorizado] = useState(false)
   const { user } = useContext(AuthContext)
+  const [isClientSide, setIsClientSide] = useState(false); // Controle para lado do cliente
 
   const toggleModal = () => {
     setModalOpen(!isModalOpen);
   };
+
+  useEffect(() => {
+    setIsClientSide(true); // Marca quando a renderização for no lado do cliente
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -21,7 +26,7 @@ export default function UserPage() {
     }
   }, [user])
 
-  if (!user || !user.sector) {
+  if (!isClientSide || !user || !user.sector) {
     return <div><Loading /></div>;
   }
 
