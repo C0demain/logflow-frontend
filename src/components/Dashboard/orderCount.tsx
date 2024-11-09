@@ -43,10 +43,10 @@ const OrderCount: React.FC = () => {
   const totalOrders = qtdOrders(orders);
 
   return (
-    <div className="card bg-base-100 shadow-xl w-1/2">
+    <div className="card bg-base-100 shadow-xl w-full my-4">
       <div className="card-body">
         <h2 className="card-title">Quantidade de Ordens de Serviço em Aberto</h2>
-        <p className="text-2xl mt-2">{totalOrders}</p> {/* Exibe a quantidade */}
+        <p className="text-2xl mt-2">{totalOrders}</p>
       </div>
     </div>
   );

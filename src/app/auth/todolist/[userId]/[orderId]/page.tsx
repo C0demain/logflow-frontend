@@ -97,8 +97,8 @@ export default function TaskPage({ params }: TaskListProps) {
     <div className="flex flex-col h-full">
       <HeaderOrderService orderId={orderId} />
       <TaskProvider>
-        <div className="flex flex-row justify-between space-x-1 w-full h-full">
-          <div className="flex flex-col w-1/2 space-y-2 h-full overscroll-contain overflow-y-auto">
+        <div className="flex flex-col sm:flex-row justify-between space-y-4 sm:space-x-4 w-full h-full">
+          <div className="flex flex-col sm:w-1/2 w-full space-y-2 h-full overscroll-contain overflow-y-auto">
             <TodoList onUpdateTaskList={refetch} sectorName="EMISSÃO DE DOCUMENTOS DE COLETA" tasks={data["EMISSÃO DE DOCUMENTOS DE COLETA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="COLETA" tasks={data["COLETA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="EMISSÃO DE DOCUMENTOS DE ENTREGA" tasks={data["EMISSÃO DE DOCUMENTOS DE ENTREGA"]} />
@@ -106,11 +106,12 @@ export default function TaskPage({ params }: TaskListProps) {
             <TodoList onUpdateTaskList={refetch} sectorName="CONFIRMAÇÃO DE ENTREGA" tasks={data["CONFIRMAÇÃO DE ENTREGA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="CONFERÊNCIA DE ORÇAMENTO" tasks={data["CONFERÊNCIA DE ORÇAMENTO"]} />
           </div>
-          <div className="w-1/2 h-full">
+          <div className="sm:w-1/2 w-full h-full mt-4 sm:mt-0">
             <ReadUnitTask />
           </div>
         </div>
       </TaskProvider>
     </div>
   );
+  
 }

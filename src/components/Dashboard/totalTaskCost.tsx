@@ -55,23 +55,23 @@ const TotalTaskCost: React.FC<TotalTaskCostProps> = ({ orderId, orders }) => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="flex space-x-4 mt-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
       {/* Card para Custo Total das Tarefas */}
-      <div className="card bg-base-100 shadow-xl w-1/2">
+      <div className="card bg-base-100 shadow-xl w-full">
         <div className="card-body">
           <h2 className="card-title">Custo Total das Tarefas</h2>
           <p className="text-2xl mt-2">R$ {totalTaskCost.toFixed(2)}</p>
         </div>
       </div>
-      {/* Card para Custo Total das Tarefas */}
-      <div className="card bg-base-100 shadow-xl w-1/2">
+  
+      {/* Card para Lucro Total */}
+      <div className="card bg-base-100 shadow-xl w-full">
         <div className="card-body">
           <h2 className="card-title">Lucro Total</h2>
           <p className="text-2xl mt-2">R$ {profit.toFixed(2)}</p>
         </div>
       </div>
-      </div>
-
+    </div>
   );
 };
 

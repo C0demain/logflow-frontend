@@ -66,72 +66,71 @@ export default function Dashboard() {
 
   return (
     <div className="m-5 space-y-5">
-      <h1 className="text-2xl">Dashboard Geral:</h1>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <div className="space-y-3">
-            {/* Filtro de Data */}
-            <div className="flex space-x-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Data Início</label>
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="input input-bordered"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Data Fim</label>
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="input input-bordered"
-                />
-              </div>
-            </div>
-            <br />
+  <h1 className="text-2xl">Dashboard Geral:</h1>
+  {loading ? (
+    <Loading />
+  ) : (
+    <>
+      <div className="space-y-3">
+        {/* Filtro de Data */}
+        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Data Início</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="input input-bordered w-full"
+            />
           </div>
-
-          <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
-
-          <div className="overflow-x-auto">
-          <div className="flex space-x-4 mt-5">
-            <OrderCount />
-            <OverdueOrdersCount />
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Data Fim</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="input input-bordered w-full"
+            />
           </div>
-          </div>
+        </div>
+        <br />
+      </div>
 
-          </AccessWrapper>
-          <AccessWrapper sectors={["FINANCEIRO","VENDAS", "DIRETORIA"]}>
-
-            <div className="overflow-x-auto">
-              {/* Exibe as ordens filtradas */}
-              <CostCards orders={filteredOrders} />
-            </div>
-
-          </AccessWrapper>
-
-          <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
-
-            <div className="overflow-x-auto">
-              <TotalTaskCost orderId={""} orders={filteredOrders} />
-            </div>
-
-          </AccessWrapper>
-
-          <AccessWrapper sectors={["DIRETORIA"]}>
-
-          <div className="overflow-x-auto">
-            <OverdueTasksCount />
-          </div>
-
-          </AccessWrapper>
-        </>
-      )}
+      <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
+  <div className="overflow-x-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5 w-full">
+      <div className="w-full">
+        <OrderCount />
+      </div>
+      <div className="w-full">
+        <OverdueOrdersCount />
+      </div>
     </div>
+  </div>
+</AccessWrapper>
+
+
+      <AccessWrapper sectors={["FINANCEIRO", "VENDAS", "DIRETORIA"]}>
+        <div className="overflow-x-auto">
+          {/* Exibe as ordens filtradas */}
+          <CostCards orders={filteredOrders} />
+        </div>
+      </AccessWrapper>
+
+      <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
+        <div className="overflow-x-auto">
+          <TotalTaskCost orderId={""} orders={filteredOrders} />
+        </div>
+      </AccessWrapper>
+
+      <AccessWrapper sectors={["DIRETORIA"]}>
+        <div className="overflow-x-auto">
+          <OverdueTasksCount />
+        </div>
+      </AccessWrapper>
+    </>
+  )}
+</div>
+
   );
 }

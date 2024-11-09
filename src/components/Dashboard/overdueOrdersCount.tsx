@@ -46,10 +46,10 @@ const OverdueOrdersCount: React.FC = () => {
   const totalOverdueOrders = qtdOverdueOrders(orders);
 
   return (
-    <div className="card bg-base-100 shadow-xl w-1/2">
+    <div className="card bg-base-100 shadow-xl w-full my-4">
       <div className="card-body">
         <h2 className="card-title">Ordens de Serviço Atrasadas</h2>
-        <p className="text-2xl mt-2">{totalOverdueOrders} Ordens Atrasadas</p> {/* Exibe a quantidade */}
+        <p className="text-2xl mt-2">{totalOverdueOrders} Ordens Atrasadas</p>
       </div>
     </div>
   );

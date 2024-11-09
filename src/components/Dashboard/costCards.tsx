@@ -17,18 +17,19 @@ const CostCards: React.FC<AverageCostProps> = ({ orders, onTotalCostCalculated }
       onTotalCostCalculated(totalCost);
     }
   }, [totalCost, onTotalCostCalculated]);
+  
   return (
-    <div className="flex space-x-4 mt-5">
-      {/* Card para Custo Total */}
-      <div className="card bg-base-100 shadow-xl w-1/2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+      {/* Card para Ticket Total */}
+      <div className="card bg-base-100 shadow-xl w-full">
         <div className="card-body">
           <h2 className="card-title">Ticket Total</h2>
           <p className="text-2xl mt-2">R$ {totalCost.toFixed(2)}</p>
         </div>
       </div>
-
-      {/* Card para Custo Médio */}
-      <div className="card bg-base-100 shadow-xl w-1/2">
+  
+      {/* Card para Ticket Médio */}
+      <div className="card bg-base-100 shadow-xl w-full">
         <div className="card-body">
           <h2 className="card-title">Ticket Médio</h2>
           <p className="text-2xl mt-2">R$ {averageCost.toFixed(2)}</p>

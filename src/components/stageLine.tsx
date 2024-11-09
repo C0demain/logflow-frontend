@@ -19,40 +19,41 @@ export const StageLine: React.FC<stageLineProps> = ({ tasks }) => {
     if (!tasks){
         <></>
     }
-    return(
-        <Box>
-      <Stepper index={activeStep} size="lg">
-        <Box
-          display="grid"
-          gridTemplateColumns="repeat(11, 1fr)" // Define 4 colunas
-          gap="10px" // Espaço entre os itens
-        >
-          {tasks?.map((e, index) => (
-            <Step key={index}>
-              <Tooltip label={e.key} placement="top">
-                <Box
-                  as="span"
-                  fontSize="sm"
-                  fontWeight="bold"
-                  padding="10px"
-                  minWidth="40px"
-                  minHeight="40px"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  borderRadius="full"
-                  backgroundColor={e.value ? "green.500" : "blue.500"}
-                  color="white"
-                  cursor="pointer"
-                  _hover={e.value?{ backgroundColor: "green.300" }:{ backgroundColor: "blue.300" }}
-                >
-                  {e.value ? (<FaCheck />): (<FaRegCircle />)}
-                </Box>
-              </Tooltip>
-            </Step>
-          ))}
-        </Box>
-      </Stepper>
-    </Box>
-    )
+    return (
+      <Box width="100%" display="flex" justifyContent={{ base: "center", lg: "flex-start" }}>
+        <Stepper index={activeStep} size="lg">
+          <Box
+            display="grid"
+            gridTemplateColumns={{ base: "repeat(4, 1fr)", sm: "repeat(6, 1fr)", md: "repeat(8, 1fr)", lg: "repeat(11, 1fr)" }}
+            gap="10px"
+          >
+            {tasks?.map((e, index) => (
+              <Step key={index}>
+                <Tooltip label={e.key} placement="top">
+                  <Box
+                    as="span"
+                    fontSize="sm"
+                    fontWeight="bold"
+                    padding="10px"
+                    minWidth="40px"
+                    minHeight="40px"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    borderRadius="full"
+                    backgroundColor={e.value ? "green.500" : "blue.500"}
+                    color="white"
+                    cursor="pointer"
+                    _hover={e.value ? { backgroundColor: "green.300" } : { backgroundColor: "blue.300" }}
+                  >
+                    {e.value ? <FaCheck /> : <FaRegCircle />}
+                  </Box>
+                </Tooltip>
+              </Step>
+            ))}
+          </Box>
+        </Stepper>
+      </Box>
+    );
+    
 }

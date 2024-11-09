@@ -30,7 +30,7 @@ const OverdueTasksCount: React.FC = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="card bg-base-100 shadow-xl w-1/2">
+    <div className="card bg-base-100 shadow-xl w-full my-4">
       <div className="card-body">
         <h2 className="card-title">Tarefas Atrasadas</h2>
         <p className="text-2xl mt-2">{overdueTasks} Tarefas Atrasadas</p>
