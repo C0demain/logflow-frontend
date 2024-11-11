@@ -35,6 +35,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
 
   const fetchTasks = async () => {
     const response = await getTasks(orderId, "", "", "", "");
+    console.log(response)
     if (response.tasks.length > 0) {
       const tasks: taskForStage[] = response?.tasks.map(task => ({
         key: task.title,
@@ -69,7 +70,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
 
       {/* Terceira Seção: Status e Links */}
       {userId && orderId && (
-        <div className="flex flex-col items-center sm:items-end col-span-1 w-full sm:justify-between">
+        <div className="flex flex-col col-span-1 w-full justify-between items-end">
           {/* Status Badge */}
           <div className="flex justify-center mb-4">
             <div
@@ -81,9 +82,9 @@ export const RequestItem: React.FC<RequestItemProps> = ({
           </div>
 
           {/* Links */}
-          <div className="flex flex-col sm:flex-row items-center sm:space-x-1 w-full mt-4 sm:mt-0">
+          <div className="flex flex-col sm:flex-row items-center  sm:space-x-1 mt-4 sm:mt-0">
             <Link
-              className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-400 hover:bg-blue-500 transition-all mb-2 sm:mb-0 lg:ml-40"
+              className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-400 hover:bg-blue-500 transition-all mb-2 sm:mb-0"
 
               href={`/auth/history`}
             >

@@ -96,7 +96,7 @@ export default function TaskPage({ params }: TaskListProps) {
     <div className="flex flex-col h-full">
       <HeaderOrderService orderId={orderId} />
       <TaskProvider>
-        <div className="flex flex-col sm:flex-row justify-between space-y-4 sm:space-x-4 w-full h-full">
+        <div className="flex flex-col sm:flex-row justify-between sm:space-x-2 w-full h-full">
           <div className="flex flex-col sm:w-1/2 w-full space-y-2 h-full overscroll-contain overflow-y-auto">
             <TodoList onUpdateTaskList={refetch} sectorName="EMISSÃO DE DOCUMENTOS DE COLETA" tasks={data["EMISSÃO DE DOCUMENTOS DE COLETA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="COLETA" tasks={data["COLETA"]} />

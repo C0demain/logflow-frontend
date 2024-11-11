@@ -15,7 +15,7 @@ export default function TodoList({
 
   return (
     <div className="flex flex-col w-full bg-white p-2 rounded-md shadow-lg">
-      <h1 className="text-xl">Tarefas {sectorName}</h1>
+      <h1 className="text-xl">{sectorName}</h1>
       {tasks.map((task) => (
         <TaskItem
           onChecked={onUpdateTaskList}

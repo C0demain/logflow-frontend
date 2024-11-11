@@ -8,9 +8,6 @@ interface stageLineProps {
 }
 
 export const StageLine: React.FC<stageLineProps> = ({ tasks }) => {
-  useEffect(() => {
-    //console.log(tasks)
-  })
 
   const { activeStep } = useSteps({
     index: 0
