@@ -9,10 +9,10 @@ export default function ClientPage() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
   const setoresCrudPermitido = ["VENDAS", "DIRETORIA"]
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
 
-  useEffect(()=>{
-    if(user){
+  useEffect(() => {
+    if (user) {
       setoresCrudPermitido.includes(user.sector) ? setCrudAutorizado(true) : setCrudAutorizado(false)
     }
   }, [user])
@@ -23,8 +23,8 @@ export default function ClientPage() {
         <h1 className="text-2xl">Lista de Clientes:</h1>
         {crudAutorizado && <CreateClient />}
       </div>
-      <ReadClient 
-      autorizado={crudAutorizado}/>
+      <ReadClient
+        autorizado={crudAutorizado} />
     </div>
   );
 }

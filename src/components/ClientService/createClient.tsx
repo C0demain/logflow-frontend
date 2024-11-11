@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MaskedInput from "react-text-mask";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface ClientData {
   name: string;
@@ -178,7 +178,7 @@ export function CreateClient() {
       <CreateButton>
         <h1 className="text-2xl font-semibold mb-4">Cadastrar Cliente</h1>
         {errorMessage && <div className="text-red-500">{errorMessage}</div>}
-        <form onSubmit={handleSubmit} className="modal-middle space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col modal-middle space-y-4 items-stretch">
           <input
             type="text"
             name="name"
@@ -198,7 +198,7 @@ export function CreateClient() {
             required
           />
           <MaskedInput
-            mask={["(",/\d/,/\d/,")"," ",/\d/,/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,/\d/]}
+            mask={["(", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
             name="phone"
             placeholder="Telefone"
             value={formData.phone}
@@ -207,7 +207,7 @@ export function CreateClient() {
             required
           />
           <MaskedInput
-            mask={[/\d/,/\d/,".",/\d/,/\d/,/\d/,".",/\d/,/\d/,/\d/,"/",/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,]}
+            mask={[/\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/,]}
             name="cnpj"
             placeholder="CNPJ"
             value={formData.cnpj}
@@ -297,7 +297,7 @@ export function CreateClient() {
           </div>
 
           <div className="modal-action flex flex-row justify-around">
-            <button type="submit" className="btn btn-info" disabled={loading}>
+            <button type="submit" className="btn btn-info hover:text-white" disabled={loading}>
               {loading ? "Registrando..." : "Registrar Cliente"}
             </button>
           </div>

@@ -9,8 +9,8 @@ export const deleteUserById = async (id: string) => {
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      if(error?.response?.status === 400)
-      throw new AxiosError(error.response.data?.message)
+      if (error?.response?.status === 400)
+        throw new AxiosError(error.response.data?.message)
     } else {
       throw new AxiosError('Erro ao conectar ao servidor. Tente novamente');
     }

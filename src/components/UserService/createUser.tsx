@@ -5,7 +5,7 @@ import { registerUser } from "@/app/api/userService/createUser";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface UserData {
   name: string;
@@ -17,7 +17,7 @@ interface UserData {
 }
 
 const rolesBySector: Record<string, string[]> = {
-  OPERACIONAL: ["SAC", "Motorista", "Analista de Logística", 'Ass. Administrativo "Operacional"', "Gerente Operacional" ],
+  OPERACIONAL: ["SAC", "Motorista", "Analista de Logística", 'Ass. Administrativo "Operacional"', "Gerente Operacional"],
   VENDAS: ["Vendedor"],
   FINANCEIRO: ['Analista Administrativo "Financeiro"', 'Ass. Administrativo "Financeiro"'],
   RH: ["Analista de RH", 'Ass. Administrativo "RH"'],
@@ -97,7 +97,7 @@ export function CreateUser() {
   return (
     <div>
       <CreateButton>
-      <h1 className="text-2xl font-semibold mb-4">Cadastrar Funcionário</h1>
+        <h1 className="text-2xl font-semibold mb-4">Cadastrar Funcionário</h1>
         <form onSubmit={handleSubmit} className="modal-middle space-y-3">
           <input
             type="text"
@@ -152,12 +152,12 @@ export function CreateUser() {
           </select>
 
           <div className="modal-action flex justify-around">
-            <button type="submit" className="btn btn-info">
+            <button type="submit" className="btn btn-info hover:text-white">
               Registrar Funcionário
             </button>
           </div>
         </form>
-        
+
       </CreateButton>
     </div>
   );

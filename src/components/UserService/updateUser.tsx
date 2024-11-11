@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
-import { updateUserById } from "@/app/api/userService/updateUser"; // Função de atualização
+import { updateUserById } from "@/app/api/userService/updateUser";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";

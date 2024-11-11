@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import EditModal from "./editModal"; // Componente do modal de edição
+import EditModal from "./editModal";
 
 interface Address {
   zipCode: string;

@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosRequestHeaders } from "axios";
 
-const apiBackend = "http://localhost:8000";
+export const apiBackend = "http://localhost:8000";
 
 async function fetchToken(): Promise<string | undefined> {
   try {

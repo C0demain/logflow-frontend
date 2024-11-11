@@ -18,8 +18,11 @@ type AuthContextProps = {
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
-const AuthProvider = ({children}: {children: ReactNode}) => {
-    const [user, setUser] = useState<UserProps | undefined>(undefined);
+const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const [user, setUser] = useState(() => {
+        const cookieUser = Cookies.get('user');
+        return cookieUser ? JSON.parse(cookieUser) : undefined;
+    });
 
     useEffect(() => {
         const storedUser = Cookies.get('user');
@@ -35,17 +38,16 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
 
     const login = (userT: UserProps) => {
         setUser(userT);
-        Cookies.set('user', JSON.stringify(userT), { expires: 7 }); // Cookie expira em 7 dias
+        Cookies.set('user', JSON.stringify(userT), { expires: 1 }); // Cookie expira em 1 dia
     }
 
     const logout = () => {
-        console.log("Logging out user");
         setUser(undefined);
         Cookies.remove('user');
     }
 
     return (
-        <AuthContext.Provider value={{user, login, logout}}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,9 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Loading from "@/app/loading";
 import { listClient } from "@/app/api/clientService/listClient";
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
-import EditModal from "./editModal"; // Importa o modal de edição
+import EditModal from "./editModal";
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
@@ -12,12 +11,13 @@ import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { FaEdit } from "react-icons/fa";
 import { DeleteClient } from "./deleteClient";
+import Empty from "@/components/Shared/Empty";
 
-interface ReadClientProps{
-  autorizado:boolean
+interface ReadClientProps {
+  autorizado: boolean
 }
 
-export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
+export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
   const [data, setData] = useState<ClientData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -130,19 +130,19 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
   }
 
   if (!Array.isArray(data) || data.length === 0) {
-    return <div>Nenhum cliente encontrado.</div>;
+    return <Empty title="Ainda não há clientes cadastrados" description="Crie um novo cliente com o botao '+'" />
   }
 
   return (
     <div className="overflow-x-auto">
       <table className="table w-full bg-white shadow-md rounded-lg">
-        <thead className="bg-gray-800 text-white">
+        <thead className="bg-blue-400 text-white rounded-t-lg">
           <tr>
-            <th className="text-lg px-4 py-2">Nome</th>
+            <th className="text-lg px-4 py-2 rounded-tl-lg">Nome</th>
             <th className="text-lg px-4 py-2">Email</th>
             <th className="text-lg px-4 py-2">Telefone</th>
             <th className="text-lg px-4 py-2">CNPJ</th>
-            <th className="text-lg px-4 py-2">Ações</th>
+            <th className="text-lg px-4 py-2 rounded-tr-lg">Ações</th>
           </tr>
         </thead>
         <tbody className="text-gray-700 text-lg">
@@ -159,7 +159,7 @@ export const ReadClient: React.FC<ReadClientProps> =({autorizado}) => {
                       <FaEdit />
                     </label>
                   </button>
-                  <DeleteClient id={client.id}/>
+                  <DeleteClient id={client.id} />
                 </td>
               )}
 

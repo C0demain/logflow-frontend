@@ -4,4 +4,5 @@ export interface OrderData {
   status?: string;
   sector?: string;
   userId?: string;
+  stage?: string;
 }

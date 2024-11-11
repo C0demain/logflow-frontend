@@ -3,11 +3,11 @@ import { registerTask } from "@/app/api/tasks/registerTask";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import Select, { SingleValue } from "react-select";
-import CreateButton from "../createButton";
+import CreateButton from "../Shared/createButton";
 
 interface CreateTaskProps {
   orderId: string;
-  userId: string; 
+  userId: string;
 }
 
 type SectorOption = {
@@ -27,13 +27,13 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [sector, setSector] = useState<SectorOption | null>(sectorOptions[0]);
-  const [completed, setCompleted] = useState(false); 
+  const [completed, setCompleted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null); // Reseta a mensagem de erro ao iniciar o envio
-    
+
     try {
       // Validação dos IDs
       if (!userId) {
@@ -51,8 +51,8 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
           title,
           orderId,
           sector: sector.value,
-          userId, 
-          completed,
+          userId,
+          completedAt: completed ? new Date() : null,
         });
 
         // Verifica se a resposta é válida, caso contrário, mostra erro
@@ -67,15 +67,6 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
     } catch (error: any) {
       console.error("Erro ao registrar tarefa:", error);
       setErrorMessage(error.message || "Erro inesperado ao registrar a tarefa.");
-    }
-  };
-
-  const handleModalOpen = () => {
-    const modal = document.getElementById("modal");
-    if (modal) {
-      (modal as HTMLDialogElement).showModal();
-    } else {
-      console.error("Modal element not found");
     }
   };
 
@@ -128,7 +119,7 @@ export default function CreateTask({ orderId, userId }: CreateTaskProps) {
             <div className="text-red-500">{errorMessage}</div> // Exibe mensagem de erro
           )}
           <div className="modal-action flex flex-row justify-around pt-2">
-            <button type="submit" className="btn btn-info">
+            <button type="submit" className="btn btn-info hover:text-white">
               Registrar nova tarefa
             </button>
           </div>

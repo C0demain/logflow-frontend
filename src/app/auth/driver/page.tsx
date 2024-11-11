@@ -11,6 +11,6 @@ export default function UserPage() {
   };
 
   return (
-  <p>tela do motorista</p>
+    <p>tela do motorista</p>
   )
 }
