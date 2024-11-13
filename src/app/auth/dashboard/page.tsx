@@ -3,7 +3,7 @@
 import { AuthContext } from "@/app/context/auth";
 import Loading from "@/app/loading";
 import { useContext, useEffect, useState } from "react";
-import CostCards from "@/components/Dashboard/costCards";
+import TicketCards from "@/components/Dashboard/ticketCards";
 import { Order } from "@/app/api/dashboardService/orderUtils";
 import TotalTaskCost from "@/components/Dashboard/totalTaskCost";
 import OrderCount from "@/components/Dashboard/orderCount";
@@ -104,7 +104,7 @@ export default function Dashboard() {
                 </div>
             </AccessWrapper>
             <AccessWrapper sectors={["FINANCEIRO", "VENDAS", "DIRETORIA"]}>
-                <CostCards orders={filteredOrders} />
+                <TicketCards/>
             </AccessWrapper>
             <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
                 <TotalTaskCost orderId={""} orders={filteredOrders} />

@@ -19,7 +19,11 @@ export const getOrdersStats = async (filters?: Filters): Promise<OrderStats> => 
   
     try {
      
-      const response = await apiInstance.get("/api/v1/service-order/dashboard");
+      const response = await apiInstance.get("/api/v1/service-order/dashboard", { params: {
+        dateFrom: filters?.dateFrom,
+        dateTo: filters?.dateTo
+      }});
+
       return response.data;
     } catch (error) {
       
