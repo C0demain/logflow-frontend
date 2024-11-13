@@ -11,6 +11,7 @@ import AccessWrapper from "@/components/Shared/AccessWrapper";
 import OverdueOrdersCount from "@/components/Dashboard/overdueOrdersCount";
 import OverdueTasksCount from "@/components/Dashboard/overdueTasksCount";
 import { listOs } from "@/app/api/serviceOrder/listOrder";
+import { DateFilterProvider } from "@/app/context/dashboard";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -70,65 +71,49 @@ export default function Dashboard() {
       {loading ? (
         <Loading />
       ) : (
-        <>
-          <div className="space-y-3">
-            {/* Filtro de Data */}
-            <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Data Início</label>
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="input input-bordered w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Data Fim</label>
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="input input-bordered w-full"
-                />
-              </div>
-            </div>
-            <br />
-          </div>
-
-          <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
-            <div className="overflow-x-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5 w-full">
-                <div className="w-full">
-                  <OrderCount />
+        <DateFilterProvider filters={ {startDate, endDate} }>
+          <>
+            <div className="space-y-3">
+              {/* Filtro de Data */}
+              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Data Início</label>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="input input-bordered w-full"
+                  />
                 </div>
-                <div className="w-full">
-                  <OverdueOrdersCount />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Data Fim</label>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className="input input-bordered w-full"
+                  />
                 </div>
               </div>
+              <br />
             </div>
-          </AccessWrapper>
-
-
-          <AccessWrapper sectors={["FINANCEIRO", "VENDAS", "DIRETORIA"]}>
-            <div className="overflow-x-auto">
-              {/* Exibe as ordens filtradas */}
-              <CostCards orders={filteredOrders} />
-            </div>
-          </AccessWrapper>
-
-          <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
-            <div className="overflow-x-auto">
-              <TotalTaskCost orderId={""} orders={filteredOrders} />
-            </div>
-          </AccessWrapper>
-
-          <AccessWrapper sectors={["DIRETORIA"]}>
-            <div className="overflow-x-auto">
-              <OverdueTasksCount />
-            </div>
-          </AccessWrapper>
-        </>
+            <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5 w-full">
+                    <OrderCount />
+                    <OverdueOrdersCount />
+                </div>
+            </AccessWrapper>
+            <AccessWrapper sectors={["FINANCEIRO", "VENDAS", "DIRETORIA"]}>
+                <CostCards orders={filteredOrders} />
+            </AccessWrapper>
+            <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
+                <TotalTaskCost orderId={""} orders={filteredOrders} />
+            </AccessWrapper>
+            <AccessWrapper sectors={["DIRETORIA"]}>
+                <OverdueTasksCount />
+            </AccessWrapper>
+          </>
+        </DateFilterProvider>
       )}
     </div>
 
