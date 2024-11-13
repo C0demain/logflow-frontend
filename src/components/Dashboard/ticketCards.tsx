@@ -12,10 +12,15 @@ const TicketCards: React.FC = () => {
   const [averageTicket, setAverageTicket] = useState<number>()
 
   const fetchStats = async () => {
-    const stats = await getOrdersStats({dateFrom: startDate, dateTo: endDate})
-    setTotalTicket(Number(stats.totalValue))
-    setAverageTicket(Number(stats.averageValue))
-    setLoading(false)
+    try{
+
+      const response = await getOrdersStats({dateFrom: startDate, dateTo: endDate})
+      setTotalTicket(Number(response.totalValue))
+      setAverageTicket(Number(response.averageValue))
+      setLoading(false)
+    }catch(e){
+      console.log(e)
+    }
   }
 
   useEffect(() => {

@@ -1,34 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
 import { calculateProfit, calculateTotal, Order, totalCost } from "@/app/api/dashboardService/orderUtils";
-
-interface TotalTaskCostProps {
-  orderId: string;
-  orders: Order[];
-}
+import Loading from "@/app/loading";
+import { getOrdersStats } from "@/app/api/dashboardService/getOrdersStats";
+import { DateFilterContext } from "@/app/context/dashboard";
 
 
-const TotalTaskCost: React.FC<TotalTaskCostProps> = ({ orderId, orders }) => {
+const TotalTaskCost: React.FC = () => {
+  const {startDate, endDate} = useContext(DateFilterContext)
   const [totalTaskCost, setTotalTaskCost] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [profit, setProfit] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   // Função para buscar custos das tarefas
   const fetchTaskCosts = async () => {
-    setLoading(true);
-    setError(null);
-
     try {
-      const response = await getTasks(orderId, "", "", "", undefined);
-      const tasks: TaskData[] = response.tasks;
+      const response = await getOrdersStats({dateFrom: startDate, dateTo: endDate});
 
-      // Calcular o custo total das tarefas
-      const totalCost = tasks.reduce((acc, task) => {
-        const taskCost = task.taskCost ?? 0;
-        return acc + (parseFloat(taskCost.toString()) || 0);
-      }, 0);
-
-      setTotalTaskCost(totalCost);
+      setTotalTaskCost(Number(response.totalTaskCost));
+      setProfit(Number(response.profit))
+      setLoading(false)
 
     } catch (err) {
       setError("Erro ao carregar os custos das tarefas.");
@@ -40,18 +32,10 @@ const TotalTaskCost: React.FC<TotalTaskCostProps> = ({ orderId, orders }) => {
   // Executa a função ao montar o componente ou quando `orderId` ou `orders` mudarem
   useEffect(() => {
     fetchTaskCosts();
-  }, [orderId, orders.length]);
-
-  useEffect(() => {
-    fetchTaskCosts();
-  }, [orderId, orders.length]);
-
-  // Calcula o custo total dos pedidos usando o valor importado totalCost
-  const profit = calculateProfit(orders, totalTaskCost)
-  const totalOrdersCost = calculateTotal(orders); // Usando a função totalCost para calcular o custo total dos pedidos
+  }, [startDate, endDate]);
 
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) return <Loading/>;
   if (error) return <div>{error}</div>;
 
   return (

@@ -107,7 +107,7 @@ export default function Dashboard() {
                 <TicketCards/>
             </AccessWrapper>
             <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
-                <TotalTaskCost orderId={""} orders={filteredOrders} />
+                <TotalTaskCost />
             </AccessWrapper>
             <AccessWrapper sectors={["DIRETORIA"]}>
                 <OverdueTasksCount />
