@@ -8,6 +8,7 @@ import { deleteUserById } from "@/app/api/userService/deleteUser";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import SelectSector from "@/components/Selects/SelectSector";
+import { SelectRole } from "@/components/Selects/SelectRole";
 
 interface UserData {
     id: string;
@@ -25,18 +26,19 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
     const [data, setData] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(true);
     const [sectorFilter, setSectorFilter] = useState<string>()
+    const [roleFilter, setRoleFilter] = useState<string>('')
     const router = useRouter(); // Inicializando o router
 
     const getUsers = useCallback(async () => {
         try {
-            const response = await listUsers({sector: sectorFilter});
+            const response = await listUsers({sector: sectorFilter, roleId: roleFilter});
             setData(response);
         } catch (error) {
             console.error("Error fetching users:", error);
         } finally {
             setLoading(false);
         }
-    }, [sectorFilter]);
+    }, [sectorFilter, roleFilter]);
 
     useEffect(() => {
         getUsers();
@@ -61,6 +63,10 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
                 <div className="flex flex-row items-center space-x-2">
                     <p className="text-lg">Setor</p>
                     <SelectSector controlState={[sectorFilter, setSectorFilter]}/>
+                </div>
+                <div className="flex flex-row items-center space-x-2">
+                    <p className="text-lg">Função</p>
+                    <SelectRole sector={String(sectorFilter).toString()} controlState={[roleFilter, setRoleFilter]}/>
                 </div>
                 <button className="btn btn-outline-primary" onClick={_ => setSectorFilter('')}>Limpar</button>
             </div>

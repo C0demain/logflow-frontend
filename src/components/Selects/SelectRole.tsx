@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 type propsType = {
     controlState: any[],
     className?: string,
-    sector: `${Sector}`
+    sector: `${Sector}` | string | undefined
 }
 
 export const SelectRole = (props: propsType) => {
@@ -15,7 +15,7 @@ export const SelectRole = (props: propsType) => {
 
     const getRoles = async () => {
         const response = await listRoles()
-        const options = []
+        const options = [{value: undefined, label: ''}]
         let first;
         for (const c of response) {
             if (c.sector === sector) {
@@ -30,14 +30,13 @@ export const SelectRole = (props: propsType) => {
             }
         }
 
-        setControlState(first)
+        setControlState('')
         setOptions(options)
 
     };
 
     useEffect(() => {
         getRoles()
-        console.log(controlState)
     }, [sector])
 
     return (

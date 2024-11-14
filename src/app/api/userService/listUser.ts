@@ -3,6 +3,7 @@ import axios from "axios";
 
 interface Filters{
   sector?: string
+  roleId?: string
 }
 
 export const listUsers = async (filters?: Filters) => {
@@ -12,9 +13,14 @@ export const listUsers = async (filters?: Filters) => {
     filters.sector = undefined
   }
 
+  if(filters?.roleId === ''){
+    filters.roleId = undefined
+  }
+
   try {
     const response = await apiInstance.get('/api/v1/users', { params: {
-      sector: filters?.sector
+      sector: filters?.sector,
+      roleId: filters?.roleId
     }});
     return response.data.users;
   } catch (error) {
