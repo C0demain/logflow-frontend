@@ -6,6 +6,7 @@ type propsType = {
 
 const SelectSector = (props: propsType) => {
     const options = [
+        {value: undefined, label: ""},
         { value: "OPERACIONAL", label: "Operacional" },
         { value: "FINANCEIRO", label: "Financeiro" },
         { value: "RH", label: "RH" },

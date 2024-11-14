@@ -1,11 +1,21 @@
 import { createApiInstances } from "@/app/util/baseURL";
 import axios from "axios";
 
-export const listUsers = async () => {
+interface Filters{
+  sector?: string
+}
+
+export const listUsers = async (filters?: Filters) => {
   const { apiInstance } = await createApiInstances();
 
+  if(filters?.sector === ''){
+    filters.sector = undefined
+  }
+
   try {
-    const response = await apiInstance.get('/api/v1/users');
+    const response = await apiInstance.get('/api/v1/users', { params: {
+      sector: filters?.sector
+    }});
     return response.data.users;
   } catch (error) {
     if (axios.isAxiosError(error)) {

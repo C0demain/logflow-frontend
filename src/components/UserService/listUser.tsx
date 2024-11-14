@@ -7,6 +7,7 @@ import { FaEdit, FaFileAlt } from "react-icons/fa";
 import { deleteUserById } from "@/app/api/userService/deleteUser";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import SelectSector from "@/components/Selects/SelectSector";
 
 interface UserData {
     id: string;
@@ -23,18 +24,19 @@ interface ReadUsersProps {
 export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
     const [data, setData] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(true);
+    const [sectorFilter, setSectorFilter] = useState<string>()
     const router = useRouter(); // Inicializando o router
 
     const getUsers = useCallback(async () => {
         try {
-            const response = await listUsers();
+            const response = await listUsers({sector: sectorFilter});
             setData(response);
         } catch (error) {
             console.error("Error fetching users:", error);
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [sectorFilter]);
 
     useEffect(() => {
         getUsers();
@@ -55,6 +57,13 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
 
     return (
         <div className="overflow-x-auto">
+            <div className="flex flex-row space-x-2 mb-6 items-center justify-between bg-white p-3 rounded-md">
+                <div className="flex flex-row items-center space-x-2">
+                    <p className="text-lg">Setor</p>
+                    <SelectSector controlState={[sectorFilter, setSectorFilter]}/>
+                </div>
+                <button className="btn btn-outline-primary" onClick={_ => setSectorFilter('')}>Limpar</button>
+            </div>
             <table className="table w-full bg-white shadow-md rounded-lg">
                 <thead className="bg-blue-400 text-white rounded-t-lg">
                     <tr className="rounded-t-bg">
