@@ -28,7 +28,6 @@ async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }
 
   // Faz uma única requisição para obter todas as tarefas
   const { tasks }: { tasks: TaskData[] } = await getTasks(orderId, "", "", "", "");
-
   // Define os diferentes "stages"
   const stages = [
     "EMISSÃO DE DOCUMENTOS DE COLETA",
@@ -102,7 +101,6 @@ export default function TaskPage({ params }: TaskListProps) {
             <TodoList onUpdateTaskList={refetch} sectorName="COLETA" tasks={data["COLETA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="EMISSÃO DE DOCUMENTOS DE ENTREGA" tasks={data["EMISSÃO DE DOCUMENTOS DE ENTREGA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="ENTREGA" tasks={data["ENTREGA"]} />
-            <TodoList onUpdateTaskList={refetch} sectorName="CONFIRMAÇÃO DE ENTREGA" tasks={data["CONFIRMAÇÃO DE ENTREGA"]} />
             <TodoList onUpdateTaskList={refetch} sectorName="CONFERÊNCIA DE ORÇAMENTO" tasks={data["CONFERÊNCIA DE ORÇAMENTO"]} />
           </div>
           <div className="sm:w-1/2 w-full h-full mt-4 sm:mt-0">
