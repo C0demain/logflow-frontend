@@ -128,7 +128,20 @@ export function CreateClient() {
     setLoading(true);
 
     try {
-      const response = await registerClient(formData);
+      const addressToSend = {
+        zipCode: formData.address.zipCode,
+        number: formData.address.number,
+        complement: formData.address.complement,
+      };
+  
+      // Crie um objeto com os dados a serem enviados
+      const dataToSend = {
+        ...formData,
+        address: addressToSend, // Aqui você só envia os campos necessários
+      };
+
+      const response = await registerClient(dataToSend);
+      
       toast({
         status: "success",
         title: "Sucesso",
