@@ -21,6 +21,7 @@ export function Navbar() {
             <li className="hover:text-white"><Link href="/auth/service-order">Ordens de Serviço</Link></li>
             <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
             <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
+            <li className="hover:text-white"><Link href="/auth/vehicles">Veículos</Link></li>
             <li><Link href="/auth/process">Processos</Link></li>
           </ul>
         )}
