@@ -21,7 +21,6 @@ export function Navbar() {
             <li className="hover:text-white"><Link href="/auth/service-order">Ordens de Serviço</Link></li>
             <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
             <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
-            <li className="hover:text-white"><Link href="/auth/documents">Documentos</Link></li>
             <li><Link href="/auth/process">Processos</Link></li>
           </ul>
         )}
@@ -38,7 +37,9 @@ export function Navbar() {
             </svg>
           </summary>
           <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow">
-            <Logout /> {/* Componente de Logout */}
+            <li className="hover:text-white"><Link href="/auth/my-to-do-list">Minhas Tarefas</Link></li>
+            <li className="hover:text-white"><Link href="/auth/documents">Meus documentos</Link></li>
+            <li><Logout /></li>
           </ul>
         </details>
 

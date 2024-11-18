@@ -92,7 +92,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
             </Link>
             <Link
               className="w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-400 hover:bg-blue-500 transition-all"
-              href={`/auth/to-do-list/${userId}/${orderId}`}
+              href={`/auth/to-do-list/${orderId}`}
             >
               Tarefas
             </Link>
