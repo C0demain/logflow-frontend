@@ -12,7 +12,6 @@ interface DocumentsProps {
 }
 
 export default function DocumentsPage({ params }: DocumentsProps) {
-  const [isModalOpen, setModalOpen] = useState(false);
   const [crudAutorizado, setCrudAutorizado] = useState<boolean>(false)
   const setoresCrudPermitido = ["VENDAS", "DIRETORIA", "RH", "OPERACIONAL", "FINCANCEIRO"]
   const { user } = useContext(AuthContext)

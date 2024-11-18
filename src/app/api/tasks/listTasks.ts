@@ -41,10 +41,10 @@ type TasksResponse = {
 };
 
 export const getTasks = async (
-  orderId: string,
-  sector: string,
-  userId: string,
-  title: string,
+  orderId: string | undefined,
+  sector: string | undefined,
+  userId: string | undefined,
+  title: string | undefined,
   taskId: string | undefined
 ): Promise<TasksResponse> => {
   const { apiInstance } = await createApiInstances();

@@ -24,6 +24,7 @@ export function Navbar() {
             <li className="hover:text-white"><Link href="/auth/documents">Documentos</Link></li>
             <li className="hover:text-white"><Link href="/auth/process">Processos</Link></li>
             <li className="hover:text-white"><Link href="/auth/chat">Chat</Link></li>
+            <li className="hover:text-white"><Link href="/auth/vehicles">Veículos</Link></li>
           </ul>
         )}
       </div>
@@ -39,7 +40,9 @@ export function Navbar() {
             </svg>
           </summary>
           <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow">
-            <Logout /> {/* Componente de Logout */}
+            <li className="hover:text-white"><Link href="/auth/my-to-do-list">Minhas Tarefas</Link></li>
+            <li className="hover:text-white"><Link href="/auth/documents">Meus documentos</Link></li>
+            <li><Logout /></li>
           </ul>
         </details>
 
@@ -65,6 +68,7 @@ export function Navbar() {
               <li><Link href="/auth/documents">Documentos</Link></li>
               <li><Link href="/auth/process">Processos</Link></li>
               <li><Link href="/auth/chat">Chat</Link></li>
+              <li><Link href="/auth/vehicles">Veículos</Link></li>
             </ul>
           </details>
         </div>

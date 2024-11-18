@@ -11,8 +11,13 @@ import { isAxiosError } from "axios";
 import { useToast } from "@chakra-ui/react/toast";
 import { formatDateForInput, formatDateToBR } from "@/app/util/dateFormatter";
 import { Divider } from "@chakra-ui/react";
+import { HeaderOrderService } from "../ServiceOrder/headerOrderService";
 
-export const ReadUnitTask = () => {
+interface ReadUnitTaskProps{
+  myTask: boolean;
+}
+
+export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
   const [shownTask, setShownTask] = useState<any>();
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState<any>();
@@ -102,6 +107,7 @@ export const ReadUnitTask = () => {
     }
   };
 
+  /* Adiciona custo da tarefa */
   const addTaskCost = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -163,6 +169,11 @@ export const ReadUnitTask = () => {
   return (
     <>
       <div className="flex flex-col w-full bg-white p-3 rounded-md shadow-lg space-y-2 relative">
+        {myTask && 
+        <div>
+        <HeaderOrderService orderId={shownTask.serviceOrder.id}/>
+        <Divider/>
+        </div>}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full justify-between">
           <div>
             <p className="font-bold text-lg w-full">Titulo: {shownTask?.title}</p>

@@ -11,7 +11,6 @@ import { useQuery } from "@tanstack/react-query";
 
 interface TaskListProps {
   params: {
-    userId: string;
     orderId: string;
   };
 }
@@ -104,7 +103,7 @@ export default function TaskPage({ params }: TaskListProps) {
             <TodoList onUpdateTaskList={refetch} sectorName="CONFERÊNCIA DE ORÇAMENTO" tasks={data["CONFERÊNCIA DE ORÇAMENTO"]} />
           </div>
           <div className="sm:w-1/2 w-full h-full mt-4 sm:mt-0">
-            <ReadUnitTask />
+            <ReadUnitTask myTask={false}/>
           </div>
         </div>
       </TaskProvider>

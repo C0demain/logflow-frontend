@@ -3,7 +3,7 @@ import { TaskData } from "@/app/api/tasks/listTasks";
 
 interface TodoListProps {
   sectorName: string;
-  tasks: TaskData[];
+  tasks: TaskData[] | undefined;
   onUpdateTaskList: () => void;
 }
 
@@ -16,7 +16,7 @@ export default function TodoList({
   return (
     <div className="flex flex-col w-full bg-white p-2 rounded-md shadow-lg">
       <h1 className="text-xl">{sectorName}</h1>
-      {tasks.map((task) => (
+      {tasks?.map((task) => (
         <TaskItem
           onChecked={onUpdateTaskList}
           key={task.id}
