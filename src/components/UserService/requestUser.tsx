@@ -7,7 +7,7 @@ interface RequestUserProps {
   onDelete: (id: string) => void;
 }
 
-const RequestUser: React.FC<RequestUserProps> = ({ name, email, role, sector, id, onDelete }) => {
+const RequestUser: React.FC<RequestUserProps> = ({ name, email, role, sector }) => {
   return (
     <div className="table">
       <div>

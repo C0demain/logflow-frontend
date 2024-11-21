@@ -6,11 +6,13 @@ import DeleteButton from "../Shared/deleteButton";
 
 interface DeleteUserProps {
   id: string;
+  onDelete: (id: string) => void; 
 }
 
-export const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
+export const DeleteUser: React.FC<DeleteUserProps> = ({ id, onDelete }) => {
   const toast = useToast();
   const router = useRouter();
+  
   const handleDelete = async (id: string) => {
     try {
       const response = await deleteUserById(id);
@@ -19,7 +21,7 @@ export const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
         title: "Sucesso",
         description: "Funcionário arquivado com sucesso",
       });
-      router.refresh();
+      onDelete(id);
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         toast({

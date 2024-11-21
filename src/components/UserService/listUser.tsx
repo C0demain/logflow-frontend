@@ -20,7 +20,9 @@ interface UserData {
 
 interface ReadUsersProps {
     autorizado: boolean;
+    onDelete: (id: string) => void;
 }
+
 
 export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
     const [data, setData] = useState<UserData[]>([]);
@@ -31,7 +33,7 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
 
     const getUsers = useCallback(async () => {
         try {
-            const response = await listUsers({sector: sectorFilter, roleId: roleFilter});
+            const response = await listUsers({ sector: sectorFilter, roleId: roleFilter });
             setData(response);
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -62,11 +64,11 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
             <div className="flex flex-row space-x-2 mb-6 items-center justify-between bg-white p-3 rounded-md">
                 <div className="flex flex-row items-center space-x-2">
                     <p className="text-lg">Setor</p>
-                    <SelectSector controlState={[sectorFilter, setSectorFilter]}/>
+                    <SelectSector controlState={[sectorFilter, setSectorFilter]} />
                 </div>
                 <div className="flex flex-row items-center space-x-2">
                     <p className="text-lg">Função</p>
-                    <SelectRole sector={String(sectorFilter).toString()} controlState={[roleFilter, setRoleFilter]}/>
+                    <SelectRole sector={String(sectorFilter).toString()} controlState={[roleFilter, setRoleFilter]} />
                 </div>
                 <button className="btn btn-outline-primary" onClick={_ => setSectorFilter('')}>Limpar</button>
             </div>
@@ -98,7 +100,7 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
                                     <label htmlFor={`edit${user.id}`} className="btn btn-md bg-gray-100 text-black flex items-center hover:bg-gray-300">
                                         <FaEdit />
                                     </label>
-                                    <DeleteUser id={user.id} />
+                                    <DeleteUser id={user.id} onDelete={handleDelete} />
                                     <EditUser id={user.id} name={user.name} email={user.email} role={user.role} sector={user.sector} />
                                 </td>
                             )}

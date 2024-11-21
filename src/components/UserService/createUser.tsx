@@ -1,19 +1,22 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from "react";
 import { registerUser } from "@/app/api/userService/createUser";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import CreateButton from "../Shared/createButton";
 
-interface UserData {
+export interface UserData {
+  id?: string;
   name: string;
   email: string;
   password: string;
   role: string;
   sector: string;
-  isActive: boolean;
+}
+
+interface CreateUserProps {
+  onCreate: (user: UserData) => void;
 }
 
 const rolesBySector: Record<string, string[]> = {
@@ -24,19 +27,17 @@ const rolesBySector: Record<string, string[]> = {
   DIRETORIA: ["Diretor Comercial", "Diretor Administrativo"],
 };
 
-export function CreateUser() {
+export const CreateUser: React.FC<CreateUserProps> = ({ onCreate }) => {
   const [formData, setFormData] = useState<UserData>({
     name: "",
     email: "",
     password: "",
     role: "",
     sector: "OPERACIONAL", // Setando um valor padrão para sector
-    isActive: true,
   });
 
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const router = useRouter();
 
   useEffect(() => {
     // Atualiza o campo "role" quando o campo "sector" é alterado
@@ -67,14 +68,17 @@ export function CreateUser() {
         password: "",
         role: "",
         sector: "OPERACIONAL", // Resetando para o valor padrão
-        isActive: true,
       });
       toast({
         status: "success",
         title: "Sucesso",
         description: "Funcionário adicionado com sucesso",
       });
-      router.refresh()
+      onCreate(response); // Atualiza a lista de usuários no componente pai
+
+      // Fecha o modal após o sucesso
+      const modal = document.getElementById("modal") as HTMLDialogElement;
+      if (modal) modal.close();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         toast({
@@ -95,70 +99,83 @@ export function CreateUser() {
   };
 
   return (
-    <div>
-      <CreateButton>
-        <h1 className="text-2xl font-semibold mb-4">Cadastrar Funcionário</h1>
-        <form onSubmit={handleSubmit} className="modal-middle space-y-3">
-          <input
-            type="text"
-            name="name"
-            placeholder="Nome"
-            value={formData.name}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Senha"
-            value={formData.password}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-            required
-          />
-          <select
-            name="sector"
-            value={formData.sector}
-            onChange={handleChange}
-            className="select select-bordered w-full"
-            required
-          >
-            <option value="OPERACIONAL">OPERACIONAL</option>
-            <option value="VENDAS">VENDAS</option>
-            <option value="FINANCEIRO">FINANCEIRO</option>
-            <option value="RH">RH</option>
-            <option value="DIRETORIA">DIRETORIA</option>
-          </select>
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className="select select-bordered w-full"
-            required
-          >
-            {rolesBySector[formData.sector]?.map((role) => (
-              <option key={role} value={role}>{role}</option>
-            ))}
-          </select>
+    <CreateButton>
+      <h1 className="text-2xl font-semibold mb-4">Cadastrar Funcionário</h1>
+      <form onSubmit={handleSubmit} className="modal-middle space-y-3">
+        <input
+          type="text"
+          name="name"
+          placeholder="Nome"
+          value={formData.name}
+          onChange={handleChange}
+          className="input input-bordered w-full"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          className="input input-bordered w-full"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Senha"
+          value={formData.password}
+          onChange={handleChange}
+          className="input input-bordered w-full"
+          required
+        />
+        <select
+          name="sector"
+          value={formData.sector}
+          onChange={handleChange}
+          className="select select-bordered w-full"
+          required
+        >
+          <option value="OPERACIONAL">OPERACIONAL</option>
+          <option value="VENDAS">VENDAS</option>
+          <option value="FINANCEIRO">FINANCEIRO</option>
+          <option value="RH">RH</option>
+          <option value="DIRETORIA">DIRETORIA</option>
+        </select>
+        <select
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          className="select select-bordered w-full"
+          required
+        >
+          {rolesBySector[formData.sector]?.map((role) => (
+            <option key={role} value={role}>
+              {role}
+            </option>
+          ))}
+        </select>
 
-          <div className="modal-action flex justify-around">
-            <button type="submit" className="btn btn-info hover:text-white">
-              Registrar Funcionário
-            </button>
-          </div>
-        </form>
-
-      </CreateButton>
-    </div>
+        <div className="modal-action flex justify-around">
+          <button
+            type="submit"
+            className="btn btn-info hover:text-white"
+            disabled={loading}
+          >
+            {loading ? "Registrando..." : "Registrar Funcionário"}
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline"
+            onClick={() => {
+              const modal = document.getElementById("modal") as HTMLDialogElement;
+              if (modal) modal.close();
+            }}
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </CreateButton>
   );
-}
+};
