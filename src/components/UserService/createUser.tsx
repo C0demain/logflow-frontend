@@ -13,7 +13,6 @@ interface UserData {
   password: string;
   role: string;
   sector: string;
-  isActive: boolean;
 }
 
 const rolesBySector: Record<string, string[]> = {
@@ -31,7 +30,6 @@ export function CreateUser() {
     password: "",
     role: "",
     sector: "OPERACIONAL", // Setando um valor padrão para sector
-    isActive: true,
   });
 
   const [loading, setLoading] = useState(false);
@@ -67,7 +65,6 @@ export function CreateUser() {
         password: "",
         role: "",
         sector: "OPERACIONAL", // Resetando para o valor padrão
-        isActive: true,
       });
       toast({
         status: "success",
