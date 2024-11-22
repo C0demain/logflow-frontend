@@ -12,6 +12,7 @@ import OverdueOrdersCount from "@/components/Dashboard/overdueOrdersCount";
 import OverdueTasksCount from "@/components/Dashboard/overdueTasksCount";
 import { listOs } from "@/app/api/serviceOrder/listOrder";
 import { DateFilterProvider } from "@/app/context/dashboard";
+import TurnoverCards from "@/components/Dashboard/turnoverCards";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -111,6 +112,9 @@ export default function Dashboard() {
             </AccessWrapper>
             <AccessWrapper sectors={["DIRETORIA"]}>
                 <OverdueTasksCount />
+            </AccessWrapper>
+            <AccessWrapper sectors={["DIRETORIA"]}>
+                <TurnoverCards/>
             </AccessWrapper>
           </>
         </DateFilterProvider>
