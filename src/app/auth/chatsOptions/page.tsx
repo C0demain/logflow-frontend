@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Heading, VStack, Divider, Text } from '@chakra-ui/react';
+import { Box, Heading, VStack, Divider } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { socket } from '@/app/util/socket';
 
@@ -12,9 +12,9 @@ interface ConnectedUser {
 }
 
 // Chats em grupo pré-fixados
-const groupChats = [
-  { id: 'group-1', name: 'Friends Group' },
-  { id: 'group-2', name: 'Work Group' },
+export const groupChats = [
+  { id: 'group-1', name: 'Central de Comunicação' },
+  { id: 'group-2', name: 'Gestão e Resultados' },
 ];
 
 export default function ChatsOptions() {
@@ -50,7 +50,7 @@ export default function ChatsOptions() {
       <Heading mb={4}>Chats</Heading>
       <VStack align="stretch" spacing={4}>
         {/* Chats em Grupo */}
-        <Heading size="md">Group Chats</Heading>
+        <Heading size="md">Chats em Grupo</Heading>
         <VStack align="stretch" spacing={2}>
           {groupChats.map((group) => (
             <Box
@@ -68,7 +68,7 @@ export default function ChatsOptions() {
         <Divider />
 
         {/* Usuários Conectados */}
-        <Heading size="md">Connected Users</Heading>
+        <Heading size="md">Chats Privados - Usuários Conectados</Heading>
         <VStack align="stretch" spacing={2}>
           {connectedUsers
             .filter((user) => user.id !== currentUser) // Filtrar o usuário atual

@@ -2,26 +2,24 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Box, VStack, HStack, Text, Input, Button } from '@chakra-ui/react';
+import { Box, VStack, HStack, Text, Input, Button, IconButton } from '@chakra-ui/react';
+import { AttachmentIcon } from '@chakra-ui/icons';
 import { socket } from '@/app/util/socket';
+import { groupChats } from '../../chatsOptions/page';
 
 // Tipos de mensagens
 interface Message {
   sender: string; // Nome do remetente
   content: string;
   createdAt: string;
+  fileType?: string; // Tipo do arquivo (ex: 'image', 'document')
+  fileName?: string; // Nome do arquivo, se aplicável
 }
 
 interface ConnectedUser {
   id: string;
   name: string;
 }
-
-// Grupos pré-fixados
-const groupChats = [
-  { id: 'group-1', name: 'Friends Group' },
-  { id: 'group-2', name: 'Work Group' },
-];
 
 export default function ChatPage() {
   const { id } = useParams() as { id: string };
@@ -31,16 +29,16 @@ export default function ChatPage() {
   const [chatName, setChatName] = useState<string>(''); // Nome do chat
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
 
+  // Conexão inicial do socket e configuração de usuários conectados
   useEffect(() => {
     if (!socket.connected) {
-      socket.connect(); // Conecta o socket se ainda não estiver conectado
+      socket.connect();
     }
 
     socket.on('connect', () => {
       console.log('Socket connected:', socket.id);
     });
 
-    // Obter usuários conectados
     socket.emit('getConnectedUsers');
     socket.on('connectedUsers', (users: ConnectedUser[]) => {
       setConnectedUsers(users);
@@ -52,99 +50,128 @@ export default function ChatPage() {
     };
   }, []);
 
-  // Configuração do chat
+  // Configuração do chat (grupo ou privado)
   useEffect(() => {
     if (!id) return;
 
-    // Verificar se é um grupo ou um chat privado
     const isGroup = id.startsWith('group-');
     setIsGroupChat(isGroup);
 
     if (isGroup) {
-      // Encontrar o nome do grupo
       const group = groupChats.find((group) => group.id === id);
-      setChatName(group ? group.name : 'Unknown Group');
+      setChatName(group ? group.name : 'Grupo Desconhecido');
       socket.emit('joinGroup', id);
-      console.log(`Joined group ${id}`);
     } else {
-      // Encontrar o nome do usuário pelo ID
       const user = connectedUsers.find((user) => user.id === id);
-      setChatName(user ? user.name : 'Unknown User');
+      setChatName(user ? user.name : 'Usuário Desconhecido');
     }
 
-    // Listener para mensagens de grupo
     socket.on('message', (message: Message) => {
-      console.log('Group message received:', message);
       setMessages((prev) => [...prev, message]);
     });
 
-    // Listener para mensagens privadas
     socket.on('privateMessage', (message: Message) => {
-      console.log('Private message received:', message);
       setMessages((prev) => [...prev, message]);
     });
 
     return () => {
       if (isGroup) {
         socket.emit('leaveGroup', id);
-        console.log(`Left group ${id}`);
       }
       socket.off('message');
       socket.off('privateMessage');
     };
   }, [id, connectedUsers]);
 
+  // Enviar mensagem de texto
   const sendMessage = () => {
     if (newMessage.trim()) {
-      const message = {
-        sender: 'Me', // Nome do remetente local
+      const message: Message = {
+        sender: 'Eu',
         content: newMessage,
         createdAt: new Date().toISOString(),
       };
 
       if (isGroupChat) {
         socket.emit('sendMessage', { groupName: id, message: newMessage });
-        console.log(`Message sent to group ${id}: ${newMessage}`);
       } else {
         socket.emit('privateMessage', { toUserId: id, message: newMessage });
-        console.log(`Private message sent to user ${id}: ${newMessage}`);
       }
 
-      // Atualizar localmente as mensagens enviadas
       setMessages((prev) => [...prev, message]);
-
-      // Limpar o campo de entrada
       setNewMessage('');
+    }
+  };
+
+  // Enviar arquivo
+  const sendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const fileType = file.type.startsWith('image') ? 'image' : 'document';
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileContent = reader.result; // Base64 ou URL do arquivo
+      const message: Message = {
+        sender: 'Eu',
+        content: fileType === 'image' ? (fileContent as string) : 'Arquivo enviado',
+        createdAt: new Date().toISOString(),
+        fileType,
+        fileName: file.name,
+      };
+
+      if (isGroupChat) {
+        socket.emit('sendMessage', { groupName: id, message: fileContent, fileType, fileName: file.name });
+      } else {
+        socket.emit('privateMessage', { toUserId: id, message: fileContent, fileType, fileName: file.name });
+      }
+
+      setMessages((prev) => [...prev, message]);
+    };
+    reader.readAsDataURL(file); // Converte para base64
+  };
+
+  // Renderizar a lista de mensagens
+  const renderMessageContent = (msg: Message) => {
+    if (msg.fileType === 'image') {
+      // eslint-disable-next-line @next/next/no-img-element
+      return <img src={msg.content} alt={msg.fileName} style={{ maxWidth: '200px', borderRadius: '8px' }} />;
+    } else if (msg.fileType === 'document') {
+      return (
+        <a href={msg.content} download={msg.fileName} target="_blank" rel="noopener noreferrer">
+          {msg.fileName || 'Documento'}
+        </a>
+      );
+    } else {
+      return <Text>{msg.content}</Text>;
     }
   };
 
   return (
     <Box p={4}>
       <VStack align="stretch" spacing={4}>
-        {/* Nome do chat */}
-        <Text fontWeight="bold">Chat: {chatName || 'Loading...'}</Text>
+        <Text fontWeight="bold">Chat conectado com: {chatName || 'Carregando...'}</Text>
         <VStack align="stretch" spacing={2}>
           {messages.map((msg, index) => (
             <Box key={index}>
-              {/* Nome do remetente */}
               <Text fontSize="sm" fontWeight="bold" color="gray.600">
-                {msg.sender || 'Unknown Sender'}
+                {msg.sender} - {new Date(msg.createdAt).toLocaleString()}
               </Text>
-              {/* Conteúdo da mensagem */}
               <HStack
-                alignSelf={msg.sender === 'Me' ? 'flex-end' : 'flex-start'}
-                bg={msg.sender === 'Me' ? 'blue.100' : 'gray.100'}
+                alignSelf={msg.sender === 'Eu' ? 'flex-end' : 'flex-start'}
+                bg={msg.sender === 'Eu' ? 'blue.100' : 'gray.100'}
                 p={2}
                 borderRadius="md"
               >
-                <Text>{msg.content}</Text>
+                {renderMessageContent(msg)}
               </HStack>
             </Box>
           ))}
         </VStack>
         <HStack>
           <Input
-            placeholder="Type a message"
+            placeholder="Escreva uma mensagem"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={(e) => {
@@ -154,8 +181,17 @@ export default function ChatPage() {
             }}
           />
           <Button colorScheme="blue" onClick={sendMessage}>
-            Send
+            Enviar
           </Button>
+          <Button as="label" htmlFor="file-upload" leftIcon={<AttachmentIcon />} colorScheme="gray">
+            Arquivo
+          </Button>
+          <Input
+            type="file"
+            id="file-upload"
+            hidden
+            onChange={sendFile}
+          />
         </HStack>
       </VStack>
     </Box>
