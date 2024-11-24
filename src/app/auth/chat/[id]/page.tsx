@@ -7,13 +7,12 @@ import { AttachmentIcon } from '@chakra-ui/icons';
 import { socket } from '@/app/util/socket';
 import { groupChats } from '../../chatsOptions/page';
 
-// Tipos de mensagens
 interface Message {
-  sender: string; // Nome do remetente
+  sender: string;
   content: string;
   createdAt: string;
-  fileType?: string; // Tipo do arquivo (ex: 'image', 'document')
-  fileName?: string; // Nome do arquivo, se aplicável
+  fileType?: string;
+  fileName?: string;
 }
 
 interface ConnectedUser {
@@ -26,8 +25,19 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
   const [isGroupChat, setIsGroupChat] = useState<boolean>(false);
-  const [chatName, setChatName] = useState<string>(''); // Nome do chat
+  const [chatName, setChatName] = useState<string>('');
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
+
+  // Função para tocar som de notificação
+  const playNotificationSound = () => {
+    try {
+      const notificationSound = new Audio('/sounds/notification.mp3');
+      notificationSound.volume = 0.5;
+      notificationSound.play();
+    } catch (error) {
+      console.error('Error playing notification sound:', error);
+    }
+  };
 
   // Conexão inicial do socket e configuração de usuários conectados
   useEffect(() => {
@@ -66,12 +76,16 @@ export default function ChatPage() {
       setChatName(user ? user.name : 'Usuário Desconhecido');
     }
 
+    // Listener para mensagens de grupo
     socket.on('message', (message: Message) => {
       setMessages((prev) => [...prev, message]);
+      playNotificationSound();
     });
 
+    // Listener para mensagens privadas
     socket.on('privateMessage', (message: Message) => {
       setMessages((prev) => [...prev, message]);
+      playNotificationSound();
     });
 
     return () => {
@@ -83,7 +97,7 @@ export default function ChatPage() {
     };
   }, [id, connectedUsers]);
 
-  // Enviar mensagem de texto
+  // Função para enviar mensagens de texto
   const sendMessage = () => {
     if (newMessage.trim()) {
       const message: Message = {
@@ -103,44 +117,56 @@ export default function ChatPage() {
     }
   };
 
-  // Enviar arquivo
+  // Função para enviar arquivos
   const sendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const fileType = file.type.startsWith('image') ? 'image' : 'document';
+    const fileType = file.type;
+    const fileName = file.name;
 
     const reader = new FileReader();
     reader.onload = () => {
-      const fileContent = reader.result; // Base64 ou URL do arquivo
+      const fileContent = reader.result;
+
       const message: Message = {
         sender: 'Eu',
-        content: fileType === 'image' ? (fileContent as string) : 'Arquivo enviado',
+        content: 'Arquivo enviado',
         createdAt: new Date().toISOString(),
         fileType,
-        fileName: file.name,
+        fileName,
       };
 
       if (isGroupChat) {
-        socket.emit('sendMessage', { groupName: id, message: fileContent, fileType, fileName: file.name });
+        socket.emit('sendMessage', { groupName: id, file: fileContent, fileType, fileName });
       } else {
-        socket.emit('privateMessage', { toUserId: id, message: fileContent, fileType, fileName: file.name });
+        socket.emit('privateMessage', { toUserId: id, file: fileContent, fileType, fileName });
       }
 
       setMessages((prev) => [...prev, message]);
     };
-    reader.readAsDataURL(file); // Converte para base64
+    reader.readAsArrayBuffer(file);
   };
 
-  // Renderizar a lista de mensagens
+  // Renderizar o conteúdo da mensagem
   const renderMessageContent = (msg: Message) => {
-    if (msg.fileType === 'image') {
-      // eslint-disable-next-line @next/next/no-img-element
-      return <img src={msg.content} alt={msg.fileName} style={{ maxWidth: '200px', borderRadius: '8px' }} />;
-    } else if (msg.fileType === 'document') {
+    if (msg.fileType?.startsWith('image')) {
       return (
-        <a href={msg.content} download={msg.fileName} target="_blank" rel="noopener noreferrer">
-          {msg.fileName || 'Documento'}
+        <img
+          src={`data:${msg.fileType};base64,${msg.content}`}
+          alt={msg.fileName}
+          style={{ maxWidth: '200px', borderRadius: '8px' }}
+        />
+      );
+    } else if (msg.fileType) {
+      return (
+        <a
+          href={`data:${msg.fileType};base64,${msg.content}`}
+          download={msg.fileName}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {msg.fileName || 'Arquivo'}
         </a>
       );
     } else {
@@ -175,9 +201,7 @@ export default function ChatPage() {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                sendMessage();
-              }
+              if (e.key === 'Enter') sendMessage();
             }}
           />
           <Button colorScheme="blue" onClick={sendMessage}>
@@ -186,12 +210,7 @@ export default function ChatPage() {
           <Button as="label" htmlFor="file-upload" leftIcon={<AttachmentIcon />} colorScheme="gray">
             Arquivo
           </Button>
-          <Input
-            type="file"
-            id="file-upload"
-            hidden
-            onChange={sendFile}
-          />
+          <Input type="file" id="file-upload" hidden onChange={sendFile} />
         </HStack>
       </VStack>
     </Box>
