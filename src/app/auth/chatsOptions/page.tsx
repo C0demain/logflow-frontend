@@ -71,7 +71,7 @@ export default function ChatsOptions() {
         <Heading size="md">Connected Users</Heading>
         <VStack align="stretch" spacing={2}>
           {connectedUsers
-            .filter((user) => user.id !== currentUser)
+            .filter((user) => user.id !== currentUser) // Filtrar o usuário atual
             .map((user) => (
               <Box
                 key={user.id}
