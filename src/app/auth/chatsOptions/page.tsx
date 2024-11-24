@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Heading, VStack, Divider } from '@chakra-ui/react';
+import { Box, Heading, VStack, Divider, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { socket } from '@/app/util/socket';
 
@@ -70,20 +70,26 @@ export default function ChatsOptions() {
         {/* Usuários Conectados */}
         <Heading size="md">Chats Privados - Usuários Conectados</Heading>
         <VStack align="stretch" spacing={2}>
-          {connectedUsers
-            .filter((user) => user.id !== currentUser) // Filtrar o usuário atual
-            .map((user) => (
-              <Box
-                key={user.id}
-                onClick={() => handleChatClick(user.id)}
-                cursor="pointer"
-                p={2}
-                bg="gray.100"
-                borderRadius="md"
-              >
-                {user.name}
-              </Box>
-            ))}
+          {connectedUsers === null || connectedUsers.length === 0 ? (
+            <Text>
+              Nenhum usuário conectado no momento.
+            </Text>
+          ) : (
+            connectedUsers
+              .filter((user) => user.id !== currentUser) // Filtrar o usuário atual
+              .map((user) => (
+                <Box
+                  key={user.id}
+                  onClick={() => handleChatClick(user.id)}
+                  cursor="pointer"
+                  p={2}
+                  bg="gray.100"
+                  borderRadius="md"
+                >
+                  {user.name}
+                </Box>
+              ))
+          )}
         </VStack>
       </VStack>
     </Box>

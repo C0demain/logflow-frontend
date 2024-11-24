@@ -177,7 +177,7 @@ export default function ChatPage() {
   return (
     <Box p={4}>
       <VStack align="stretch" spacing={4}>
-        <Text fontWeight="bold">Chat conectado com: {chatName || 'Carregando...'}</Text>
+        <Text fontWeight="bold">Chat: {chatName || 'Carregando...'}</Text>
         <VStack align="stretch" spacing={2}>
           {messages.map((msg, index) => (
             <Box key={index}>
