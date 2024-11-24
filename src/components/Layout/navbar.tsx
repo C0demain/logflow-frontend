@@ -23,7 +23,7 @@ export function Navbar() {
             <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
             <li className="hover:text-white"><Link href="/auth/documents">Documentos</Link></li>
             <li className="hover:text-white"><Link href="/auth/process">Processos</Link></li>
-            <li className="hover:text-white"><Link href="/auth/chat">Chat</Link></li>
+            <li className="hover:text-white"><Link href="/auth/chatsOptions">Chats</Link></li>
             <li className="hover:text-white"><Link href="/auth/vehicles">Veículos</Link></li>
           </ul>
         )}
@@ -67,7 +67,7 @@ export function Navbar() {
               <li><Link href="/auth/client">Cliente</Link></li>
               <li><Link href="/auth/documents">Documentos</Link></li>
               <li><Link href="/auth/process">Processos</Link></li>
-              <li><Link href="/auth/chat">Chat</Link></li>
+              <li><Link href="/auth/chatsOptions">Chats</Link></li>
               <li><Link href="/auth/vehicles">Veículos</Link></li>
             </ul>
           </details>

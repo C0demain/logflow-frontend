@@ -3,60 +3,54 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Box, VStack, HStack, Text, Input, Button } from '@chakra-ui/react';
-import io, { Socket } from 'socket.io-client';
+import { socket } from '@/app/util/socket';
 
 // Tipos de mensagens
 interface Message {
-  sender: string;
-  name: string;
+  sender: string; // Nome do remetente
+  recipient?: string; // Nome do destinatário (opcional)
   content: string;
   createdAt: string;
 }
-
-const socket: Socket = io('http://localhost:8000'); // URL do backend
 
 export default function ChatPage() {
   const { id } = useParams() as { id: string };
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
-  const [isGroupChat, setIsGroupChat] = useState<boolean>(false); // Identifica se é grupo ou privado
+  const [isGroupChat, setIsGroupChat] = useState<boolean>(false);
 
   useEffect(() => {
     if (!socket.connected) {
-      socket.on('connect', () => {
-        // Registra o usuário ao conectar
-        const userId = 'user-123'; // Substitua pelo ID real do usuário
-        const userName = 'John Doe'; // Substitua pelo nome real do usuário
-        socket.emit('register', { userId, name: userName });
-        console.log('Socket connected:', socket.id);
-      });
+      socket.connect(); // Conecta o socket se ainda não estiver conectado
     }
+
+    socket.on('connect', () => {
+      console.log('Socket connected:', socket.id);
+    });
 
     return () => {
       socket.off('connect');
     };
   }, []);
 
+  // Configuração do chat
   useEffect(() => {
     if (!id) return;
 
-    // Verifica se o chat é um grupo ou privado
-    const isGroup = id.startsWith('group-'); // Suposição: grupos começam com "group-"
+    const isGroup = id.startsWith('group-');
     setIsGroupChat(isGroup);
 
     if (isGroup) {
-      // Entrar no grupo
       socket.emit('joinGroup', id);
       console.log(`Joined group ${id}`);
     }
 
-    // Receber mensagens em grupo
+    // Listeners para mensagens recebidas
     socket.on('message', (message: Message) => {
       console.log('Group message received:', message);
       setMessages((prev) => [...prev, message]);
     });
 
-    // Receber mensagens privadas
     socket.on('privateMessage', (message: Message) => {
       console.log('Private message received:', message);
       setMessages((prev) => [...prev, message]);
@@ -64,7 +58,6 @@ export default function ChatPage() {
 
     return () => {
       if (isGroup) {
-        // Sair do grupo
         socket.emit('leaveGroup', id);
         console.log(`Left group ${id}`);
       }
@@ -73,11 +66,11 @@ export default function ChatPage() {
     };
   }, [id]);
 
+  // Enviar mensagens
   const sendMessage = () => {
     if (newMessage.trim()) {
       const message = {
         sender: 'Me',
-        name: 'You',
         content: newMessage,
         createdAt: new Date().toISOString(),
       };
@@ -104,7 +97,7 @@ export default function ChatPage() {
             <Box key={index}>
               {/* Nome do remetente */}
               <Text fontSize="sm" fontWeight="bold" color="gray.600">
-                {msg.name || 'Unknown User'}
+                {msg.sender || 'Unknown Sender'}
               </Text>
               {/* Conteúdo da mensagem */}
               <HStack
@@ -123,6 +116,11 @@ export default function ChatPage() {
             placeholder="Type a message"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                sendMessage();
+              }
+            }}
           />
           <Button colorScheme="blue" onClick={sendMessage}>
             Send
