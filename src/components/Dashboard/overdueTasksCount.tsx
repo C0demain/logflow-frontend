@@ -8,7 +8,6 @@ const OverdueTasksCount: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-
   const fetchOverdueTasks = async () => {
     setLoading(true);
     setError(null);

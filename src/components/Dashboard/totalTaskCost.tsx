@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
-import { calculateProfit, calculateTotal, Order, totalCost } from "@/app/api/dashboardService/orderUtils";
 import Loading from "@/app/loading";
 import { getOrdersStats } from "@/app/api/dashboardService/getOrdersStats";
 import { DateFilterContext } from "@/app/context/dashboard";

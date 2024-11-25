@@ -3,8 +3,6 @@ import { DateFilterContext } from "@/app/context/dashboard";
 import { getOrdersStats } from "@/app/api/dashboardService/getOrdersStats";
 import Loading from "@/app/loading";
 
-
-
 const TicketCards: React.FC = () => {
   const {startDate, endDate} = useContext(DateFilterContext)
   const [loading, setLoading] = useState<boolean>(true);
