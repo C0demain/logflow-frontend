@@ -15,7 +15,10 @@ export const SelectRole = (props: propsType) => {
 
     const getRoles = async () => {
         const response = await listRoles()
-        const options = [{value: undefined, label: ''}]
+        const options = [
+            { value: "default", label: '' }
+        ];
+        
         let first;
         for (const c of response) {
             if (c.sector === sector) {
@@ -36,16 +39,19 @@ export const SelectRole = (props: propsType) => {
     };
 
     useEffect(() => {
-        getRoles()
-    }, [sector])
+        if (sector) {
+            getRoles();
+        }
+    }, [sector]);
+    
 
     return (
         <select
             value={controlState}
             onChange={(e) => { setControlState(e.target.value); }}
             className="select select-bordered w-full"
-            name="stage"
-            key="stage"
+            name="role"
+            key="role"
         >
             {options.map(op => <option key={op.value} value={op.value}>{op.label}</option>)}
         </select>

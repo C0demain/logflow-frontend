@@ -57,7 +57,6 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
 
     return (
         <div>
-
             {/* Seção de Listagem de Usuários */}
             <div className="overflow-x-auto">
                 <div className="flex flex-row space-x-2 mb-6 items-center justify-between bg-white p-3 rounded-md">
@@ -65,11 +64,13 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
                         <p className="text-lg">Setor</p>
                         <SelectSector controlState={[sectorFilter, setSectorFilter]} />
                     </div>
-                    <div className="flex flex-row items-center space-x-2">
-                        <p className="text-lg">Função</p>
-                        <SelectRole sector={String(sectorFilter)} controlState={[roleFilter, setRoleFilter]} />
-                    </div>
-                    <button className="btn btn-outline-primary" onClick={() => setSectorFilter('')}>Limpar</button>
+                    {sectorFilter && (
+                        <div className="flex flex-row items-center space-x-2">
+                            <p className="text-lg">Função</p>
+                            <SelectRole sector={String(sectorFilter)} controlState={[roleFilter, setRoleFilter]} />
+                        </div>
+                    )}
+                    <button className="btn btn-outline-primary" onClick={() => setSectorFilter("")}>Limpar</button>
                 </div>
                 <table className="table w-full bg-white shadow-md rounded-lg">
                     <thead className="bg-blue-400 text-white rounded-t-lg">
