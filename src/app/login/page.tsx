@@ -5,8 +5,8 @@ import { FormEvent, useContext, useState } from "react";
 import Loading from "../loading";
 import { AuthContext } from "../context/auth";
 import { loginPut } from "../api/userService/login";
-import { useToast } from "@chakra-ui/react";
 import { isAxiosError } from "axios";
+import useToasts from "@/hooks/useToasts";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("")
@@ -14,7 +14,7 @@ export default function Login() {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
   const { login } = useContext(AuthContext)
-  const toast = useToast()
+  const { showToastOnReload, showToast } = useToasts()
 
   async function logon(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,29 +26,13 @@ export default function Login() {
         router.push('/auth/service-order');
         const { token, id, role, sector } = response;
         login({ token, id, role, sector });
-        toast({
-          status: "success",
-          title: "Login realizado com sucesso!",
-          duration: 3000,
-          isClosable: true
-        })
+        showToast("Login realizado com sucesso", 'success')
       }
     } catch (error: any) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro no login",
-          description: error.message,
-          position: "bottom-right",
-          duration: 3000,
-          isClosable: true
-        })
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro no login",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        })
+        showToast(error.message, 'error')
       }
     } finally {
       setLoading(false); // Finaliza o estado de loading

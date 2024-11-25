@@ -11,16 +11,16 @@ import { Sector } from "@/enums/sector"
 import { TaskStage } from "@/enums/taskStage"
 import { Process } from "@/interfaces/process"
 import { Task } from "@/interfaces/task"
-import { Accordion, useToast } from "@chakra-ui/react"
-import { useParams, useRouter } from "next/navigation"
+import { Accordion } from "@chakra-ui/react"
+import { useParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
+import useToasts from "@/hooks/useToasts"
 
 export default function SingleProcessPage() {
   const { processId } = useParams()
   const [processData, setProcessData] = useState<Process>()
   const [loading, setLoading] = useState(true)
-  const toast = useToast()
-  const router = useRouter()
+  const {showToast, showToastOnReload} = useToasts()
 
   const fetchProcess = useCallback(async () => {
     const process = await getSingleProcess(String(processId))
@@ -38,19 +38,11 @@ export default function SingleProcessPage() {
         stage: data.stage || TaskStage.SALE_COMPLETED
 
       })
-      toast({
-        status: 'success',
-        title: 'Sucesso',
-        description: 'Tarefa criada com sucesso'
-      })
+      showToastOnReload('Tarefa criada com sucesso', 'success')
 
-      router.refresh()
+      window.location.reload()
     } catch (error: any) {
-      toast({
-        status: 'error',
-        title: 'Erro',
-        description: error.message
-      })
+      showToast(error.message, 'error')
     }
   }
 

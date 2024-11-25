@@ -7,33 +7,26 @@ import { getProcesses } from "@/app/api/process/getProcesses";
 import { Process } from "@/interfaces/process";
 import DeleteButton from "@/components/Shared/deleteButton";
 import { deleteProcess } from "@/app/api/process/deleteProcess";
-import { useToast } from "@chakra-ui/react";
+
 import { useRouter } from "next/navigation";
 import { FaCircleInfo } from "react-icons/fa6";
+import useToasts from "@/hooks/useToasts";
 
 export const ProcessesList: React.FC = () => {
   const [data, setData] = useState<Process[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const toast = useToast()
+  const {showToast, showToastOnReload} = useToasts()
   const router = useRouter()
 
   const removeProcess = async (id: string) => {
     try {
       await deleteProcess(id)
-      toast({
-        status: 'success',
-        title: 'Sucesso',
-        description: 'Processo removido com sucesso'
-      })
+      showToastOnReload('Processo removido com sucesso', 'success')
 
-      router.refresh()
+      window.location.reload()
     } catch (error: any) {
-      toast({
-        status: 'error',
-        title: 'Erro',
-        description: error.message
-      })
+      showToast(error.message, 'error')
     }
   }
 

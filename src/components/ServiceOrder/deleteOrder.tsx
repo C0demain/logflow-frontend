@@ -1,24 +1,21 @@
 import { deleteOsById } from "@/app/api/serviceOrder/deleteOrder";
-import { useToast } from "@chakra-ui/react";
+
 import { useRouter } from "next/navigation";
 import DeleteButton from "../Shared/deleteButton";
+import useToasts from "@/hooks/useToasts";
 
 interface DeleteOrderProps {
   id: string;
 }
 
 export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
-  const toast = useToast();
+  const {showToast, showToastOnReload} = useToasts()
   const router = useRouter();
   const handleDelete = async (id: string) => {
     try {
       const response = await deleteOsById(id);
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Ordem de serviço arquivada com sucesso",
-      });
-      router.refresh();
+      showToastOnReload("Ordem de serviço arquivada com sucesso", 'success')
+      window.location.reload();
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Erro ao registrar ordem de serviço:", error.message);

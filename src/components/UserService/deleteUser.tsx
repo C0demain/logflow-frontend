@@ -1,38 +1,27 @@
 import { deleteUserById } from "@/app/api/userService/deleteUser";
-import { useToast } from "@chakra-ui/react";
+
 import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import DeleteButton from "../Shared/deleteButton";
+import useToasts from "@/hooks/useToasts";
 
 interface DeleteUserProps {
   id: string;
 }
 
 export const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
-  const toast = useToast();
+  const {showToast, showToastOnReload} = useToasts()
   const router = useRouter();
   const handleDelete = async (id: string) => {
     try {
       const response = await deleteUserById(id);
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Funcionário arquivado com sucesso",
-      });
-      router.refresh();
+      showToastOnReload("Funcionário arquivado com sucesso", 'success')
+      window.location.reload();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+         showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };

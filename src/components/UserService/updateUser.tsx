@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { updateUserById } from "@/app/api/userService/updateUser";
-import { useToast } from "@chakra-ui/react";
+
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
+import useToasts from "@/hooks/useToasts";
 
 interface EditUserProps {
     id: string;
@@ -29,7 +30,7 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
         sector,
     });
     const [loading, setLoading] = useState(false);
-    const toast = useToast();
+    const {showToast, showToastOnReload} = useToasts()
     const router = useRouter();
 
     useEffect(() => {
@@ -53,25 +54,13 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
 
         try {
             await updateUserById(id, formData);
-            toast({
-                status: "success",
-                title: "Sucesso",
-                description: "Funcionário atualizado com sucesso"
-            });
-            router.refresh();  // Atualizar a página após a edição
+            showToastOnReload("Funcionário atualizado com sucesso", 'success')
+            window.location.reload();  // Atualizar a página após a edição
         } catch (error: unknown) {
             if (isAxiosError(error)) {
-                toast({
-                    status: "error",
-                    title: "Erro",
-                    description: error.message
-                });
+                showToast(error.message, 'error')
             } else {
-                toast({
-                    status: "error",
-                    title: "Erro",
-                    description: "Ocorreu um erro inesperado. Tente novamente"
-                });
+                showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
             }
         } finally {
             setLoading(false);

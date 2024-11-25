@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { updateVehicleById } from "@/app/api/vehicleService/updateVehicle"; // Função para atualizar o veículo
-import { useToast } from "@chakra-ui/react";
+
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
+import useToasts from "@/hooks/useToasts";
 
 interface EditVehicleProps {
     id: string;
@@ -31,7 +32,7 @@ export const EditVehicle: React.FC<EditVehicleProps> = ({
         status
     });
     const [loading, setLoading] = useState(false);
-    const toast = useToast();
+    const {showToast, showToastOnReload} = useToasts()
     const router = useRouter();
 
     // Função para manipular as mudanças nos campos do formulário
@@ -54,25 +55,13 @@ export const EditVehicle: React.FC<EditVehicleProps> = ({
         try {
             // Aqui, passamos o formData para a função que faz a atualização do veículo
             await updateVehicleById(id, formData);
-            toast({
-                status: "success",
-                title: "Sucesso",
-                description: "Veículo atualizado com sucesso"
-            });
-            router.refresh();  // Atualiza a página após a edição
+            showToastOnReload("Veículo atualizado com sucesso", 'success')
+            window.location.reload();  // Atualiza a página após a edição
         } catch (error: unknown) {
             if (isAxiosError(error)) {
-                toast({
-                    status: "error",
-                    title: "Erro",
-                    description: error.message
-                });
+                showToast(error.message, 'error')
             } else {
-                toast({
-                    status: "error",
-                    title: "Erro",
-                    description: "Ocorreu um erro inesperado. Tente novamente"
-                });
+                showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
             }
         } finally {
             setLoading(false);

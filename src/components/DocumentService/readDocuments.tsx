@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { FaDownload } from "react-icons/fa";
 import Loading from "@/app/loading";
-import { useToast } from "@chakra-ui/react";
+
 import { DeleteDocument } from "./deleteDocuments";
 import DocumentData from "@/app/api/documentsService/DocumentData";
 import { listDocuments } from "@/app/api/documentsService/listDocuments";
 import { deleteDocumentById } from "@/app/api/documentsService/deleteDocument";
 import { downloadById } from "@/app/api/documentsService/downloadDocument";
 import Empty from "../Shared/Empty";
+import useToasts from "@/hooks/useToasts";
 
 interface ReadDocumentsProps {
   userId: string | undefined;
@@ -18,7 +19,7 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) 
   const [data, setData] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
+  const {showToast, showToastOnReload} = useToasts()
 
   const getDocuments = useCallback(async () => {
     setLoading(true);
@@ -42,36 +43,21 @@ export const ReadDocuments: React.FC<ReadDocumentsProps> = ({ userId, taskId }) 
       // Chama a função de exclusão
       await deleteDocumentById(documentId);
       setData((prevData) => prevData.filter(doc => doc.id !== documentId));
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Documento excluído com sucesso"
-      });
+      showToastOnReload("Documento excluído com sucesso", 'success');
+      window.location.reload()
     } catch (error) {
       console.error("Error deleting document:", error);
-      toast({
-        status: "error",
-        title: "Erro",
-        description: "Não foi possível excluir o documento. Tente novamente."
-      });
+      showToast("Não foi possível excluir o documento. Tente novamente.", 'error')
     }
   };
 
   const downloadDoc = async (id: string, name: string) => {
     try {
       await downloadById(id, name)
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Documento baixado com sucesso"
-      });
+      showToast("Documento baixado com sucesso", 'success')
     } catch (error) {
       console.error("Error deleting document:", error);
-      toast({
-        status: "error",
-        title: "Erro",
-        description: "Não foi possível baixar o documento. Tente novamente."
-      });
+      showToast("Não foi possível baixar o documento. Tente novamente.", 'error')
     }
   }
 
