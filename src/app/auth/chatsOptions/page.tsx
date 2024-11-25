@@ -12,7 +12,7 @@ interface ConnectedUser {
 }
 
 // Chats em grupo pré-fixados
-export const groupChats = [
+const groupChats = [
   { id: 'group-1', name: 'Central de Comunicação' },
   { id: 'group-2', name: 'Gestão e Resultados' },
 ];

@@ -5,7 +5,6 @@ import { useParams } from 'next/navigation';
 import { Box, VStack, HStack, Text, Input, Button, IconButton } from '@chakra-ui/react';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import { socket } from '@/app/util/socket';
-import { groupChats } from '../../chatsOptions/page';
 
 interface Message {
   sender: string;
@@ -19,6 +18,11 @@ interface ConnectedUser {
   id: string;
   name: string;
 }
+
+const groupChats = [
+  { id: 'group-1', name: 'Central de Comunicação' },
+  { id: 'group-2', name: 'Gestão e Resultados' },
+];
 
 export default function ChatPage() {
   const { id } = useParams() as { id: string };
