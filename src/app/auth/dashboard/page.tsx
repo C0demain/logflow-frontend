@@ -13,6 +13,7 @@ import OverdueTasksCount from "@/components/Dashboard/overdueTasksCount";
 import { listOs } from "@/app/api/serviceOrder/listOrder";
 import { DateFilterProvider } from "@/app/context/dashboard";
 import TurnoverCards from "@/components/Dashboard/turnoverCards";
+import OrdersChart from '@/components/Charts/OrdersChart';
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -22,12 +23,12 @@ export default function Dashboard() {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
-  // Função para buscar ordens com filtros de data
+ 
   const fetchOrders = async () => {
     try {
       const response = await listOs(null, null, null, true, null);
       setOrders(response);
-      setFilteredOrders(response); // Inicializa com todas as ordens
+      setFilteredOrders(response);
     } catch (error) {
       console.error("Erro ao buscar ordens:", error);
     } finally {
@@ -35,16 +36,15 @@ export default function Dashboard() {
     }
   };
 
-  // Função para filtrar as ordens com base nas datas
+ 
   const filterOrdersByDate = () => {
     if (!startDate && !endDate) {
-      // Se não houver datas selecionadas, mostra todas as ordens
       setFilteredOrders(orders);
       return;
     }
 
     const filtered = orders.filter((order) => {
-      const orderDate = new Date(order.createdAt); // Ajuste de acordo com o campo de data da ordem
+      const orderDate = new Date(order.createdAt); 
       const start = startDate ? new Date(startDate) : null;
       const end = endDate ? new Date(endDate) : null;
 
@@ -57,7 +57,7 @@ export default function Dashboard() {
     setFilteredOrders(filtered);
   };
 
-  // Atualiza o filtro quando as datas forem alteradas
+  
   useEffect(() => {
     filterOrdersByDate();
   }, [startDate, endDate, orders]);
@@ -112,10 +112,10 @@ export default function Dashboard() {
             </AccessWrapper>
             <AccessWrapper sectors={["DIRETORIA"]}>
                 <OverdueTasksCount />
-            </AccessWrapper>
-            <AccessWrapper sectors={["DIRETORIA"]}>
                 <TurnoverCards/>
+                <OrdersChart/>
             </AccessWrapper>
+           
           </>
         </DateFilterProvider>
       )}
