@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { AuthProvider } from "./context/auth";
 import { Providers } from "@/app/providers";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "LogFlow",
@@ -20,6 +21,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <Providers>{children}</Providers>
+          <Toaster position="bottom-right"/>
         </AuthProvider>
       </body>
     </html>

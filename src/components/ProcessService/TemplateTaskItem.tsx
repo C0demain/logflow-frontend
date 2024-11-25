@@ -1,8 +1,8 @@
 import { deleteTaskById } from "@/app/api/tasks/deleteTask";
 import DeleteButton from "@/components/Shared/deleteButton";
+import useToasts from "@/hooks/useToasts";
 import { Task } from "@/interfaces/task";
-import { AccordionButton, AccordionItem, AccordionPanel, useToast } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { AccordionButton, AccordionItem, AccordionPanel } from "@chakra-ui/react";
 
 interface propsType {
     task: Task
@@ -10,25 +10,16 @@ interface propsType {
 
 export default function TemplateTaskItem(props: propsType) {
     const { task } = props
-    const toast = useToast()
-    const router = useRouter()
+    const {showToast, showToastOnReload} = useToasts()
 
     const handleDelete = async (id: string) => {
         try {
             await deleteTaskById(id);
-            toast({
-                status: 'success',
-                title: 'Sucesso',
-                description: 'Tarefa removida com sucesso'
-            })
+            showToastOnReload('Tarefa removida com sucesso', 'success')
 
-            router.refresh()
+            window.location.reload()
         } catch (error: any) {
-            toast({
-                status: 'error',
-                title: 'Erro',
-                description: `Erro ao registrar Tarefa: ${error.message}`
-            })
+            showToast(`Erro ao registrar Tarefa: ${error.message}`, 'error')
             console.log(error)
         }
     };

@@ -12,6 +12,7 @@ import { useToast } from "@chakra-ui/react/toast";
 import { formatDateForInput, formatDateToBR } from "@/app/util/dateFormatter";
 import { Divider } from "@chakra-ui/react";
 import { HeaderOrderService } from "../ServiceOrder/headerOrderService";
+import useToasts from "@/hooks/useToasts";
 
 interface ReadUnitTaskProps{
   myTask: boolean;
@@ -23,7 +24,7 @@ export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
   const [userObj, setUserObj] = useState<any>();
   const [dueDate, setDueDate] = useState<string>("");
   const [taskCost, setTaskCost] = useState<number>();
-  const toast = useToast();
+  const {showToast, showToastOnReload} = useToasts()
   const { task, deleteTask } = useContext(TaskContext);
   const user = shownTask?.assignedUser;
 
@@ -34,17 +35,9 @@ export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
       return response;
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };
@@ -55,27 +48,15 @@ export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
     try {
       const response = await userForTask(shownTask.id, { userId: userObj.value });
       await startTasks(shownTask.id);
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Usuário vínculado",
-      });
+       showToast("Usuário vínculado", 'success')
       setUserObj("");
       getTask()
       return response;
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };
@@ -85,24 +66,12 @@ export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
     event.preventDefault();
     try {
       const response = await setdueDate(shownTask.id, { date: formatDateToBR(dueDate) });
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Previsão de fim atualizada",
-      });
+      showToast("Previsão de fim atualizada", 'success')
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };
@@ -112,25 +81,13 @@ export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
     event.preventDefault();
     try {
       const response = await addCost(shownTask.id, { value: taskCost });
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Custo de tarefa atualizado",
-      });
+      showToast("Custo de tarefa atualizado", 'success')
       return response;
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };

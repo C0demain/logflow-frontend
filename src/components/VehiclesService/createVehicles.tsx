@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { registerVehicle } from "@/app/api/vehicleService/registerVehicle"; // Certifique-se de ter a função de API correspondente
 import axios from "axios";
-import { useToast } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+
 import CreateButton from "../Shared/createButton";
+import useToasts from "@/hooks/useToasts";
 
 interface VehicleData {
   model: string;
@@ -27,8 +27,7 @@ export function CreateVehicle() {
   });
 
   const [loading, setLoading] = useState(false);
-  const toast = useToast();
-  const router = useRouter();
+  const {showToast, showToastOnReload} = useToasts()
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -57,25 +56,13 @@ export function CreateVehicle() {
         autonomy: 0, // Resetando para o valor default
         status: "Disponível", // Resetando status
       });
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Veículo cadastrado com sucesso",
-      });
-      router.refresh();
+      showToastOnReload("Veículo cadastrado com sucesso", 'success')
+      window.location.reload();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     } finally {
       setLoading(false);

@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { SelectClient } from "../ClientService/selectClient";
 import { registerOrder } from "@/app/api/serviceOrder/registerOrder";
-import { useRouter } from "next/navigation";
-import { useToast } from "@chakra-ui/react";
+
 import { isAxiosError } from "axios";
 import CreateButton from "../Shared/createButton";
 import { SelectProcess } from "@/components/ProcessService/SelectProcess";
+import useToasts from "@/hooks/useToasts";
 
 interface CreateOrderProps {
   id: string
@@ -22,8 +22,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
   const userId = id
   const status = "PENDENTE";
   const sector = "VENDAS";
-  const router = useRouter();
-  const toast = useToast();
+  const {showToast, showToastOnReload} = useToasts()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,30 +39,14 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
         value,
         processId
       });
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Ordem de serviço criada com sucesso",
-      });
+      showToastOnReload("Ordem de serviço criada com sucesso", 'success')
 
-      setTitle("");
-      setClientObj(null);
-      setDescription("");
-      setValue(undefined);
-      router.refresh();
+      window.location.reload();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };

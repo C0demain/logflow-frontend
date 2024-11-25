@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { registerUser } from "@/app/api/userService/createUser";
 import axios from "axios";
-import { useToast } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+
 import CreateButton from "../Shared/createButton";
+import useToasts from "@/hooks/useToasts";
 
 interface UserData {
   name: string;
@@ -33,8 +33,7 @@ export function CreateUser() {
   });
 
   const [loading, setLoading] = useState(false);
-  const toast = useToast();
-  const router = useRouter();
+  const {showToast, showToastOnReload} = useToasts()
 
   useEffect(() => {
     // Atualiza o campo "role" quando o campo "sector" é alterado
@@ -66,25 +65,13 @@ export function CreateUser() {
         role: "",
         sector: "OPERACIONAL", // Resetando para o valor padrão
       });
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Funcionário adicionado com sucesso",
-      });
-      router.refresh()
+      showToastOnReload("Funcionário adicionado com sucesso", 'success')
+      window.location.reload()
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     } finally {
       setLoading(false);

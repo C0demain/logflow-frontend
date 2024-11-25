@@ -1,8 +1,8 @@
 "use client"
 
+import useToasts from '@/hooks/useToasts';
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-import { useToast } from '@chakra-ui/react';
 
 const socket = io('http://localhost:8000', {
     transports: ['websocket'], // Force to use WebSocket
@@ -15,7 +15,7 @@ const ChatBox: React.FC = () => {
   const [groupName, setGroupName] = useState<string>('Funcionários');
   const [privateMessage, setPrivateMessage] = useState<string>('');
   const [privateRecipient, setPrivateRecipient] = useState<string>('');
-  const toast = useToast();
+  const {showToast} = useToasts()
 
   useEffect(() => {
     // Receber mensagens do grupo
@@ -39,21 +39,9 @@ const ChatBox: React.FC = () => {
       socket.emit('sendMessage', { groupName, message });
       setMessage('');
       
-      toast({
-        title: 'Mensagem enviada',
-        description: 'Sua mensagem foi enviada para o grupo.',
-        status: 'success',
-        duration: 4000,
-        isClosable: true,
-      });
+      showToast('Sua mensagem foi enviada para o grupo.', 'success');
     } else {
-      toast({
-        title: 'Erro',
-        description: 'Digite uma mensagem para enviar.',
-        status: 'error',
-        duration: 4000,
-        isClosable: true,
-      });
+      showToast('Digite uma mensagem para enviar.', 'error');
     }
   };
 
@@ -63,44 +51,20 @@ const ChatBox: React.FC = () => {
       setPrivateMessage('');
       setPrivateRecipient('');
       
-      toast({
-        title: 'Mensagem Privada Enviada',
-        description: 'Sua mensagem privada foi enviada.',
-        status: 'success',
-        duration: 4000,
-        isClosable: true,
-      });
+      showToast('Sua mensagem privada foi enviada.', 'success');
     } else {
-      toast({
-        title: 'Erro',
-        description: 'Preencha todos os campos para enviar a mensagem privada.',
-        status: 'error',
-        duration: 4000,
-        isClosable: true,
-      });
+      showToast('Preencha todos os campos para enviar a mensagem privada.', 'error');
     }
   };
 
   const joinGroup = () => {
     socket.emit('joinGroup', groupName);
-    toast({
-      title: 'Entrou no Grupo',
-      description: `Você entrou no grupo ${groupName}.`,
-      status: 'success',
-      duration: 4000,
-      isClosable: true,
-    });
+    showToast(`Você entrou no grupo ${groupName}.`, 'success');
   };
 
   const leaveGroup = () => {
     socket.emit('leaveGroup', groupName);
-    toast({
-      title: 'Saiu do Grupo',
-      description: `Você saiu do grupo ${groupName}.`,
-      status: 'info',
-      duration: 4000,
-      isClosable: true,
-    });
+    showToast(`Você saiu do grupo ${groupName}.`, 'success');
   };
 
   return (

@@ -1,12 +1,12 @@
 "use client";
 
 import { registerClient } from "@/app/api/clientService/registerClient";
-import { useToast } from "@chakra-ui/react";
+
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MaskedInput from "react-text-mask";
 import CreateButton from "../Shared/createButton";
+import useToasts from "@/hooks/useToasts";
 
 interface ClientData {
   name: string;
@@ -45,8 +45,7 @@ export function CreateClient() {
   const [loading, setLoading] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const toast = useToast();
-  const router = useRouter();
+  const {showToast, showToastOnReload} = useToasts();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -67,11 +66,7 @@ export function CreateClient() {
     const cep = formData.address.zipCode.replace("-", "");
 
     if (cep.length !== 8) {
-      toast({
-        status: "error",
-        title: "CEP inválido",
-        description: "CEP deve ter 8 dígitos.",
-      });
+      showToast( "CEP deve ter 8 dígitos.", 'error');
       return;
     }
 
@@ -81,11 +76,7 @@ export function CreateClient() {
       const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const data = await response.json();
       if (data.erro) {
-        toast({
-          status: "error",
-          title: "CEP inválido",
-          description: "Não foi possível encontrar esse CEP. Tente novamente",
-        });
+        showToast("Não foi possível encontrar esse CEP. Tente novamente", 'error');
         setFormData((prevState) => ({
           ...prevState,
           address: {
@@ -111,12 +102,7 @@ export function CreateClient() {
         },
       }));
     } catch (error) {
-      toast({
-        status: "error",
-        title: "Erro ao buscar CEP",
-        description:
-          "Não foi possível encontrar o CEP especificado. Tente novamente",
-      });
+      showToast("Não foi possível encontrar o CEP especificado. Tente novamente", 'error');
     } finally {
       setLoadingCep(false);
     }
@@ -142,11 +128,7 @@ export function CreateClient() {
 
       const response = await registerClient(dataToSend);
       
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Cliente criado com sucesso",
-      });
+      showToastOnReload("Cliente criado com sucesso", 'success');
 
       setFormData({
         name: "",
@@ -165,23 +147,14 @@ export function CreateClient() {
       });
 
       setIsOpen(false);
-      router.refresh();
+      window.location.reload()
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error');
       }
     } finally {
-      router.refresh()
       setLoading(false);
     }
   };

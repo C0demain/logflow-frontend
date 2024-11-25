@@ -1,9 +1,10 @@
 "use client";
 
-import { useToast } from "@chakra-ui/react";
+
 import { useState } from "react";
 import CreateButton from "../Shared/createButton";
 import { registerDocument } from "@/app/api/documentsService/registerDocument";
+import useToasts from "@/hooks/useToasts";
 
 interface CreateDocumentsProps {
   id: string | undefined;
@@ -13,7 +14,7 @@ interface CreateDocumentsProps {
 export const CreateDocuments: React.FC<CreateDocumentsProps> = ({ id, taskId }) => {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const toast = useToast();
+  const {showToast, showToastOnReload} = useToasts()
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -26,11 +27,7 @@ export const CreateDocuments: React.FC<CreateDocumentsProps> = ({ id, taskId }) 
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) {
-      toast({
-        status: "error",
-        title: "Nenhum arquivo selecionado",
-        description: "Por favor, selecione um arquivo antes de enviar.",
-      });
+      showToast("Por favor, selecione um arquivo antes de enviar.", 'error');
       return;
     }
 
@@ -38,18 +35,11 @@ export const CreateDocuments: React.FC<CreateDocumentsProps> = ({ id, taskId }) 
 
     try {
       await registerDocument({ file: file, filename: file.name, userId: id, taskId: taskId }); // Chama a função de registro
-      toast({
-        status: "success",
-        title: "Upload realizado com sucesso",
-        description: `Arquivo ${file.name} foi enviado.`,
-      });
+      showToastOnReload(`Arquivo ${file.name} foi enviado.`, 'success');
+      window.location.reload()
       setFile(null); // Limpa o estado do arquivo após o upload
     } catch (error) {
-      toast({
-        status: "error",
-        title: "Erro ao enviar o arquivo",
-        description: (error as Error).message || "Ocorreu um erro ao enviar o arquivo.",
-      });
+      showToast((error as Error).message || "Ocorreu um erro ao enviar o arquivo.", 'error');
     } finally {
       setLoading(false);
     }
