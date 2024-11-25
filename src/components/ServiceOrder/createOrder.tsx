@@ -118,9 +118,11 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
                 <input
                   type="number"
                   className="grow"
-                  value={value}
-                  onChange={(e) => setValue(parseFloat(e.target.value) || undefined)}
-                /></label>
+                  value={value ?? ""}
+                  onChange={(e) => setValue(e.target.value ? parseFloat(e.target.value) : undefined)}
+                />
+
+              </label>
             </div>
           </div>
           <div className="w-full max-w-md flex justify-end">
