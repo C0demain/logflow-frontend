@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { registerUser } from "@/app/api/userService/createUser";
 import axios from "axios";
 
-import { useRouter } from "next/navigation";
 import CreateButton from "../Shared/createButton";
 import useToasts from "@/hooks/useToasts";
 
@@ -35,7 +34,6 @@ export function CreateUser() {
 
   const [loading, setLoading] = useState(false);
   const {showToast, showToastOnReload} = useToasts()
-  const router = useRouter();
 
   useEffect(() => {
     // Atualiza o campo "role" quando o campo "sector" é alterado

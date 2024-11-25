@@ -4,7 +4,6 @@ import { useState } from "react";
 import { registerVehicle } from "@/app/api/vehicleService/registerVehicle"; // Certifique-se de ter a função de API correspondente
 import axios from "axios";
 
-import { useRouter } from "next/navigation";
 import CreateButton from "../Shared/createButton";
 import useToasts from "@/hooks/useToasts";
 
@@ -29,7 +28,6 @@ export function CreateVehicle() {
 
   const [loading, setLoading] = useState(false);
   const {showToast, showToastOnReload} = useToasts()
-  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

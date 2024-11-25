@@ -1,7 +1,6 @@
 import { deleteUserById } from "@/app/api/userService/deleteUser";
 
 import { isAxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import DeleteButton from "../Shared/deleteButton";
 import useToasts from "@/hooks/useToasts";
 
@@ -11,7 +10,6 @@ interface DeleteUserProps {
 
 export const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
   const {showToast, showToastOnReload} = useToasts()
-  const router = useRouter();
   const handleDelete = async (id: string) => {
     try {
       const response = await deleteUserById(id);

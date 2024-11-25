@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { updateVehicleById } from "@/app/api/vehicleService/updateVehicle"; // Função para atualizar o veículo
 
-import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
 import useToasts from "@/hooks/useToasts";
 
@@ -33,7 +32,6 @@ export const EditVehicle: React.FC<EditVehicleProps> = ({
     });
     const [loading, setLoading] = useState(false);
     const {showToast, showToastOnReload} = useToasts()
-    const router = useRouter();
 
     // Função para manipular as mudanças nos campos do formulário
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

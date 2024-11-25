@@ -3,7 +3,6 @@
 import { deleteVehicleById } from "@/app/api/vehicleService/deleteVehicle"; // Certifique-se de ter a função de API correspondente
 
 import { isAxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import DeleteButton from "../Shared/deleteButton";
 import useToasts from "@/hooks/useToasts";
 
@@ -13,7 +12,6 @@ interface DeleteVehicleProps {
 
 export const DeleteVehicle: React.FC<DeleteVehicleProps> = ({ id }) => {
   const {showToast, showToastOnReload} = useToasts()
-  const router = useRouter();
 
   const handleDelete = async (id: string) => {
     try {

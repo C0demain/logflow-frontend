@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { updateUserById } from "@/app/api/userService/updateUser";
 
-import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
 import useToasts from "@/hooks/useToasts";
 
@@ -31,7 +30,6 @@ export const EditUser: React.FC<EditUserProps> = ({ id, name, email, role, secto
     });
     const [loading, setLoading] = useState(false);
     const {showToast, showToastOnReload} = useToasts()
-    const router = useRouter();
 
     useEffect(() => {
         // Atualiza o campo "role" quando o campo "sector" é alterado

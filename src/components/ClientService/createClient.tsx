@@ -3,7 +3,6 @@
 import { registerClient } from "@/app/api/clientService/registerClient";
 
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MaskedInput from "react-text-mask";
 import CreateButton from "../Shared/createButton";

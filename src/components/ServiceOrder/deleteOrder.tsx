@@ -1,6 +1,5 @@
 import { deleteOsById } from "@/app/api/serviceOrder/deleteOrder";
 
-import { useRouter } from "next/navigation";
 import DeleteButton from "../Shared/deleteButton";
 import useToasts from "@/hooks/useToasts";
 
@@ -10,7 +9,6 @@ interface DeleteOrderProps {
 
 export const DeleteOrder: React.FC<DeleteOrderProps> = ({ id }) => {
   const {showToast, showToastOnReload} = useToasts()
-  const router = useRouter();
   const handleDelete = async (id: string) => {
     try {
       const response = await deleteOsById(id);

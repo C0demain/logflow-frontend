@@ -5,7 +5,6 @@ import Loading from "@/app/loading";
 import { listUsers } from "@/app/api/userService/listUser";
 import { FaEdit, FaFileAlt } from "react-icons/fa";
 import { deleteUserById } from "@/app/api/userService/deleteUser";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import SelectSector from "@/components/Selects/SelectSector";
 import { SelectRole } from "@/components/Selects/SelectRole";
@@ -27,7 +26,6 @@ export const ReadUsers: React.FC<ReadUsersProps> = ({ autorizado }) => {
     const [loading, setLoading] = useState(true);
     const [sectorFilter, setSectorFilter] = useState<string>();
     const [roleFilter, setRoleFilter] = useState<string>('');
-    const router = useRouter();
 
     const getUsers = useCallback(async () => {
         try {

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { SelectClient } from "../ClientService/selectClient";
 import { registerOrder } from "@/app/api/serviceOrder/registerOrder";
-import { useRouter } from "next/navigation";
 
 import { isAxiosError } from "axios";
 import CreateButton from "../Shared/createButton";
@@ -23,7 +22,6 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
   const userId = id
   const status = "PENDENTE";
   const sector = "VENDAS";
-  const router = useRouter();
   const {showToast, showToastOnReload} = useToasts()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

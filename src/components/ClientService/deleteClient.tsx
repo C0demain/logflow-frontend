@@ -1,6 +1,5 @@
 import { deleteClientById } from "@/app/api/clientService/deleteClient";
 
-import { useRouter } from "next/navigation";
 import DeleteButton from "../Shared/deleteButton";
 import useToasts from "@/hooks/useToasts";
 
