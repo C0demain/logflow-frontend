@@ -35,7 +35,7 @@ export default function ChatPage() {
   // Função para tocar som de notificação
   const playNotificationSound = () => {
     try {
-      const notificationSound = new Audio('/sounds/notification.mp3');
+      const notificationSound = new Audio('/sounds/notification-wpp.mp3');
       notificationSound.volume = 0.5;
       notificationSound.play();
     } catch (error) {
