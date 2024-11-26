@@ -46,6 +46,7 @@ export function Navbar() {
             <li className="hover:text-white"><Link href="/auth/process">Processos</Link></li>
             <li className="hover:text-white"><Link href="/auth/chatsOptions">Chats</Link></li>
             <li className="hover:text-white"><Link href="/auth/vehicles">Veículos</Link></li>
+            <li className="hover:text-white"><Link href="/auth/calendar">Agenda</Link></li>
           </ul>
         )}
       </div>
