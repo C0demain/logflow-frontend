@@ -112,8 +112,8 @@ export default function Dashboard() {
             <TotalTaskCost />
           </AccessWrapper>
           <AccessWrapper sectors={["DIRETORIA"]}>
+          <TurnoverCards />
             <OverdueTasksCount />
-            <TurnoverCards />
             <OrdersChart />
           </AccessWrapper>
         </DateFilterProvider>
