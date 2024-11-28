@@ -1,7 +1,13 @@
-import { useState } from "react";
-import useToasts from "@/hooks/useToasts";
-import CreateButton from "../Shared/createButton";
 import { registerEvent } from "@/app/api/calendarService/registerEvent";
+import useToasts from "@/hooks/useToasts";
+import UserCookie from "@/interfaces/userCookie";
+import axios from "axios";
+import { useState } from "react";
+import CreateButton from "../Shared/createButton";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
+
+dayjs.locale("pt-br");
 
 export default function CreateEvent() {
   const [formData, setFormData] = useState({
@@ -9,16 +15,24 @@ export default function CreateEvent() {
     description: "",
     start: "",
     end: "",
-    allDay: false,
   });
   const [loading, setLoading] = useState(false);
   const { showToast } = useToasts();
+
+  async function fetchUserCookie(): Promise<UserCookie | undefined> {
+    try {
+      const response = await axios.get("/api/getUser");
+      return response.data as UserCookie;
+    } catch (error) {
+      console.error("Failed to fetch token", error);
+      return undefined;
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
-    // Validação simples
     if (!formData.title || !formData.start || !formData.end) {
       showToast("Preencha todos os campos obrigatórios", "error");
       setLoading(false);
@@ -26,7 +40,29 @@ export default function CreateEvent() {
     }
 
     try {
-      const response = await registerEvent(formData);
+      const userId = (await fetchUserCookie())?.id;
+      if (!userId) {
+        showToast("Erro ao obter o ID do usuário", "error");
+        setLoading(false);
+        return;
+      }
+
+      if (!dayjs(formData.start).isBefore(dayjs(formData.end))) {
+        showToast(
+          "Data de início não pode ser após a data de término",
+          "error"
+        );
+        setLoading(false);
+        return;
+      }
+
+      const response = await registerEvent({
+        ...formData,
+        start: dayjs(formData.start).toISOString(),
+        end: dayjs(formData.end).toISOString(),
+        userId,
+      });
+
       if (response) {
         showToast("Evento cadastrado com sucesso", "success");
       }
@@ -39,9 +75,7 @@ export default function CreateEvent() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -84,59 +118,31 @@ export default function CreateEvent() {
           </div>
           <div className="w-full max-w-md">
             <label className="block mb-2" htmlFor="start">
-              Início <span className="text-red-500">*</span>
+              Data e Hora de Início <span className="text-red-500">*</span>
             </label>
-            <div className="flex space-x-2">
-              <input
-                type="date"
-                id="start"
-                name="startDate"
-                onChange={(e) =>
-                  setFormData({ ...formData, start: e.target.value })
-                }
-                className="input input-bordered w-1/2"
-              />
-              <input
-                type="time"
-                id="start-time"
-                name="startTime"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    start: `${formData.start.split("T")[0]}T${e.target.value}`,
-                  })
-                }
-                className="input input-bordered w-1/2"
-              />
-            </div>
+            <input
+              type="datetime-local"
+              id="start"
+              name="start"
+              value={formData.start}
+              min={dayjs().toISOString()}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
           </div>
           <div className="w-full max-w-md">
             <label className="block mb-2" htmlFor="end">
-              Fim <span className="text-red-500">*</span>
+              Data e Hora de Término <span className="text-red-500">*</span>
             </label>
-            <div className="flex space-x-2">
-              <input
-                type="date"
-                id="end"
-                name="endDate"
-                onChange={(e) =>
-                  setFormData({ ...formData, end: e.target.value })
-                }
-                className="input input-bordered w-1/2"
-              />
-              <input
-                type="time"
-                id="end-time"
-                name="endTime"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    end: `${formData.end.split("T")[0]}T${e.target.value}`,
-                  })
-                }
-                className="input input-bordered w-1/2"
-              />
-            </div>
+            <input
+              type="datetime-local"
+              id="end"
+              name="end"
+              min={dayjs().toISOString()}
+              value={formData.end}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
           </div>
           <div className="modal-action flex justify-around">
             <button
@@ -146,7 +152,7 @@ export default function CreateEvent() {
               }`}
               disabled={loading}
             >
-              Registrar evento
+              {loading ? "Registrando..." : "Registrar evento"}
             </button>
           </div>
         </form>

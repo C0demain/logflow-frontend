@@ -7,9 +7,10 @@ import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 
 export default function CalendarLogin() {
+  const [isLogged, setIsLogged] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  async function fetchUser(): Promise<UserCookie | undefined> {
+  async function fetchUserCookie(): Promise<UserCookie | undefined> {
     try {
       const response = await axios.get("/api/getUser");
       return response.data as UserCookie;
@@ -21,14 +22,13 @@ export default function CalendarLogin() {
 
   const login = useGoogleLogin({
     onSuccess: async (codeResponse) => {
-      const userId = (await fetchUser())?.id;
+      const userId = (await fetchUserCookie())?.id;
       if (userId) {
-        const accessToken = await sendAuthCode({
+        await sendAuthCode({
           code: codeResponse.code,
           id: userId,
         });
-        console.log(accessToken);
-        setAccessToken(accessToken);
+        setIsLogged(true);
       }
     },
     onError: (error) => console.log("Login Failed:", error),
@@ -37,8 +37,8 @@ export default function CalendarLogin() {
     redirect_uri: "http://localhost:3000/auth/calendar",
   });
 
-  return accessToken ? (
-    <div>Logado</div>
+  return isLogged ? (
+    <></>
   ) : (
     <button onClick={() => login()} className="btn btn-info btn-ghost">
       <span>Entrar com Google</span>
