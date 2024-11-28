@@ -4,6 +4,11 @@ import axios, { AxiosError } from "axios";
 interface MonthlyOrder {
   month: string;
   totalValue: number;
+  averageValue: number,
+  totalTaskCost: number,
+  profit: number,
+  completedTasks: number,
+  completedOrders: number
 }
 
 export const getMonthlyOrders = async (

@@ -8,9 +8,6 @@ const OrdersChart: React.FC = () => {
     chart: {
       id: "orders-chart",
       background: "#ffffff",
-      toolbar: {
-        show: false,
-      },
     },
     xaxis: {
       categories: [],
