@@ -95,7 +95,7 @@ export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
   const getTask = async () => {
     try {
       const response = await getTasks('', '', '', '', task?.id);
-      setShownTask(response.task);
+      setShownTask(response.tasks[0]);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {

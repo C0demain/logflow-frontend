@@ -17,7 +17,7 @@ interface RequestItemProps {
 }
 
 export interface taskForStage {
-  key: string,
+  key: string | undefined,
   value: boolean
 }
 

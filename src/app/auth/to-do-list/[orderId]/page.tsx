@@ -1,12 +1,13 @@
 "use client";
 
 import { updateOrder } from "@/app/api/serviceOrder/updateOrder";
-import { getTasks, TaskData } from "@/app/api/tasks/listTasks";
+import { getTasks } from "@/app/api/tasks/listTasks";
 import { TaskProvider } from "@/app/context/task";
 import Loading from "@/app/loading";
 import { HeaderOrderService } from "@/components/ServiceOrder/headerOrderService";
 import { ReadUnitTask } from "@/components/TaskService/readUnitTask";
 import TodoList from "@/components/TaskService/todoList";
+import { Task } from "@/interfaces/task";
 import { useQuery } from "@tanstack/react-query";
 
 interface TaskListProps {
@@ -15,18 +16,12 @@ interface TaskListProps {
   };
 }
 
-interface Task {
-  id: string;
-  stage: string;
-  completedAt: string | null;
-  // Adicione outros campos relevantes aqui
-}
 
-async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }] }): Promise<{ [key: string]: TaskData[] }> {
+async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }] }): Promise<{ [key: string]: Task[] }> {
   const [, { orderId }] = queryKey;
 
   // Faz uma única requisição para obter todas as tarefas
-  const { tasks }: { tasks: TaskData[] } = await getTasks(orderId, "", "", "", "");
+  const { tasks }: { tasks: Task[] } = await getTasks(orderId, "", "", "", "");
   // Define os diferentes "stages"
   const stages = [
     "EMISSÃO DE DOCUMENTOS DE COLETA",
@@ -38,7 +33,7 @@ async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }
   ];
 
   // Inicializa tasksByStage com o tipo correto
-  const tasksByStage: { [key: string]: TaskData[] } = {};
+  const tasksByStage: { [key: string]: Task[] } = {};
 
   // Separa as tarefas de acordo com o "stage"
   stages.forEach(stage => {

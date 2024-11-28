@@ -10,7 +10,6 @@ import OrderCount from "@/components/Dashboard/orderCount";
 import dynamic from "next/dynamic";
 import { listOs } from "@/app/api/serviceOrder/listOrder";
 import { DateFilterProvider } from "@/app/context/dashboard";
-import SpentAndEarnedChart from "@/components/Charts/SpentAndEarnedChart";
 
 // Importar componentes dinamicamente para evitar SSR
 const AccessWrapper = dynamic(() => import('@/components/Shared/AccessWrapper'), { ssr: false });
@@ -18,6 +17,7 @@ const OrdersChart = dynamic(() => import('@/components/Charts/OrdersChart'), { s
 const OverdueOrdersCount = dynamic(() => import('@/components/Dashboard/overdueOrdersCount'), { ssr: false });
 const OverdueTasksCount = dynamic(() => import('@/components/Dashboard/overdueTasksCount'), { ssr: false });
 const TurnoverCards = dynamic(() => import('@/components/Dashboard/turnoverCards'), { ssr: false });
+const SpentAndEarnedChart = dynamic(() => import("@/components/Charts/SpentAndEarnedChart"))
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
