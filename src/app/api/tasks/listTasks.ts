@@ -1,43 +1,10 @@
 import { createApiInstances } from "@/app/util/baseURL";
+import { Task } from "@/interfaces/task";
 import axios from "axios";
-
-export type TaskData = {
-  id: string;
-  title: string;
-  sector: string;
-  startedAt: Date | null;
-  completedAt: Date | null;
-  dueDate?: Date | null;
-  stage: string;
-  taskCost: number | null;
-  serviceOrder?: {
-    id: string,
-    title: string
-  };
-  assignedUser?: {
-    id: string,
-    name: string,
-    email: string
-  };
-  address?: {
-    zipCode: string,
-    state: string,
-    city: string,
-    neighborhood: string,
-    street: string,
-    number: string,
-    complement?: string,
-  }
-  files?: Array<{
-    id: string,
-    filename: string,
-  }>
-};
 
 type TasksResponse = {
   message: string;
-  tasks: TaskData[];
-  task: {};
+  tasks: Task[];
 };
 
 export const getTasks = async (

@@ -1,59 +1,48 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { sendAuthCode } from "@/app/api/calendarService/sendAuthCode";
+import UserCookie from "@/interfaces/userCookie";
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 
-function App() {
-  const [user, setUser] = useState<any>();
-  const [profile, setProfile] = useState<any>();
+export default function CalendarLogin() {
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  async function fetchUser(): Promise<UserCookie | undefined> {
+    try {
+      const response = await axios.get("/api/getUser");
+      return response.data as UserCookie;
+    } catch (error) {
+      console.error("Failed to fetch token", error);
+      return undefined;
+    }
+  }
 
   const login = useGoogleLogin({
-    onSuccess: (codeResponse) => setUser(codeResponse),
+    onSuccess: async (codeResponse) => {
+      const userId = (await fetchUser())?.id;
+      if (userId) {
+        const accessToken = await sendAuthCode({
+          code: codeResponse.code,
+          id: userId,
+        });
+        console.log(accessToken);
+        setAccessToken(accessToken);
+      }
+    },
     onError: (error) => console.log("Login Failed:", error),
+    flow: "auth-code",
+    scope: "https://www.googleapis.com/auth/calendar",
+    redirect_uri: "http://localhost:3000/auth/calendar",
   });
 
-  useEffect(() => {
-    if (user) {
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.access_token}`,
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          setProfile(res.data);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [user]);
-
-  const logOut = () => {
-    googleLogout();
-    setProfile(null);
-  };
-
-  return (
-    <div>
-      {profile ? (
-        <div>
-          <img src={profile.picture} alt="user image" />
-          <h3>Usuário logado</h3>
-          <p>Nome: {profile.name}</p>
-          <p>Email: {profile.email}</p>
-          <button onClick={logOut} className="btn btn-error">Sair</button>
-        </div>
-      ) : (
-        <button onClick={() => login()} className="btn btn-info btn-ghost">
-          <span>Entrar com Google</span>
-          <FaGoogle/>
-        </button>
-      )}
-    </div>
+  return accessToken ? (
+    <div>Logado</div>
+  ) : (
+    <button onClick={() => login()} className="btn btn-info btn-ghost">
+      <span>Entrar com Google</span>
+      <FaGoogle />
+    </button>
   );
 }
-export default App;
