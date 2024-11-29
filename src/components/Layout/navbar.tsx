@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "@/app/context/auth";
 import { Logout } from "./logout";
+import AccessWrapper from "@/components/Shared/AccessWrapper";
 
 export function Navbar() {
   const { user } = useContext(AuthContext);
@@ -36,19 +37,24 @@ export function Navbar() {
       </div>
 
       <div className="navbar-center hidden lg:flex">
-        {user?.role === "Motorista" ? null : (
+        
           <ul className="menu menu-horizontal text-base px-1">
             <li className="hover:text-white"><Link href="/auth/dashboard">Dashboard</Link></li>
             <li className="hover:text-white"><Link href="/auth/service-order">Ordens de Serviço</Link></li>
-            <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
-            <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
+            <AccessWrapper sectors={["DIRETORIA", "RH"]}>
+              <li className="hover:text-white"><Link href="/auth/user">Funcionários</Link></li>
+            </AccessWrapper>
+            <AccessWrapper sectors={["DIRETORIA", "VENDAS", "FINANCEIRO"]}>
+              <li className="hover:text-white"><Link href="/auth/client">Cliente</Link></li>
+            </AccessWrapper>
             <li className="hover:text-white"><Link href="/auth/documents">Documentos</Link></li>
-            <li className="hover:text-white"><Link href="/auth/process">Processos</Link></li>
+            <AccessWrapper sectors={["DIRETORIA"]}>
+              <li className="hover:text-white"><Link href="/auth/process">Processos</Link></li>
+            </AccessWrapper>
             <li className="hover:text-white"><Link href="/auth/chatsOptions">Chats</Link></li>
             <li className="hover:text-white"><Link href="/auth/vehicles">Veículos</Link></li>
             <li className="hover:text-white"><Link href="/auth/calendar">Agenda</Link></li>
           </ul>
-        )}
       </div>
 
       <div className="navbar-end space-x-5 mr-5">

@@ -26,11 +26,6 @@ export default function middleware(request: NextRequest) {
     }
   }
 
-  // Se o usuário for MOTORISTA e a URL não for '/auth/driver', redireciona para '/auth/driver'
-  if (userParse?.role === "Motorista" && request.nextUrl.pathname !== '/auth/driver') {
-    return NextResponse.redirect(driverURL);
-  }
-
   // Se houver token e a URL for '/login' ou '/', redireciona para a tela de ordem de serviço
   if (token && request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/') {
     return NextResponse.redirect(serviceOrderURL);
