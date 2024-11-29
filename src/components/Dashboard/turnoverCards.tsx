@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { getTurnover } from "@/app/api/dashboardService/getTurnover";  // Importando a função getTurnover
 import { DateFilterContext } from "@/app/context/dashboard";
+import { FaArrowUp } from "react-icons/fa6";
+import { FaArrowDown } from "react-icons/fa6";
+import { FaPersonWalkingArrowLoopLeft } from "react-icons/fa6";
+import { FaBalanceScale } from "react-icons/fa";
 
 const TurnoverCards: React.FC = () => {
   const { startDate, endDate } = useContext(DateFilterContext);
@@ -32,37 +36,34 @@ const TurnoverCards: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
         {turnover && (
           <>
             <div className="card bg-base-100 shadow-xl w-full">
               <div className="card-body">
-                <h2 className="card-title">Usuários Ativos</h2>
-                <p className="text-2xl mt-2">{turnover.newUsers}</p>
-              </div>
-            </div>
-            <div className="card bg-base-100 shadow-xl w-full">
-              <div className="card-body">
-                <h2 className="card-title">Usuários Desativados</h2>
-                <p className="text-2xl mt-2">{turnover.deactivatedUsers}</p>
-              </div>
-            </div>
-            <div className="card bg-base-100 shadow-xl w-full">
-              <div className="card-body">
-                <h2 className="card-title">Taxa de Turnover</h2>
-                <p className="text-2xl mt-2">{(turnover.ratio).toFixed(2)}%</p>
-              </div>
-            </div>
-            <div className="card bg-base-100 shadow-xl w-full">
-              <div className="card-body">
-                <h2 className="card-title">Diferença de Usuários</h2>
-                <p className="text-2xl mt-2">{turnover.difference}</p>
+                <h1 className="card-title">Funcionários</h1>
+                <div className="grid grid-cols-2 sm:grid-cols-4">
+                  <div className="mb-5 sm:mb-0">
+                    <h2 className="card-title">Entraram</h2>
+                    <p className="text-2xl mt-2 flex items-center gap-2 text-green-600"><FaArrowUp/>{turnover.newUsers}</p>
+                  </div>
+                  <div className="mb-5 sm:mb-0">
+                    <h2 className="card-title">Saíram</h2>
+                    <p className="text-2xl mt-2 flex items-center gap-2 text-red-600"><FaArrowDown/>{turnover.deactivatedUsers}</p>
+                  </div>
+                  <div>
+                    <h2 className="card-title">Turnover</h2>
+                    <p className="text-2xl mt-2 flex items-center gap-2"><FaPersonWalkingArrowLoopLeft />{(turnover.ratio).toFixed(2)}%</p>
+                  </div>
+                  <div>
+                    <h2 className="card-title">Diferença</h2>
+                    <p className="text-2xl mt-2 flex items-center gap-2"><FaBalanceScale />{turnover.difference}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </>
         )}
       </div>
-    </div>
   );
 };
 
