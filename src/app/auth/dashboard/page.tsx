@@ -10,6 +10,9 @@ import OrderCount from "@/components/Dashboard/orderCount";
 import dynamic from "next/dynamic";
 import { listOs } from "@/app/api/serviceOrder/listOrder";
 import { DateFilterProvider } from "@/app/context/dashboard";
+import CompletedOrdersChart from "@/components/Charts/CompletedOrdersChart";
+
+
 
 // Importar componentes dinamicamente para evitar SSR
 const AccessWrapper = dynamic(() => import('@/components/Shared/AccessWrapper'), { ssr: false });
@@ -116,6 +119,7 @@ export default function Dashboard() {
             <TurnoverCards />
             <OverdueTasksCount />
             <OrdersChart />
+            <CompletedOrdersChart />
           </AccessWrapper>
           <AccessWrapper sectors={["FINANCEIRO", "VENDAS", "DIRETORIA"]}>
             <SpentAndEarnedChart/>
