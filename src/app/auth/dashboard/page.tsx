@@ -10,7 +10,6 @@ import OrderCount from "@/components/Dashboard/orderCount";
 import dynamic from "next/dynamic";
 import { listOs } from "@/app/api/serviceOrder/listOrder";
 import { DateFilterProvider } from "@/app/context/dashboard";
-import CompletedOrdersChart from "@/components/Charts/CompletedOrdersChart";
 
 
 
@@ -21,6 +20,7 @@ const OverdueOrdersCount = dynamic(() => import('@/components/Dashboard/overdueO
 const OverdueTasksCount = dynamic(() => import('@/components/Dashboard/overdueTasksCount'), { ssr: false });
 const TurnoverCards = dynamic(() => import('@/components/Dashboard/turnoverCards'), { ssr: false });
 const SpentAndEarnedChart = dynamic(() => import("@/components/Charts/SpentAndEarnedChart"), {ssr: false})
+const CompletedOrdersChart = dynamic(() => import('@/components/Charts/CompletedOrdersChart'), {ssr: false})
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
