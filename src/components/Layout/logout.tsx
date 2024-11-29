@@ -36,7 +36,7 @@ export function Logout() {
 
   return (
     <div>
-      <button className="btn btn-ghost" onClick={openModal}>
+      <button onClick={openModal}>
         Sair
       </button>
       <dialog id="my_modal_4" className="modal">
