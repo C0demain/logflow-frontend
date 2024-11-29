@@ -174,7 +174,7 @@ export default function ChatPage() {
         </a>
       );
     } else {
-      return <Text>{msg.content}</Text>;
+      return <Text className='text-2xl'>{msg.content}</Text>;
     }
   };
 
@@ -184,18 +184,15 @@ export default function ChatPage() {
         <Text fontWeight="bold">Chat: {chatName || 'Carregando...'}</Text>
         <VStack align="stretch" spacing={2}>
           {messages.map((msg, index) => (
-            <Box key={index}>
-              <Text fontSize="sm" fontWeight="bold" color="gray.600">
-                {msg.sender} - {new Date(msg.createdAt).toLocaleString()}
-              </Text>
-              <HStack
-                alignSelf={msg.sender === 'Eu' ? 'flex-end' : 'flex-start'}
-                bg={msg.sender === 'Eu' ? 'blue.100' : 'gray.100'}
-                p={2}
-                borderRadius="md"
+            <Box key={index} className='flex flex-col'>
+              <div
+                data-owner={msg.sender === 'Eu'}
+                className=' flex flex-col py-2 px-4 rounded-md data-[owner=true]:bg-blue-400 data-[owner=true]:items-start data-[owner=false]:bg-slate-100 data-[owner=false]:items-end w-8/12 data-[owner=true]:self-start data-[owner=false]:self-end'
               >
+                {isGroupChat && <p className='text-md font-medium'>{msg.sender}</p>}
                 {renderMessageContent(msg)}
-              </HStack>
+                <p data-owner={msg.sender === 'Eu'} className='text-2'>{new Date(msg.createdAt).toLocaleString()}</p>
+              </div>
             </Box>
           ))}
         </VStack>
