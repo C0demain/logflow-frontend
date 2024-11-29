@@ -21,7 +21,7 @@ async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }
   const [, { orderId }] = queryKey;
 
   // Faz uma única requisição para obter todas as tarefas
-  const { tasks }: { tasks: Task[] } = await getTasks(orderId, "", "", "", "");
+  const { tasks }: { tasks: Task[] } = await getTasks(orderId, "", "", "");
   // Define os diferentes "stages"
   const stages = [
     "EMISSÃO DE DOCUMENTOS DE COLETA",

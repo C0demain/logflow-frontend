@@ -13,7 +13,7 @@ export default function MyToDoList(){
 
     const fetchTasks = async() => {
         try {
-            const response = getTasks('', '', user?.id, '', '')
+            const response = getTasks('', '', user?.id, '')
             setTasks((await response).tasks)
         } catch (error) {
             

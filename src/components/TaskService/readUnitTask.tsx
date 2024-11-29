@@ -13,6 +13,7 @@ import { formatDateForInput, formatDateToBR } from "@/app/util/dateFormatter";
 import { Divider } from "@chakra-ui/react";
 import { HeaderOrderService } from "../ServiceOrder/headerOrderService";
 import useToasts from "@/hooks/useToasts";
+import getSingleTask from "@/app/api/tasks/getSingleTask";
 
 interface ReadUnitTaskProps{
   myTask: boolean;
@@ -94,8 +95,8 @@ export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
 
   const getTask = async () => {
     try {
-      const response = await getTasks('', '', '', '', task?.id);
-      setShownTask(response.tasks[0]);
+      const fetchedTask = await getSingleTask(String(task?.id))
+      setShownTask(fetchedTask);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {

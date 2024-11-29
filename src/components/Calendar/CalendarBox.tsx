@@ -25,7 +25,7 @@ export default function CalendarBox() {
   async function getUserTasks() {
     const user = await fetchUser();
     if (user) {
-      const response = await getTasks("", "", user.id, "", "");
+      const response = await getTasks("", "", user.id, "");
       setEvents(
         response.tasks.map((task) => {
           return {

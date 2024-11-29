@@ -34,7 +34,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   const [tasksList, setTasksList] = useState<taskForStage[]>()
 
   const fetchTasks = async () => {
-    const response = await getTasks(orderId, "", "", "", "");
+    const response = await getTasks(orderId, "", "", "");
     console.log(response)
     if (response.tasks.length > 0) {
       const tasks: taskForStage[] = response?.tasks.map(task => ({
