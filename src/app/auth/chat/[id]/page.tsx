@@ -187,7 +187,7 @@ export default function ChatPage() {
             <Box key={index} className='flex flex-col'>
               <div
                 data-owner={msg.sender === 'Eu'}
-                className=' flex flex-col py-2 px-4 rounded-md data-[owner=true]:bg-blue-400 data-[owner=true]:items-start data-[owner=false]:bg-slate-100 data-[owner=false]:items-end w-8/12 data-[owner=true]:self-start data-[owner=false]:self-end'
+                className=' flex flex-col py-2 px-4 rounded-md data-[owner=true]:bg-blue-400 data-[owner=true]:items-end data-[owner=false]:bg-slate-100 data-[owner=false]:items-start w-8/12 data-[owner=true]:self-end data-[owner=false]:self-start'
               >
                 {isGroupChat && <p className='text-md font-medium'>{msg.sender}</p>}
                 {renderMessageContent(msg)}
