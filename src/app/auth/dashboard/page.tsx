@@ -17,7 +17,7 @@ const OrdersChart = dynamic(() => import('@/components/Charts/OrdersChart'), { s
 const OverdueOrdersCount = dynamic(() => import('@/components/Dashboard/overdueOrdersCount'), { ssr: false });
 const OverdueTasksCount = dynamic(() => import('@/components/Dashboard/overdueTasksCount'), { ssr: false });
 const TurnoverCards = dynamic(() => import('@/components/Dashboard/turnoverCards'), { ssr: false });
-const SpentAndEarnedChart = dynamic(() => import("@/components/Charts/SpentAndEarnedChart"))
+const SpentAndEarnedChart = dynamic(() => import("@/components/Charts/SpentAndEarnedChart"), {ssr: false})
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
