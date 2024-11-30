@@ -23,7 +23,7 @@ export default function RootLayout({
         <AuthProvider>
           <GoogleOAuthProvider
             clientId={
-              "847748011399-m9akrg5bt321h1oucoh1v6q22qgvnahi.apps.googleusercontent.com"
+              process.env.CLIENT_ID || ""
             }
           >
             <Providers>{children}</Providers>
