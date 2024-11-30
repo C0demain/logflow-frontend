@@ -86,7 +86,7 @@ export const RequestItem: React.FC<RequestItemProps> = ({
       <div className="flex flex-col sm:flex-row items-center sm:items-end sm:space-x-1 mt-4 sm:mt-0 lg:mt-20">
         <Link
           className=" px-6 py-3 sm:px-4 sm:py-2 w-full sm:w-28 h-10 flex justify-center items-center rounded-md bg-blue-400 hover:bg-blue-500 transition-all mb-2 sm:mb-0"
-          href={`/auth/history`}
+          href={`/auth/history/${orderId}`}
         >
           Histórico
         </Link>

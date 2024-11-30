@@ -46,23 +46,6 @@ async function fetchTasks({ queryKey }: { queryKey: [string, { orderId: string }
     stagesCompletion[stage] = tasksByStage[stage].every(task => task.completedAt !== null);
   });
 
-  // Atualiza o status da ordem com base na conclusão das tarefas
-  if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE COLETA"]) {
-    await updateOrder({ sector: "VENDAS", status: "ATIVO" }, orderId);
-  } else if (!stagesCompletion["COLETA"]) {
-    await updateOrder({ sector: "VENDAS", status: "ATIVO" }, orderId);
-  } else if (!stagesCompletion["EMISSÃO DE DOCUMENTOS DE ENTREGA"]) {
-    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
-  } else if (!stagesCompletion["ENTREGA"]) {
-    await updateOrder({ sector: "OPERACIONAL", status: "ATIVO" }, orderId);
-  } else if (!stagesCompletion["CONFIRMAÇÃO DE ENTREGA"]) {
-    await updateOrder({ sector: "FINANCEIRO", status: "ATIVO" }, orderId);
-  } else if (!stagesCompletion["CONFERÊNCIA DE ORÇAMENTO"]) {
-    await updateOrder({ sector: "FINANCEIRO", status: "FINALIZADO" }, orderId);
-  } else {
-    await updateOrder({ sector: "FINANCEIRO", status: "FINALIZADO" }, orderId);
-  }
-
   return tasksByStage;
 }
 

@@ -1,31 +1,43 @@
-import React from "react";
+import { listServiceOrderLogs } from "@/app/api/serviceOrderLogs/listOrderLogs";
+import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
 
 interface Log {
+  id: number;
   changedTo: string;
-  atDate: string;
+  creationDate: string;
 }
 
-interface OrderHistoryProps {
-  logs: Log[];
-}
+export default function OrderHistory({ orderId }: { orderId: string }) {
+  const [logs, setLogs] = useState<Log[]>([]);
+  const [loading, setLoading] = useState(true);
 
-const OrderHistory: React.FC<OrderHistoryProps> = ({ logs }) => {
+  dayjs.locale("pt-br");
+
+  useEffect(() => {
+    listServiceOrderLogs("", orderId)
+      .then((logs) => setLogs(logs))
+      .catch((error) => console.error("Error fetching logs:", error))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
-    <div className="p-5">
-      <h2 className="text-2xl font-bold text-center mb-4">Histórico da Ordem de Serviço</h2>
+    <div className="m-5 space-y-5">
+      <h2 className="text-2xl">Histórico da Ordem de Serviço</h2>
       {logs.length === 0 ? (
-        <p className="text-center">Nenhum histórico encontrado.</p>
+        <p className="text-center">Ainda não há registros.</p>
       ) : (
         <ul className="steps steps-vertical">
-          {logs.map((log, index) => (
-            <li key={index} className="step step-info">
-              {log.atDate} - Ordem movida para {log.changedTo}
+          {logs.map((log) => (
+            <li key={log.id} className="step step-info h-1" data-content="">
+              <p>
+                {dayjs(log.creationDate).format("DD/MM/YYYY hh:mm")} - Tarefas
+                do setor <b>{log.changedTo}</b> completas.
+              </p>
             </li>
           ))}
         </ul>
       )}
     </div>
   );
-};
-
-export default OrderHistory;
+}
