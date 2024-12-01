@@ -26,16 +26,16 @@ export default function CalendarBox() {
     const user = await fetchUser();
     if (user) {
       const response = await getTasks("", "", user.id, "");
-      setEvents(
-        response.tasks.map((task) => {
-          return {
-            id: task.id,
-            title: task.title || "Untitled",
-            start: task.dueDate || new Date(),
-            description: task.assignedUser?.name || "",
-          };
-        })
-      );
+      const newEvents = response.tasks.map((task) => {
+        return {
+          id: task.id,
+          title: task.title || "Untitled",
+          start: task.dueDate || new Date(),
+          description: task.assignedUser?.name || "",
+        } as EventInput;
+      })
+
+      return newEvents
     }
   }
 
@@ -43,27 +43,32 @@ export default function CalendarBox() {
     const user = await fetchUser();
     if (user) {
       const response = await listEvents(user?.id);
-      console.log("Google Agenda", response);
-      setEvents(
-        events.concat(
-          response.map((event: calendar_v3.Schema$Event) => {
-            return {
-              id: event.id,
-              title: event.summary || "Evento sem título",
-              start: new Date(event.start?.dateTime || new Date()),
-              end: new Date(event.end?.dateTime || new Date()),
-              description: event.description || "",
-              location: event.location || "",
-            } as EventInput;
-          })
-        )
-      );
+      
+      const newEvents = response.map((event: calendar_v3.Schema$Event) => {
+        return {
+          id: event.id,
+          title: event.summary || "Evento sem título",
+          start: new Date(event.start?.dateTime || new Date()),
+          end: new Date(event.end?.dateTime || new Date()),
+          description: event.description || "",
+          location: event.location || "",
+        } as EventInput;
+      })
+
+      return newEvents
     }
   }
 
+  async function populateCalendar(){
+    const taskEvents = await getUserTasks() || []
+    const googleEvents = await getGoogleCalendarEvents() || []
+
+
+    setEvents([...taskEvents, ...googleEvents])
+  }
+
   useEffect(() => {
-    getUserTasks();
-    getGoogleCalendarEvents();
+    populateCalendar()
   }, []);
 
   return (
