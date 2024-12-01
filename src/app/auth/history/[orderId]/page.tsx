@@ -1,13 +1,10 @@
 "use client";
 
 import OrderHistory from "@/components/ServiceOrder/orderHistory";
+import { useParams } from "next/navigation";
 
-interface HistoryParams {
-  orderId: string;
-}
+export default function OrderHistoryPage() {
+  const { orderId } = useParams()
 
-export default function OrderHistoryPage(params: HistoryParams) {
-  const { orderId } = params;
-
-  return <OrderHistory orderId={orderId} />;
+  return <OrderHistory orderId={String(orderId)} />;
 }
