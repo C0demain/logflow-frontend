@@ -17,7 +17,7 @@ export default function CreateEvent() {
     end: "",
   });
   const [loading, setLoading] = useState(false);
-  const { showToast } = useToasts();
+  const { showToast, showToastOnReload } = useToasts();
 
   async function fetchUserCookie(): Promise<UserCookie | undefined> {
     try {
@@ -64,7 +64,8 @@ export default function CreateEvent() {
       });
 
       if (response) {
-        showToast("Evento cadastrado com sucesso", "success");
+        showToastOnReload("Evento cadastrado com sucesso", "success");
+        window.location.reload()
       }
     } catch (error) {
       console.error("Failed to create event", error);
