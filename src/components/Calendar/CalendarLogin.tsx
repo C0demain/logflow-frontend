@@ -1,9 +1,10 @@
 "use client";
 import { sendAuthCode } from "@/app/api/calendarService/sendAuthCode";
+import hasGoogleAccount from "@/app/api/userService/getGoogleToken";
 import UserCookie from "@/interfaces/userCookie";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 
 export default function CalendarLogin() {
@@ -19,6 +20,13 @@ export default function CalendarLogin() {
       return undefined;
     }
   }
+
+  useEffect(() => {
+    console.log(hasGoogleAccount())
+    if(hasGoogleAccount()){
+      setIsLogged(true)
+    }
+  }, [])
 
   const login = useGoogleLogin({
     onSuccess: async (codeResponse) => {

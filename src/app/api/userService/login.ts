@@ -16,6 +16,7 @@ export async function loginPut(email: string, password: string): Promise<LoginRe
         if (response.data.token && response.data.id) {
             // Use js-cookie para armazenar os cookies no cliente
             Cookies.set('token', response.data.token, { expires: 1, path: '/' }); // expire em 1 dia
+            Cookies.set('has-google-account', String(response.data.hasGoogleAccount), {secure: true, sameSite: 'Strict'})
         }
 
         return response.data;
