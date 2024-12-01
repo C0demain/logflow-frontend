@@ -42,7 +42,7 @@ export const ReadOrder: React.FC<ReadOrderProps> = ({ userId, autorizado }) => {
             key={order.id}
             status={order.status}
             orderId={order.id}
-            name={order.title}
+            name={order.code}
             sector={order.sector}
             userId={userId}
             clientName={order.client.clientName}

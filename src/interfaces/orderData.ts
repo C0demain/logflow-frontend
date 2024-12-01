@@ -1,5 +1,5 @@
 export interface OrderData {
-  title?: string;
+  code?: string;
   clientId?: string;
   status?: string;
   sector?: string;

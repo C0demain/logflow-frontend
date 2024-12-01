@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 
 interface OrderService {
   id: number;
-  title: string;
+  code: string;
   client: string;
   status: string;
   sector: string;
@@ -46,7 +46,7 @@ export const HeaderOrderService: React.FC<HeaderOrderServiceProps> = ({ orderId 
     <div className="mb-2 bg-white rounded-md p-2 md:p-2">
       <div className="flex flex-col md:flex-row items-start md:items-center md:space-y-0 md:space-x-6 justify-between">
         <div className="w-full md:w-auto">
-          <h1 className="text-lg md:text-2xl font-bold">{orderService?.title}</h1>
+          <h1 className="text-lg md:text-2xl font-bold">{orderService?.code}</h1>
         </div>
         <div className="flex flex-col md:flex-row justify-between w-full md:w-3/4 space-y-4 md:space-y-0 md:space-x-6">
           <div>

@@ -1,7 +1,7 @@
 import { createApiInstances } from "@/app/util/baseURL"
 import axios, { AxiosError } from "axios"
 
-export const listOs = async (id: string | null, title: string | null, status: string | null, active: boolean | null, clientRelated: string | null, createdFrom?: string | Date, createdTo?: string | Date) => {
+export const listOs = async (id: string | null, code: string | null, status: string | null, active: boolean | null, clientRelated: string | null, createdFrom?: string | Date, createdTo?: string | Date) => {
   const { apiInstance } = await createApiInstances();
 
   try {
@@ -11,7 +11,7 @@ export const listOs = async (id: string | null, title: string | null, status: st
       id,
       status,
       clientRelated,
-      title,
+      code,
       active,
       createdFrom,
       createdTo

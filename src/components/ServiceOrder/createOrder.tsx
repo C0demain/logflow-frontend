@@ -14,7 +14,6 @@ interface CreateOrderProps {
 }
 
 export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
-  const [title, setTitle] = useState<string>("");
   const [clientObj, setClientObj] = useState<any>();
   const [processObj, setProcessObj] = useState<any>()
   const [description, setDescription] = useState<string>("");
@@ -30,7 +29,6 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
     const processId = processObj?.value;
     try {
       const response = await registerOrder({
-        title,
         clientId,
         status,
         userId,
@@ -58,18 +56,6 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
           <h1 className="text-2xl text-center">Nova Ordem de Serviço</h1>
         </div>
         <form onSubmit={handleSubmit} className="modal-middle space-y-3 flex flex-col items-center">
-          <div className="w-full max-w-md">
-            <label htmlFor="title" className="block mb-2">
-              Titulo
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="input input-bordered rounded-md w-full"
-            />
-          </div>
           <div className="w-full max-w-md">
             <label className="block mb-2">Cliente</label>
             <SelectClient
