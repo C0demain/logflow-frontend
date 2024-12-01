@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 interface Log {
   id: number;
-  changedTo: string;
+  action: string;
   creationDate: string;
 }
 
@@ -30,9 +30,8 @@ export default function OrderHistory({ orderId }: { orderId: string }) {
         <ul className="steps steps-vertical">
           {logs.map((log) => (
             <li key={log.id} className="step step-info h-1" data-content="">
-              <p>
-                {dayjs(log.creationDate).format("DD/MM/YYYY hh:mm")} - Tarefas
-                do setor <b>{log.changedTo}</b> completas.
+              <p className="text-lg">
+                <b>{dayjs(log.creationDate).format("DD/MM/YYYY hh:mm")}</b> - {log.action}
               </p>
             </li>
           ))}
