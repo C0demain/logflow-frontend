@@ -22,7 +22,7 @@ export default function CalendarLogin() {
   }
 
   useEffect(() => {
-    console.log(hasGoogleAccount())
+    console.log('hasGoogleAccount', hasGoogleAccount())
     if(hasGoogleAccount()){
       setIsLogged(true)
     }

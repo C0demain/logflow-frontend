@@ -1,5 +1,6 @@
 import { listEvents } from "@/app/api/calendarService/listEvents";
 import { getTasks } from "@/app/api/tasks/listTasks";
+import hasGoogleAccount from "@/app/api/userService/getGoogleToken";
 import UserCookie from "@/interfaces/userCookie";
 import { EventInput } from "@fullcalendar/core/index.js";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -61,8 +62,11 @@ export default function CalendarBox() {
   }
 
   async function populateCalendar(){
+    let googleEvents: EventInput[] = [];
+    if(hasGoogleAccount()){
+      googleEvents = await getGoogleCalendarEvents() || []
+    }
     const taskEvents = await getUserTasks() || []
-    const googleEvents = await getGoogleCalendarEvents() || []
 
 
     setEvents([...taskEvents, ...googleEvents])

@@ -12,7 +12,7 @@ export const sendAuthCode = async (codeData: SendAuthCodeData) => {
   
   try {
     const response = await apiInstance.post('/api/v1/calendar/callback', codeData);
-    Cookies.set('has-google-account', response.data, {secure: true})
+    Cookies.set('has-google-account', response.data && String(true), {secure: true})
     
     return response.data;
   } catch (error: unknown) {
