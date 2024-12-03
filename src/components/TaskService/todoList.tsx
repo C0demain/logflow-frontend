@@ -1,9 +1,9 @@
+import { Task } from "@/interfaces/task";
 import TaskItem from "./taskItem";
-import { TaskData } from "@/app/api/tasks/listTasks";
 
 interface TodoListProps {
   sectorName: string;
-  tasks: TaskData[];
+  tasks: Task[] | undefined;
   onUpdateTaskList: () => void;
 }
 
@@ -15,14 +15,14 @@ export default function TodoList({
 
   return (
     <div className="flex flex-col w-full bg-white p-2 rounded-md shadow-lg">
-      <h1 className="text-xl">Tarefas {sectorName}</h1>
-      {tasks.map((task) => (
+      <h1 className="text-xl">{sectorName}</h1>
+      {tasks?.map((task) => (
         <TaskItem
           onChecked={onUpdateTaskList}
           key={task.id}
-          idTask={task.id}
+          idTask={String(task.id)}
           completed={task.completedAt !== null}
-          title={task.title}
+          title={String(task.title)}
         />
       ))}
     </div>

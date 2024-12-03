@@ -2,7 +2,6 @@ import { createApiInstances } from '@/app/util/baseURL';
 import axios, { AxiosError } from 'axios';
 
 interface OrderData {
-  title: string;
   clientId: string;
   status: string;
   userId: string

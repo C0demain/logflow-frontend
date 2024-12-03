@@ -5,29 +5,19 @@ import CreateButton from "@/components/Shared/createButton";
 import ProcessForm from "@/components/ProcessService/ProcessForm";
 import { ProcessesList } from "@/components/ProcessService/ProcessList";
 import { Process } from "@/interfaces/process";
-import { useToast } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import useToasts from "@/hooks/useToasts";
 
 export default function ProcessListPage() {
-  const toast = useToast()
-  const router = useRouter()
+  const {showToastOnReload, showToast} = useToasts()
 
   const createProcess = async (data: Partial<Process>) => {
     try {
       await registerProcess(data)
-      toast({
-        status: 'success',
-        title: 'Sucesso',
-        description: 'Processo criado com sucesso'
-      })
+      showToastOnReload('Processo criado com sucesso', 'success')
 
-      router.refresh()
+      window.location.reload()
     } catch (error: any) {
-      toast({
-        status: 'error',
-        title: 'Erro',
-        description: error.message
-      })
+      showToast(error.message, 'error')
     }
   }
 

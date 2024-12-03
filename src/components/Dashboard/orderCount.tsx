@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Order } from "@/app/api/dashboardService/orderUtils";
 import { listOs } from "@/app/api/serviceOrder/listOrder";
+import Loading from "@/app/loading";
+import { DateFilterContext } from "@/app/context/dashboard";
 
 // Função para contar a quantidade de ordens abertas (não finalizadas)
 const qtdOrders = (orders: Order[]): number => {
@@ -12,6 +14,7 @@ const OrderCount: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const {startDate, endDate} = useContext(DateFilterContext)
 
   // Função para buscar as ordens
   const fetchOrders = async () => {
@@ -19,7 +22,7 @@ const OrderCount: React.FC = () => {
     setError(null);
 
     try {
-      const response = await listOs(null, null, null, true, null); // Ajuste os parâmetros se necessário
+      const response = await listOs(null, null, null, true, null, startDate, endDate); // Ajuste os parâmetros se necessário
       setOrders(response);
     } catch (err) {
       setError("Erro ao carregar as ordens de serviço.");
@@ -31,10 +34,7 @@ const OrderCount: React.FC = () => {
   // Carregar as ordens ao montar o componente
   useEffect(() => {
     fetchOrders();
-  }, []);
-
-  // Exibe "Carregando..." enquanto as ordens não forem carregadas
-  if (loading) return <div>Carregando...</div>;
+  }, [startDate, endDate]);
 
   // Exibe uma mensagem de erro se houver algum problema ao carregar as ordens
   if (error) return <div>{error}</div>;
@@ -46,7 +46,7 @@ const OrderCount: React.FC = () => {
     <div className="card bg-base-100 shadow-xl w-full my-4">
       <div className="card-body">
         <h2 className="card-title">Quantidade de Ordens de Serviço em Aberto</h2>
-        <p className="text-2xl mt-2">{totalOrders}</p>
+        {loading ? <Loading/> : <p className="text-2xl mt-2">{totalOrders}</p>}
       </div>
     </div>
   );

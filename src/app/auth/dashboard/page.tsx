@@ -1,16 +1,26 @@
 "use client";
 
+import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/app/context/auth";
 import Loading from "@/app/loading";
-import { useContext, useEffect, useState } from "react";
-import CostCards from "@/components/Dashboard/costCards";
+import TicketCards from "@/components/Dashboard/ticketCards";
 import { Order } from "@/app/api/dashboardService/orderUtils";
 import TotalTaskCost from "@/components/Dashboard/totalTaskCost";
 import OrderCount from "@/components/Dashboard/orderCount";
-import AccessWrapper from "@/components/Shared/AccessWrapper";
-import OverdueOrdersCount from "@/components/Dashboard/overdueOrdersCount";
-import OverdueTasksCount from "@/components/Dashboard/overdueTasksCount";
+import dynamic from "next/dynamic";
 import { listOs } from "@/app/api/serviceOrder/listOrder";
+import { DateFilterProvider } from "@/app/context/dashboard";
+
+
+
+// Importar componentes dinamicamente para evitar SSR
+const AccessWrapper = dynamic(() => import('@/components/Shared/AccessWrapper'), { ssr: false });
+const OrdersChart = dynamic(() => import('@/components/Charts/OrdersChart'), { ssr: false });
+const OverdueOrdersCount = dynamic(() => import('@/components/Dashboard/overdueOrdersCount'), { ssr: false });
+const OverdueTasksCount = dynamic(() => import('@/components/Dashboard/overdueTasksCount'), { ssr: false });
+const TurnoverCards = dynamic(() => import('@/components/Dashboard/turnoverCards'), { ssr: false });
+const SpentAndEarnedChart = dynamic(() => import("@/components/Charts/SpentAndEarnedChart"), {ssr: false})
+const CompletedOrdersChart = dynamic(() => import('@/components/Charts/CompletedOrdersChart'), {ssr: false})
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -20,12 +30,13 @@ export default function Dashboard() {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
-  // Função para buscar ordens com filtros de data
   const fetchOrders = async () => {
+    if (typeof window === "undefined") return; // Proteção contra SSR
+
     try {
       const response = await listOs(null, null, null, true, null);
       setOrders(response);
-      setFilteredOrders(response); // Inicializa com todas as ordens
+      setFilteredOrders(response);
     } catch (error) {
       console.error("Erro ao buscar ordens:", error);
     } finally {
@@ -33,16 +44,14 @@ export default function Dashboard() {
     }
   };
 
-  // Função para filtrar as ordens com base nas datas
   const filterOrdersByDate = () => {
     if (!startDate && !endDate) {
-      // Se não houver datas selecionadas, mostra todas as ordens
       setFilteredOrders(orders);
       return;
     }
 
     const filtered = orders.filter((order) => {
-      const orderDate = new Date(order.createdAt); // Ajuste de acordo com o campo de data da ordem
+      const orderDate = new Date(order.createdAt);
       const start = startDate ? new Date(startDate) : null;
       const end = endDate ? new Date(endDate) : null;
 
@@ -55,7 +64,6 @@ export default function Dashboard() {
     setFilteredOrders(filtered);
   };
 
-  // Atualiza o filtro quando as datas forem alteradas
   useEffect(() => {
     filterOrdersByDate();
   }, [startDate, endDate, orders]);
@@ -70,7 +78,7 @@ export default function Dashboard() {
       {loading ? (
         <Loading />
       ) : (
-        <>
+        <DateFilterProvider filters={{ startDate, endDate }}>
           <div className="space-y-3">
             {/* Filtro de Data */}
             <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
@@ -95,42 +103,29 @@ export default function Dashboard() {
             </div>
             <br />
           </div>
-
           <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
-            <div className="overflow-x-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5 w-full">
-                <div className="w-full">
-                  <OrderCount />
-                </div>
-                <div className="w-full">
-                  <OverdueOrdersCount />
-                </div>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5 w-full">
+              <OrderCount />
+              <OverdueOrdersCount />
             </div>
           </AccessWrapper>
-
-
           <AccessWrapper sectors={["FINANCEIRO", "VENDAS", "DIRETORIA"]}>
-            <div className="overflow-x-auto">
-              {/* Exibe as ordens filtradas */}
-              <CostCards orders={filteredOrders} />
-            </div>
+            <TicketCards />
           </AccessWrapper>
-
           <AccessWrapper sectors={["FINANCEIRO", "DIRETORIA"]}>
-            <div className="overflow-x-auto">
-              <TotalTaskCost orderId={""} orders={filteredOrders} />
-            </div>
+            <TotalTaskCost />
           </AccessWrapper>
-
           <AccessWrapper sectors={["DIRETORIA"]}>
-            <div className="overflow-x-auto">
-              <OverdueTasksCount />
-            </div>
+            <TurnoverCards />
+            <OverdueTasksCount />
+            <OrdersChart />
+            <CompletedOrdersChart />
           </AccessWrapper>
-        </>
+          <AccessWrapper sectors={["FINANCEIRO", "VENDAS", "DIRETORIA"]}>
+            <SpentAndEarnedChart/>
+          </AccessWrapper>
+        </DateFilterProvider>
       )}
     </div>
-
   );
 }

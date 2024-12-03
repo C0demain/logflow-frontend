@@ -3,18 +3,17 @@
 import { useState } from "react";
 import { SelectClient } from "../ClientService/selectClient";
 import { registerOrder } from "@/app/api/serviceOrder/registerOrder";
-import { useRouter } from "next/navigation";
-import { useToast } from "@chakra-ui/react";
+
 import { isAxiosError } from "axios";
 import CreateButton from "../Shared/createButton";
 import { SelectProcess } from "@/components/ProcessService/SelectProcess";
+import useToasts from "@/hooks/useToasts";
 
 interface CreateOrderProps {
   id: string
 }
 
 export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
-  const [title, setTitle] = useState<string>("");
   const [clientObj, setClientObj] = useState<any>();
   const [processObj, setProcessObj] = useState<any>()
   const [description, setDescription] = useState<string>("");
@@ -22,8 +21,7 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
   const userId = id
   const status = "PENDENTE";
   const sector = "VENDAS";
-  const router = useRouter();
-  const toast = useToast();
+  const {showToast, showToastOnReload} = useToasts()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +29,6 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
     const processId = processObj?.value;
     try {
       const response = await registerOrder({
-        title,
         clientId,
         status,
         userId,
@@ -40,30 +37,14 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
         value,
         processId
       });
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Ordem de serviço criada com sucesso",
-      });
+      showToastOnReload("Ordem de serviço criada com sucesso", 'success')
 
-      setTitle("");
-      setClientObj(null);
-      setDescription("");
-      setValue(undefined);
-      router.refresh();
+      window.location.reload();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };
@@ -75,18 +56,6 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
           <h1 className="text-2xl text-center">Nova Ordem de Serviço</h1>
         </div>
         <form onSubmit={handleSubmit} className="modal-middle space-y-3 flex flex-col items-center">
-          <div className="w-full max-w-md">
-            <label htmlFor="title" className="block mb-2">
-              Titulo
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="input input-bordered rounded-md w-full"
-            />
-          </div>
           <div className="w-full max-w-md">
             <label className="block mb-2">Cliente</label>
             <SelectClient
@@ -118,9 +87,11 @@ export const CreateOrder: React.FC<CreateOrderProps> = ({ id }) => {
                 <input
                   type="number"
                   className="grow"
-                  value={value}
-                  onChange={(e) => setValue(parseFloat(e.target.value) || undefined)}
-                /></label>
+                  value={value ?? ""}
+                  onChange={(e) => setValue(e.target.value ? parseFloat(e.target.value) : undefined)}
+                />
+
+              </label>
             </div>
           </div>
           <div className="w-full max-w-md flex justify-end">

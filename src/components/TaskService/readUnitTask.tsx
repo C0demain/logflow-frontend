@@ -11,14 +11,21 @@ import { isAxiosError } from "axios";
 import { useToast } from "@chakra-ui/react/toast";
 import { formatDateForInput, formatDateToBR } from "@/app/util/dateFormatter";
 import { Divider } from "@chakra-ui/react";
+import { HeaderOrderService } from "../ServiceOrder/headerOrderService";
+import useToasts from "@/hooks/useToasts";
+import getSingleTask from "@/app/api/tasks/getSingleTask";
 
-export const ReadUnitTask = () => {
+interface ReadUnitTaskProps{
+  myTask: boolean;
+}
+
+export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
   const [shownTask, setShownTask] = useState<any>();
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState<any>();
   const [dueDate, setDueDate] = useState<string>("");
   const [taskCost, setTaskCost] = useState<number>();
-  const toast = useToast();
+  const {showToast, showToastOnReload} = useToasts()
   const { task, deleteTask } = useContext(TaskContext);
   const user = shownTask?.assignedUser;
 
@@ -29,17 +36,9 @@ export const ReadUnitTask = () => {
       return response;
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };
@@ -50,27 +49,15 @@ export const ReadUnitTask = () => {
     try {
       const response = await userForTask(shownTask.id, { userId: userObj.value });
       await startTasks(shownTask.id);
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Usuário vínculado",
-      });
+       showToast("Usuário vínculado", 'success')
       setUserObj("");
       getTask()
       return response;
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };
@@ -80,59 +67,36 @@ export const ReadUnitTask = () => {
     event.preventDefault();
     try {
       const response = await setdueDate(shownTask.id, { date: formatDateToBR(dueDate) });
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Previsão de fim atualizada",
-      });
+      showToast("Previsão de fim atualizada", 'success')
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };
 
+  /* Adiciona custo da tarefa */
   const addTaskCost = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       const response = await addCost(shownTask.id, { value: taskCost });
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Custo de tarefa atualizado",
-      });
+      showToast("Custo de tarefa atualizado", 'success')
       return response;
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: error.message,
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente",
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error')
       }
     }
   };
 
   const getTask = async () => {
     try {
-      const response = await getTasks('', '', '', '', task?.id);
-      setShownTask(response.task);
+      const fetchedTask = await getSingleTask(String(task?.id))
+      setShownTask(fetchedTask);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
@@ -163,6 +127,11 @@ export const ReadUnitTask = () => {
   return (
     <>
       <div className="flex flex-col w-full bg-white p-3 rounded-md shadow-lg space-y-2 relative">
+        {myTask && 
+        <div>
+        <HeaderOrderService orderId={shownTask.serviceOrder.id}/>
+        <Divider/>
+        </div>}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full justify-between">
           <div>
             <p className="font-bold text-lg w-full">Titulo: {shownTask?.title}</p>

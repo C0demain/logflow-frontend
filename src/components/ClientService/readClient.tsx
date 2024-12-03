@@ -6,12 +6,12 @@ import EditModal from "./editModal";
 import ClientData from "@/interfaces/clientData";
 import { updateClientById } from "@/app/api/clientService/updateClient";
 import ClientUpdateInterface from "@/interfaces/clientUpdateInterface";
-import { useToast } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+
 import { AxiosError } from "axios";
 import { FaEdit } from "react-icons/fa";
 import { DeleteClient } from "./deleteClient";
 import Empty from "@/components/Shared/Empty";
+import useToasts from "@/hooks/useToasts";
 
 interface ReadClientProps {
   autorizado: boolean
@@ -23,8 +23,7 @@ export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentClient, setCurrentClient] = useState<ClientData | null>(null);
-  const toast = useToast();
-  const router = useRouter();
+  const {showToast, showToastOnReload} = useToasts()
 
   const getClient = useCallback(async () => {
     try {
@@ -46,17 +45,10 @@ export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
     try {
       await deleteClientById(clientId);
       setData((prevData) => prevData.filter(client => client.id !== clientId));
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Cliente excluído com sucesso"
-      });
+      showToastOnReload( "Cliente excluído com sucesso", 'success');
+      window.location.reload()
     } catch (error) {
-      toast({
-        status: "error",
-        title: "Erro",
-        description: "Não foi possível excluir o cliente. Tente novamente"
-      });
+      showToast("Não foi possível excluir o cliente. Tente novamente", 'error');
     }
   };
 
@@ -93,26 +85,13 @@ export const ReadClient: React.FC<ReadClientProps> = ({ autorizado }) => {
 
     try {
       await updateClientById(clientId, clientUpdate);
-      toast({
-        status: "success",
-        title: "Sucesso",
-        description: "Cliente atualizado com sucesso"
-      });
-      router.refresh();
-      getClient();
+      showToastOnReload( "Cliente atualizado com sucesso", 'success');
+      window.location.reload()
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        toast({
-          status: "error",
-          title: "Error",
-          description: error.message
-        });
+        showToast(error.message, 'error')
       } else {
-        toast({
-          status: "error",
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente"
-        });
+        showToast("Ocorreu um erro inesperado. Tente novamente", 'error');
       }
     }
   };
