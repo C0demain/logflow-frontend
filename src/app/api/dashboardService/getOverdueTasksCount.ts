@@ -23,7 +23,6 @@ export const getOverdueTasksCount = async (filters?: Filters): Promise<number> =
       startedAt: filters?.startedAt,
       dueDate: filters?.dueDate
     }});
-    console.log(response)
 
     return response.data.count; 
   } catch (error) {

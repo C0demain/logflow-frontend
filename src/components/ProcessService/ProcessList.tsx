@@ -33,14 +33,12 @@ export const ProcessesList: React.FC = () => {
   const fetchProcesses = useCallback(async () => {
     try {
       const response = await getProcesses();
-      //console.log(response)
       if (Array.isArray(response)) {
         setData(response);
       } else {
         setError("Dados dos processos não estão no formato esperado.");
       }
       setLoading(false)
-      //console.log(response)
     } catch (error) {
       console.error("Error fetching processes:", error);
       setError("Não foi possível carregar os processos.");

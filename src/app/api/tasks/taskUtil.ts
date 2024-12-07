@@ -9,7 +9,6 @@ export const userForTask = async (taskId: string, assignData: assignData) => {
   const { apiInstance } = await createApiInstances();
 
   try {
-    console.log(taskId, assignData)
     const response = apiInstance.patch(`/api/v1/task/${taskId}/assign`, assignData)
     return response
   } catch (error: unknown) {

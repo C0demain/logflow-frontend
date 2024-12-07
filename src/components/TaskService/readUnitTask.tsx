@@ -112,8 +112,6 @@ export const ReadUnitTask = ({myTask}: ReadUnitTaskProps) => {
   useEffect(() => {
     setTaskCost(shownTask?.taskCost)
     setDueDate(formatDateForInput(shownTask?.dueDate));
-    console.log(shownTask)
-    console.log(shownTask?.dueDate)
   }, [shownTask]);
 
   if (!shownTask) {
